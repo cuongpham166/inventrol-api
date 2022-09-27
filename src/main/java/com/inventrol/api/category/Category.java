@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Value;
 @Entity
 @Table(name = "category")
 public class Category {
-	public Category(String name, String notice, boolean isDeleted, LocalDate createdDate, LocalDate updatedDate) {
+	public Category(String name, String notice, boolean deleted, LocalDate createdDate, LocalDate updatedDate) {
 		super();
 		this.name = name;
 		this.notice = notice;
-		this.isDeleted = isDeleted;
+		this.deleted = deleted;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
 	}
@@ -33,7 +33,7 @@ public class Category {
 	
 	@Column(name = "is_deleted")
 	@Value("false")
-	private boolean isDeleted;
+	private boolean deleted;
 	
 	@Column(name="created_date")
 	private LocalDate createdDate;
@@ -62,11 +62,11 @@ public class Category {
 	}
 
 	public boolean isDeleted() {
-		return isDeleted;
+		return deleted;
 	}
 
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public LocalDate getCreatedDate() {
