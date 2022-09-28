@@ -1,21 +1,32 @@
-package com.inventrol.api.category;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+package com.inventrol.api.subcategory;
 
-import javax.persistence.*;
+import java.time.LocalDate;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import com.inventrol.api.subcategory.Subcategory;
+import com.inventrol.api.category.Category;
 
 @Entity
-@Table(name = "category")
-public class Category {
-	public Category(Set<Subcategory> subcategory, String name, String notice, boolean deleted, LocalDate createdDate,
+@Table(name = "subcategory")
+public class Subcategory {
+	public Subcategory() {
+		super();
+	}
+
+	public Subcategory(Category category, String name, String notice, boolean deleted, LocalDate createdDate,
 			LocalDate updatedDate) {
 		super();
-		this.subcategory = subcategory;
+		this.category = category;
 		this.name = name;
 		this.notice = notice;
 		this.deleted = deleted;
@@ -23,16 +34,13 @@ public class Category {
 		this.updatedDate = updatedDate;
 	}
 
-	public Category() {
-		super();
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@OneToMany(mappedBy ="category",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
-	private Set<Subcategory>subcategory = new HashSet<Subcategory>();
+	@ManyToOne(fetch=FetchType.LAZY, optional=false)
+	@JoinColumn(name="category_id", nullable=false)
+	private Category category;
 	
 	@Column(name = "name")
 	private String name;
@@ -52,6 +60,14 @@ public class Category {
 
 	public long getId() {
 		return id;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public String getName() {
@@ -93,15 +109,4 @@ public class Category {
 	public void setUpdatedDate(LocalDate updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-
-	public Set<Subcategory> getSubcategory() {
-		return subcategory;
-	}
-
-	public void setSubcategory(Set<Subcategory> subcategory) {
-		this.subcategory = subcategory;
-	}
-
-
-	
 }

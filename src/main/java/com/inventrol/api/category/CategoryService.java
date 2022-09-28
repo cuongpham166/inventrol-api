@@ -19,9 +19,9 @@ public class CategoryService {
 		return foundCategory;
 	}
 	
-	public List<Category> getAllCategories (){
-		List<Category>categories = new ArrayList<Category>();
-		categoryRepo.findAllByOrderByIdAsc().forEach(categories::add);
+	public List<CategoryView> getAllCategories (){
+		List<CategoryView>categories = new ArrayList<CategoryView>();
+		categoryRepo.findAllProjectedByOrderByIdAsc(CategoryView.class).forEach(categories::add);
 		return categories;
 	}
 	
@@ -39,8 +39,14 @@ public class CategoryService {
 		_category.setUpdatedDate(LocalDate.now());
 		Category savedCategory = categoryRepo.save(_category);
 		return savedCategory;
-		
-
+	}
+	
+	public Category softDeleteCategory(long id){
+		Optional<Category>categoryData = getCategoryById(id);
+		Category _category = categoryData.get();
+		_category.setDeleted(true);
+		Category savedCategory = categoryRepo.save(_category);
+		return savedCategory;
 	}
 
 }

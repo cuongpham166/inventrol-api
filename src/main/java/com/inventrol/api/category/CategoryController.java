@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class CategoryController {
@@ -22,10 +23,9 @@ public class CategoryController {
 	private  CategoryService categoryService;
 
 	@GetMapping("/category")
-	@CrossOrigin(origins = "http://localhost:3000")
-	public ResponseEntity<List<Category>> getAllCategories() {
+	public ResponseEntity<List<CategoryView>> getAllCategories() {
 		try {
-			List<Category> categories = categoryService.getAllCategories();
+			List<CategoryView> categories = categoryService.getAllCategories();
 			if (categories.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
@@ -36,7 +36,6 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/category/{id}")
-	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<Category>getCategoryById(@PathVariable("id") long id){
 		Optional<Category> categoryData = categoryService.getCategoryById(id);
 		if(categoryData.isPresent()) {
@@ -47,7 +46,6 @@ public class CategoryController {
 	}
 	
 	@PostMapping("/category")
-	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<Category> createCategory(@RequestBody Category newCategory){
 		try{
 			Category _category = categoryService.createCategory(newCategory);
@@ -58,11 +56,21 @@ public class CategoryController {
 	}
 	
 	@PutMapping("/category/{id}")
-	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<Category>updateCategory(@PathVariable("id") long id,@RequestBody Category updatedCategory ){
 		Optional<Category>categoryData = categoryService.getCategoryById(id);
 		if(categoryData.isPresent()) {
 			Category _category = categoryService.updateCategory(id, updatedCategory);
+			return new ResponseEntity<>(_category, HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@PutMapping("/category/{id}/delete")
+	public ResponseEntity<Category>deleteCategory(@PathVariable("id") long id ){
+		Optional<Category>categoryData = categoryService.getCategoryById(id);
+		if(categoryData.isPresent()) {
+			Category _category = categoryService.softDeleteCategory(id);
 			return new ResponseEntity<>(_category, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
