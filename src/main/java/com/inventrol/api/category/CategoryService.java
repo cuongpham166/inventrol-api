@@ -25,6 +25,11 @@ public class CategoryService {
 		return categories;
 	}
 	
+	public CategoryDetailView getCategoryDetailById(long id) {
+		CategoryDetailView categoryDetail = categoryRepo.findProjectedById(id, CategoryDetailView.class);
+		return categoryDetail;
+	}
+	
 	public Category createCategory (Category newCategory) {
 		newCategory.setCreatedDate(LocalDate.now());
 		Category savedCategory = categoryRepo.save(newCategory);

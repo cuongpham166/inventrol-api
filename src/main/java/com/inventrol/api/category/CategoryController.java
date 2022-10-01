@@ -36,10 +36,11 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/category/{id}")
-	public ResponseEntity<Category>getCategoryById(@PathVariable("id") long id){
+	public ResponseEntity<CategoryDetailView>getCategoryById(@PathVariable("id") long id){
 		Optional<Category> categoryData = categoryService.getCategoryById(id);
 		if(categoryData.isPresent()) {
-			return new ResponseEntity<>(categoryData.get(), HttpStatus.OK);
+			CategoryDetailView _categoryDetail = categoryService.getCategoryDetailById(id);
+			return new ResponseEntity<>(_categoryDetail, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -48,8 +49,8 @@ public class CategoryController {
 	@PostMapping("/category")
 	public ResponseEntity<Category> createCategory(@RequestBody Category newCategory){
 		try{
-			Category _category = categoryService.createCategory(newCategory);
-			return new ResponseEntity<>(_category, HttpStatus.CREATED);
+			categoryService.createCategory(newCategory);
+			return new ResponseEntity<>(HttpStatus.CREATED);
 		}catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -59,8 +60,8 @@ public class CategoryController {
 	public ResponseEntity<Category>updateCategory(@PathVariable("id") long id,@RequestBody Category updatedCategory ){
 		Optional<Category>categoryData = categoryService.getCategoryById(id);
 		if(categoryData.isPresent()) {
-			Category _category = categoryService.updateCategory(id, updatedCategory);
-			return new ResponseEntity<>(_category, HttpStatus.OK);
+			categoryService.updateCategory(id, updatedCategory);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -70,8 +71,8 @@ public class CategoryController {
 	public ResponseEntity<Category>deleteCategory(@PathVariable("id") long id ){
 		Optional<Category>categoryData = categoryService.getCategoryById(id);
 		if(categoryData.isPresent()) {
-			Category _category = categoryService.softDeleteCategory(id);
-			return new ResponseEntity<>(_category, HttpStatus.OK);
+			 categoryService.softDeleteCategory(id);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

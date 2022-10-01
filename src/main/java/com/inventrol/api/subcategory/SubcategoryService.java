@@ -20,13 +20,23 @@ public class SubcategoryService {
 	@Autowired
 	private CategoryService categoryService;
 	
+	public Optional<Subcategory> getSubcategoryById(long id){
+		Optional<Subcategory> foundSubcategory = subcategoryRepo.findById(id);
+		return foundSubcategory;
+	}
+	
+	public SubcategoryDetailView getSubcategoryDetailById(long id) {
+		SubcategoryDetailView subcategoryDetail = subcategoryRepo.findProjectedById(id, SubcategoryDetailView.class);
+		return subcategoryDetail;
+	}
+	
 	public List<SubcategoryView> getAllSubcategories () {
 		List<SubcategoryView> subcategories = new ArrayList<SubcategoryView>();
 		subcategoryRepo.findAllProjectedByOrderByIdAsc(SubcategoryView.class).forEach(subcategories::add);
 		return subcategories;
 	}
 	
-	public Subcategory createSubcategory(Subcategory newSubcategory) {
+	public void createSubcategory(Subcategory newSubcategory) {
 		newSubcategory.setCreatedDate(LocalDate.now());
 		long categoryId = newSubcategory.getCategory().getId();
 		Optional<Category>categoryData = categoryService.getCategoryById(categoryId);
@@ -34,9 +44,20 @@ public class SubcategoryService {
 			Category foundCategory = categoryData.get(); 
 			newSubcategory.setCategory(foundCategory);
 			subcategoryRepo.save(newSubcategory);
-			return newSubcategory;
-		}else {
-			return null;
+		}
+	}
+	
+	public void updateSubcategory (long id, Subcategory updatedSubcategory) {
+		Optional<Subcategory>subcategoryData = getSubcategoryById(id);
+		long categoryId = updatedSubcategory.getCategory().getId();
+		Optional<Category>categoryData = categoryService.getCategoryById(categoryId);
+		if(subcategoryData.isPresent() && categoryData.isPresent()) {
+			Subcategory _subcategory = subcategoryData.get();
+			_subcategory.setName(updatedSubcategory.getName());
+			_subcategory.setNotice(updatedSubcategory.getNotice());
+			_subcategory.setUpdatedDate(LocalDate.now());
+			_subcategory.setCategory(categoryData.get());
+			subcategoryRepo.save(_subcategory);
 		}
 	}
 }
