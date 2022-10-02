@@ -1,7 +1,10 @@
 package com.inventrol.api.subcategory;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,11 +13,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
 
 import com.inventrol.api.category.Category;
+import com.inventrol.api.product.Product;
 
 @Entity
 @Table(name = "subcategory")
@@ -41,6 +46,9 @@ public class Subcategory {
 	@ManyToOne(fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="category_id", nullable=false)
 	private Category category;
+	
+	@OneToMany(mappedBy ="subcategory",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	private Set<Product>product = new HashSet<Product>();
 	
 	@Column(name = "name")
 	private String name;

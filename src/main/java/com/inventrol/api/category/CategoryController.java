@@ -39,8 +39,13 @@ public class CategoryController {
 	public ResponseEntity<CategoryDetailView>getCategoryById(@PathVariable("id") long id){
 		Optional<Category> categoryData = categoryService.getCategoryById(id);
 		if(categoryData.isPresent()) {
-			CategoryDetailView _categoryDetail = categoryService.getCategoryDetailById(id);
-			return new ResponseEntity<>(_categoryDetail, HttpStatus.OK);
+			Category _category = categoryData.get();
+			if(_category.isDeleted() == false) {
+				CategoryDetailView _categoryDetail = categoryService.getCategoryDetailById(id);
+				return new ResponseEntity<>(_categoryDetail, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -60,8 +65,14 @@ public class CategoryController {
 	public ResponseEntity<Category>updateCategory(@PathVariable("id") long id,@RequestBody Category updatedCategory ){
 		Optional<Category>categoryData = categoryService.getCategoryById(id);
 		if(categoryData.isPresent()) {
-			categoryService.updateCategory(id, updatedCategory);
-			return new ResponseEntity<>(HttpStatus.OK);
+			Category _category = categoryData.get();
+			if(_category.isDeleted()==false) {
+				categoryService.updateCategory(id, updatedCategory);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -71,8 +82,13 @@ public class CategoryController {
 	public ResponseEntity<Category>deleteCategory(@PathVariable("id") long id ){
 		Optional<Category>categoryData = categoryService.getCategoryById(id);
 		if(categoryData.isPresent()) {
-			 categoryService.softDeleteCategory(id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			Category _category  = categoryData.get();
+			if(_category.isDeleted() == false) {
+				 categoryService.softDeleteCategory(id);
+					return new ResponseEntity<>(HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

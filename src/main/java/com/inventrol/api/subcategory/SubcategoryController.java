@@ -43,8 +43,13 @@ public class SubcategoryController {
 	public ResponseEntity<SubcategoryDetailView>getCategoryById(@PathVariable("id") long id){
 		Optional<Subcategory> subcategoryData = subcategoryService.getSubcategoryById(id);
 		if(subcategoryData.isPresent()) {
-			SubcategoryDetailView _subcategoryDetail = subcategoryService.getSubcategoryDetailById(id);
-			return new ResponseEntity<>(_subcategoryDetail, HttpStatus.OK);
+			Subcategory _subcategory = subcategoryData.get();
+			if(_subcategory.isDeleted() == false) {
+				SubcategoryDetailView _subcategoryDetail = subcategoryService.getSubcategoryDetailById(id);
+				return new ResponseEntity<>(_subcategoryDetail, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -65,8 +70,13 @@ public class SubcategoryController {
 	public ResponseEntity<Subcategory>updateSubcategory(@PathVariable("id") long id,@RequestBody Subcategory updatedSubcategory ){
 		Optional<Subcategory>subcategoryData = subcategoryService.getSubcategoryById(id);
 		if(subcategoryData.isPresent()) {
-			subcategoryService.updateSubcategory(id, updatedSubcategory);
-			return new ResponseEntity<>(HttpStatus.OK);
+			Subcategory _subcategory = subcategoryData.get();
+			if(_subcategory.isDeleted() == false) {
+				subcategoryService.updateSubcategory(id, updatedSubcategory);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

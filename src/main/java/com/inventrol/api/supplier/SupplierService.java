@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,8 @@ public class SupplierService {
 	public List<SupplierView>getAllSuppliers(){
 		List<SupplierView> suppliers = new ArrayList<SupplierView>();
 		supplierRepo.findAllProjectedByOrderByIdAsc(SupplierView.class).forEach(suppliers::add);
-		return suppliers;
+		List<SupplierView> result = suppliers.stream().filter(sup -> sup.isDeleted()==false).collect(Collectors.toList());
+		return result;
 	}
 	
 	public SupplierDetailView getSupplierDetailById(long id) {

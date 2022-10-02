@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,8 @@ public class CategoryService {
 	public List<CategoryView> getAllCategories (){
 		List<CategoryView>categories = new ArrayList<CategoryView>();
 		categoryRepo.findAllProjectedByOrderByIdAsc(CategoryView.class).forEach(categories::add);
-		return categories;
+		List<CategoryView> result = categories.stream().filter(cat -> cat.isDeleted() == false).collect(Collectors.toList());
+		return result;
 	}
 	
 	public CategoryDetailView getCategoryDetailById(long id) {

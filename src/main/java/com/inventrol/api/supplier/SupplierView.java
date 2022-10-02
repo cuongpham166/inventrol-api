@@ -10,7 +10,8 @@ public interface SupplierView {
 	LocalDate getCreatedDate();
 	LocalDate getUpdatedDate();
 	ContactInfo getContact();
-	
+	 boolean isDeleted();
+	 
 	interface ContactInfo{
 		long getId();
 	}

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,8 @@ public class SubcategoryService {
 	public List<SubcategoryView> getAllSubcategories () {
 		List<SubcategoryView> subcategories = new ArrayList<SubcategoryView>();
 		subcategoryRepo.findAllProjectedByOrderByIdAsc(SubcategoryView.class).forEach(subcategories::add);
-		return subcategories;
+		List <SubcategoryView> result = subcategories.stream().filter(subcat -> subcat.isDeleted()==false).collect(Collectors.toList());
+		return result;
 	}
 	
 	public void createSubcategory(Subcategory newSubcategory) {

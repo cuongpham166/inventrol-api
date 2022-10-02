@@ -40,8 +40,13 @@ public class SupplierController {
 	public ResponseEntity<SupplierDetailView> getSupplierById(@PathVariable("id") long id){
 		Optional<Supplier> supplierData = supplierService.getSupplierById(id);
 		if(supplierData.isPresent()) {
-			SupplierDetailView _supplierDetail = supplierService.getSupplierDetailById(id);
-			return new ResponseEntity<>(_supplierDetail, HttpStatus.OK);
+			Supplier _supplier = supplierData.get();
+			if(_supplier.isDeleted() == false) {
+				SupplierDetailView _supplierDetail = supplierService.getSupplierDetailById(id);
+				return new ResponseEntity<>(_supplierDetail, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

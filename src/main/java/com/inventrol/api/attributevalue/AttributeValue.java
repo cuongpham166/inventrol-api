@@ -1,51 +1,57 @@
-package com.inventrol.api.supplier;
+package com.inventrol.api.attributevalue;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import com.inventrol.api.contact.Contact;
+import com.inventrol.api.atrribute.Attribute;
 import com.inventrol.api.product.Product;
 
 @Entity
-@Table(name = "supplier")
-public class Supplier {
-	public Supplier(Contact contact, String name, String contactPerson, String notice, boolean deleted,
+@Table(name = "attribute_value")
+public class AttributeValue {
+	public AttributeValue() {
+		super();
+	}
+
+	public AttributeValue(Attribute attribute, Set<Product> product, String name, String notice, boolean deleted,
 			LocalDate createdDate, LocalDate updatedDate) {
 		super();
-		this.contact = contact;
+		this.attribute = attribute;
+		this.product = product;
 		this.name = name;
-		this.contactPerson = contactPerson;
 		this.notice = notice;
 		this.deleted = deleted;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
 	}
 
-	public Supplier() {
-		super();
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@OneToOne(fetch=FetchType.LAZY, optional=false)
-	@JoinColumn(name="contact_id", nullable=false)
-	private Contact contact;
+	@ManyToOne(fetch=FetchType.LAZY, optional=false)
+	@JoinColumn(name="attribute_id", nullable=false)
+	private Attribute attribute;
 	
-	@ManyToMany(mappedBy="supplier")
+	@ManyToMany(mappedBy="attributeValue")
 	private Set<Product>product = new HashSet<Product>();
 	
 	@Column(name = "name")
 	private String name;
-	
-	@Column(name = "contact_person")
-	private String contactPerson;
 	
 	@Column(name = "notice")
 	private String notice;
@@ -63,13 +69,21 @@ public class Supplier {
 	public long getId() {
 		return id;
 	}
-	
-	public Contact getContact() {
-		return contact;
+
+	public Attribute getAttribute() {
+		return attribute;
 	}
 
-	public void setContact(Contact contact) {
-		this.contact = contact;
+	public void setAttribute(Attribute attribute) {
+		this.attribute = attribute;
+	}
+
+	public Set<Product> getProduct() {
+		return product;
+	}
+
+	public void setProduct(Set<Product> product) {
+		this.product = product;
 	}
 
 	public String getName() {
@@ -78,14 +92,6 @@ public class Supplier {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getContactPerson() {
-		return contactPerson;
-	}
-
-	public void setContactPerson(String contactPerson) {
-		this.contactPerson = contactPerson;
 	}
 
 	public String getNotice() {

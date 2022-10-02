@@ -12,7 +12,8 @@ public interface SupplierDetailView {
 	LocalDate getCreatedDate();
 	LocalDate getUpdatedDate();
 	ContactInfo getContact();
-	
+	boolean isDeleted();
+	 
 	interface ContactInfo{
 		long getId();
 		String getWebsite();
