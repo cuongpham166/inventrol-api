@@ -1,5 +1,26 @@
 package com.inventrol.api.attributevalue;
 
-public interface AttributeValueDetailView {
+import java.time.LocalDate;
+import java.util.Set;
 
+public interface AttributeValueDetailView {
+	long getId();
+	String getName();
+	String getNotice();
+	boolean isDeleted();
+	LocalDate getCreatedDate();
+	LocalDate getUpdatedDate();
+	
+	AttributeData getAttribute();
+	Set<ProductData>getProduct();
+	
+	interface AttributeData{
+		long getId();
+		String getName();
+	}
+	
+	interface ProductData{
+		long getId();
+		String getName();
+	}
 }

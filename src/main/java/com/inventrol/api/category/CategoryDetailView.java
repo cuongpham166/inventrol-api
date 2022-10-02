@@ -10,8 +10,8 @@ public interface CategoryDetailView {
 	LocalDate getCreatedDate();
 	LocalDate getUpdatedDate();
 	 boolean isDeleted();
-	Set<subcategoryData> getSubcategory();
-	interface subcategoryData {
+	Set<SubcategoryData> getSubcategory();
+	interface SubcategoryData {
 		long getId();
 		String getName();	
 	}
