@@ -14,10 +14,13 @@ import com.inventrol.api.product.Product;
 @Entity
 @Table(name = "supplier")
 public class Supplier {
-	public Supplier(Contact contact, String name, String contactPerson, String notice, boolean deleted,
-			LocalDate createdDate, LocalDate updatedDate) {
+
+
+	public Supplier(Contact contact, Set<Product> product, String name, String contactPerson, String notice,
+			boolean deleted, LocalDate createdDate, LocalDate updatedDate) {
 		super();
 		this.contact = contact;
+		this.product = product;
 		this.name = name;
 		this.contactPerson = contactPerson;
 		this.notice = notice;
@@ -119,4 +122,13 @@ public class Supplier {
 	public void setUpdatedDate(LocalDate updatedDate) {
 		this.updatedDate = updatedDate;
 	}
+
+	public Set<Product> getProduct() {
+		return product;
+	}
+
+	public void setProduct(Set<Product> product) {
+		this.product = product;
+	}
+
 }

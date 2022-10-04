@@ -237,6 +237,7 @@ public class Product {
 		this.sku = sku;
 	}
 
+	//In Stock, Low in Stock, Out of Stock
 	public String getStockStatus() {
 		return stockStatus;
 	}
