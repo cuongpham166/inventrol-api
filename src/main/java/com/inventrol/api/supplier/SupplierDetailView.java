@@ -1,6 +1,7 @@
 package com.inventrol.api.supplier;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -11,10 +12,11 @@ public interface SupplierDetailView {
 	String getNotice();
 	LocalDate getCreatedDate();
 	LocalDate getUpdatedDate();
-	ContactInfo getContact();
+	ContactData getContact();
 	boolean isDeleted();
-	 
-	interface ContactInfo{
+	
+	Set<ProductData>getProduct();
+	interface ContactData{
 		long getId();
 		String getWebsite();
 		String getAdditionalAddressLine();
@@ -28,7 +30,9 @@ public interface SupplierDetailView {
 	   
 	    @Value("#{target.postcode + ' ' + target.city}")
 	    String getCityInfo();
-	    
-	    
+	}
+	
+	interface ProductData {
+		
 	}
 }

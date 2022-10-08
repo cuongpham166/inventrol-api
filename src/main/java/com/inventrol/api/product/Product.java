@@ -17,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -301,4 +302,15 @@ public class Product {
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
+	
+    @PostLoad
+    private void postLoadFunction(){
+       if(quantity == 0) {
+    	   this.stockStatus = "Out of Stock";
+       }else if (quantity > 0 && quantity < 10) {
+    	   this.stockStatus = "Low in Stock";
+       }else {
+    	   this.stockStatus = "In Stock";
+       }
+    }
 }

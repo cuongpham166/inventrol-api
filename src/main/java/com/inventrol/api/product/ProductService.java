@@ -54,8 +54,8 @@ public class ProductService {
 	public List<ProductView> getAllProducts (){
 		List<ProductView>products = new ArrayList<ProductView>();
 		productRepo.findAllProjectedByOrderByIdAsc(ProductView.class).forEach(products::add);
-		List<ProductView> result = products.stream().filter(res -> res.isDeleted() == false).collect(Collectors.toList());
-		return result;
+		List<ProductView> results = products.stream().filter(res -> res.isDeleted() == false).collect(Collectors.toList());
+		return results;
 	}
 	
 	public ProductDetailView getProductDetailById(long id) {

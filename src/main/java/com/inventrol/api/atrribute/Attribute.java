@@ -21,12 +21,13 @@ import com.inventrol.api.attributevalue.AttributeValue;
 @Entity
 @Table(name = "attribute")
 public class Attribute {
-	public Attribute(Set<AttributeValue> attributevalue, String name, String notice, boolean deleted,
+	public Attribute(Set<AttributeValue> attributevalue, String name, String notice, String tagColor, boolean deleted,
 			LocalDate createdDate, LocalDate updatedDate) {
 		super();
 		this.attributevalue = attributevalue;
 		this.name = name;
 		this.notice = notice;
+		this.tagColor = tagColor;
 		this.deleted = deleted;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
@@ -48,6 +49,9 @@ public class Attribute {
 	
 	@Column(name = "notice")
 	private String notice;
+	
+	@Column(name="tag_color")
+	private String tagColor;
 	
 	@Column(name = "is_deleted")
 	@Value("false")
@@ -109,5 +113,13 @@ public class Attribute {
 
 	public void setUpdatedDate(LocalDate updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	public String getTagColor() {
+		return tagColor;
+	}
+
+	public void setTagColor(String tagColor) {
+		this.tagColor = tagColor;
 	}
 }

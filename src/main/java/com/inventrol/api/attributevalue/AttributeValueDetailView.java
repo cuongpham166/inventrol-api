@@ -17,6 +17,7 @@ public interface AttributeValueDetailView {
 	interface AttributeData{
 		long getId();
 		String getName();
+		 String getTagColor();
 	}
 	
 	interface ProductData{

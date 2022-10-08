@@ -12,13 +12,14 @@ import com.inventrol.api.subcategory.Subcategory;
 @Entity
 @Table(name = "category")
 public class Category {
-	public Category(Set<Subcategory> subcategory, String name, String notice, boolean deleted, LocalDate createdDate,
-			LocalDate updatedDate) {
+	public Category(Set<Subcategory> subcategory, String name, String notice, boolean deleted, String tagColor,
+			LocalDate createdDate, LocalDate updatedDate) {
 		super();
 		this.subcategory = subcategory;
 		this.name = name;
 		this.notice = notice;
 		this.deleted = deleted;
+		this.tagColor = tagColor;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
 	}
@@ -43,6 +44,9 @@ public class Category {
 	@Column(name = "is_deleted")
 	@Value("false")
 	private boolean deleted;
+	
+	@Column(name="tag_color")
+	private String tagColor;
 	
 	@Column(name="created_date")
 	private LocalDate createdDate;
@@ -100,6 +104,14 @@ public class Category {
 
 	public void setSubcategory(Set<Subcategory> subcategory) {
 		this.subcategory = subcategory;
+	}
+
+	public String getTagColor() {
+		return tagColor;
+	}
+
+	public void setTagColor(String tagColor) {
+		this.tagColor = tagColor;
 	}
 
 

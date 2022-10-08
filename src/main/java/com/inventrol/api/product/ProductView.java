@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
+import com.inventrol.api.product.ProductDetailView.AttributeValueData.AttributeData;
+
 public interface ProductView {
 	long getId();
 	String getName();
@@ -12,6 +14,8 @@ public interface ProductView {
 	String getNotice();
 	String getStockStatus();
 	boolean isDeleted();
+	 String getSku();
+	 int getQuantity();
 	LocalDate getCreatedDate();
 	LocalDate getUpdatedDate();
 	SubcategoryData getSubcategory();
@@ -21,16 +25,24 @@ public interface ProductView {
 	interface SubcategoryData{
 		long getId();
 		String getName();	
+		String getTagColor();
 		CategoryData getCategory();
 		interface CategoryData{
 			long getId();
 			String getName();
+			String getTagColor();
 		}
 	}
 	
 	interface AttributeValueData{
 		long getId();
 		String getName();
+		AttributeData getAttribute();
+		interface AttributeData{
+			long getId();
+			String getName();
+			String getTagColor();
+		}
 	}
 	
 	interface BrandData{

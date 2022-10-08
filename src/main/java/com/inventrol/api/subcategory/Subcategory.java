@@ -24,20 +24,23 @@ import com.inventrol.api.product.Product;
 @Entity
 @Table(name = "subcategory")
 public class Subcategory {
-	public Subcategory() {
-		super();
-	}
-
-	public Subcategory(Category category, String name, String notice, boolean deleted, LocalDate createdDate,
-			LocalDate updatedDate) {
+	public Subcategory(Category category, Set<Product> product, String name, String notice, String tagColor,
+			boolean deleted, LocalDate createdDate, LocalDate updatedDate) {
 		super();
 		this.category = category;
+		this.product = product;
 		this.name = name;
 		this.notice = notice;
+		this.tagColor = tagColor;
 		this.deleted = deleted;
 		this.createdDate = createdDate;
 		this.updatedDate = updatedDate;
 	}
+
+	public Subcategory() {
+		super();
+	}
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,6 +58,9 @@ public class Subcategory {
 	
 	@Column(name = "notice")
 	private String notice;
+	
+	@Column(name="tag_color")
+	private String tagColor;
 	
 	@Column(name = "is_deleted")
 	@Value("false")
@@ -116,5 +122,21 @@ public class Subcategory {
 
 	public void setUpdatedDate(LocalDate updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	public Set<Product> getProduct() {
+		return product;
+	}
+
+	public void setProduct(Set<Product> product) {
+		this.product = product;
+	}
+
+	public String getTagColor() {
+		return tagColor;
+	}
+
+	public void setTagColor(String tagColor) {
+		this.tagColor = tagColor;
 	}
 }

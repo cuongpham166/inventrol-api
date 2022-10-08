@@ -13,5 +13,6 @@ public interface AttributeValueView {
 	interface AttributeData{
 		long getId();
 		String getName();
+		 String getTagColor() ;
 	}
 }
