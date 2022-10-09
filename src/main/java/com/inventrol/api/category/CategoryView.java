@@ -1,6 +1,7 @@
 package com.inventrol.api.category;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 public interface CategoryView {
 	long getId();
@@ -9,4 +10,11 @@ public interface CategoryView {
 	LocalDate getCreatedDate();
 	LocalDate getUpdatedDate();
 	 boolean isDeleted();
+		Set<SubcategoryData> getSubcategory();
+		interface SubcategoryData {
+			long getId();
+			String getName();	
+			String getTagColor();
+		}
+	 
 }

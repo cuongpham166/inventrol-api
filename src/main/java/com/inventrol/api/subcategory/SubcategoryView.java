@@ -8,10 +8,11 @@ public interface SubcategoryView {
 	String getNotice();
 	LocalDate getCreatedDate();
 	LocalDate getUpdatedDate();
-	CategoryInfo getCategory();
+	CategoryData getCategory();
 	 boolean isDeleted();
-	interface CategoryInfo{
+	interface CategoryData{
 		long getId();
 		String getName();
+		String getTagColor();
 	}
 }

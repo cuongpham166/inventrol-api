@@ -13,6 +13,7 @@ public interface CategoryDetailView {
 	Set<SubcategoryData> getSubcategory();
 	interface SubcategoryData {
 		long getId();
-		String getName();	
+		String getName();
+		String getTagColor();
 	}
 }
