@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.inventrol.api.category.CategoryService;
+import com.inventrol.api.atrribute.AttributeView;
 import com.inventrol.api.category.Category;
 
 @Service
@@ -38,6 +39,12 @@ public class SubcategoryService {
 		return result;
 	}
 	
+	public List<SubcategoryView>searchSubcategory (String name){
+		List<SubcategoryView>foundSubcategories = new ArrayList<SubcategoryView>();
+		subcategoryRepo.findProjectedByNameContainsIgnoreCase(name, SubcategoryView.class).forEach(foundSubcategories::add);
+		List<SubcategoryView> result = foundSubcategories.stream().filter(cat -> cat.isDeleted() == false).collect(Collectors.toList());
+		return result;
+	}
 	public void createSubcategory(Subcategory newSubcategory) {
 		newSubcategory.setCreatedDate(LocalDate.now());
 		long categoryId = newSubcategory.getCategory().getId();

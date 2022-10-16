@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.inventrol.api.atrribute.AttributeView;
 import com.inventrol.api.attributevalue.AttributeValue;
 import com.inventrol.api.attributevalue.AttributeValueService;
 import com.inventrol.api.brand.Brand;
@@ -56,6 +57,13 @@ public class ProductService {
 		productRepo.findAllProjectedByOrderByIdAsc(ProductView.class).forEach(products::add);
 		List<ProductView> results = products.stream().filter(res -> res.isDeleted() == false).collect(Collectors.toList());
 		return results;
+	}
+	
+	public List<ProductView>searchProduct (String name){
+		List<ProductView>foundProducts = new ArrayList<ProductView>();
+		productRepo.findProjectedByNameContainsIgnoreCase(name, ProductView.class).forEach(foundProducts::add);
+		List<ProductView> result = foundProducts.stream().filter(cat -> cat.isDeleted() == false).collect(Collectors.toList());
+		return result;
 	}
 	
 	public ProductDetailView getProductDetailById(long id) {

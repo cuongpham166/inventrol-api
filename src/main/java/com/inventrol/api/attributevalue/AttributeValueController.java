@@ -1,5 +1,6 @@
 package com.inventrol.api.attributevalue;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -26,9 +28,14 @@ public class AttributeValueController {
 	
 	
 	@GetMapping("/attribute-value")
-	public ResponseEntity<List<AttributeValueView>> getAllAttributeValues() {
+	public ResponseEntity<List<AttributeValueView>> getAllAttributeValues(@RequestParam Optional<String> name) {
 		try {
-			List<AttributeValueView> attributevalues = attributeValueService.getAllAttributeValues();
+			List<AttributeValueView> attributevalues = new ArrayList<AttributeValueView>();
+			if(name.isPresent()) {
+				attributevalues = attributeValueService.searchAttributeValue(name.get());
+			}else {
+				attributevalues = attributeValueService.getAllAttributeValues();	
+			}		
 			if (attributevalues.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}

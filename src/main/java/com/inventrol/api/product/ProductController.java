@@ -1,5 +1,6 @@
 package com.inventrol.api.product;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -24,9 +26,14 @@ public class ProductController {
 	private ProductService productService;
 	
 	@GetMapping("/product")
-	public ResponseEntity<List<ProductView>> getAllProducts() {
+	public ResponseEntity<List<ProductView>> getAllProducts(@RequestParam Optional<String> name) {
 		try {
-			List<ProductView> products = productService.getAllProducts();
+			List<ProductView> products = new ArrayList<ProductView>();
+			if(name.isPresent()) {
+				products = productService.searchProduct(name.get());
+			}else {
+				products =	productService.getAllProducts();
+			}
 			if (products.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}

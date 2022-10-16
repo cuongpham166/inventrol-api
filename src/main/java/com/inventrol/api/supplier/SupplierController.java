@@ -1,5 +1,6 @@
 package com.inventrol.api.supplier;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -26,9 +28,14 @@ public class SupplierController {
 	
 
 	@GetMapping("/supplier")
-	public ResponseEntity<List<SupplierView>> getAllSuppliers() {
+	public ResponseEntity<List<SupplierView>> getAllSuppliers(@RequestParam Optional<String> name) {
 		try {
-			List<SupplierView> suppliers = supplierService.getAllSuppliers();
+			List<SupplierView> suppliers = new ArrayList<SupplierView>();
+			if(name.isPresent()) {
+				suppliers = supplierService.searchSupplier(name.get());
+			}else {
+				suppliers = supplierService.getAllSuppliers();
+			}		
 			if (suppliers.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.inventrol.api.atrribute.AttributeView;
 import com.inventrol.api.category.Category;
 import com.inventrol.api.category.CategoryDetailView;
 import com.inventrol.api.contact.Contact;
@@ -35,6 +36,12 @@ public class SupplierService {
 		return result;
 	}
 	
+	public List<SupplierView>searchSupplier (String name){
+		List<SupplierView>foundSuppliers = new ArrayList<SupplierView>();
+		supplierRepo.findProjectedByNameContainsIgnoreCase(name, SupplierView.class).forEach(foundSuppliers::add);
+		List<SupplierView> result = foundSuppliers.stream().filter(cat -> cat.isDeleted() == false).collect(Collectors.toList());
+		return result;
+	}
 	public SupplierDetailView getSupplierDetailById(long id) {
 		SupplierDetailView supplierDetail = supplierRepo.findProjectedById(id, SupplierDetailView.class);
 		return supplierDetail;

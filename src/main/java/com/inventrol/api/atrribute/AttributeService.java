@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.inventrol.api.category.CategoryView;
+
 @Service
 public class AttributeService {
 	
@@ -24,6 +26,13 @@ public class AttributeService {
 		List<AttributeView>attributes = new ArrayList<AttributeView>();
 		attributeRepo.findAllProjectedByOrderByIdAsc(AttributeView.class).forEach(attributes::add);
 		List<AttributeView> result = attributes.stream().filter(cat -> cat.isDeleted() == false).collect(Collectors.toList());
+		return result;
+	}
+	
+	public List<AttributeView>searchAttribute (String name){
+		List<AttributeView>foundAttributes = new ArrayList<AttributeView>();
+		attributeRepo.findProjectedByNameContainsIgnoreCase(name, AttributeView.class).forEach(foundAttributes::add);
+		List<AttributeView> result = foundAttributes.stream().filter(cat -> cat.isDeleted() == false).collect(Collectors.toList());
 		return result;
 	}
 	

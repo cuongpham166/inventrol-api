@@ -1,5 +1,6 @@
 package com.inventrol.api.brand;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -24,9 +26,14 @@ public class BrandController {
 	private  BrandService brandService;
 
 	@GetMapping("/brand")
-	public ResponseEntity<List<BrandView>> getAllBrands() {
+	public ResponseEntity<List<BrandView>> getAllBrands(@RequestParam Optional<String> name) {
 		try {
-			List<BrandView> brands = brandService.getAllBrands();
+			List<BrandView> brands = new ArrayList<BrandView>();
+			if(name.isPresent()) {
+				brands = brandService.searchBrand(name.get());
+			}else {
+				brands = brandService.getAllBrands();
+			}
 			if (brands.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}

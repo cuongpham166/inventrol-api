@@ -1,5 +1,6 @@
 package com.inventrol.api.subcategory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inventrol.api.category.Category;
@@ -27,9 +29,14 @@ public class SubcategoryController {
 	private SubcategoryService subcategoryService;
 	
 	@GetMapping("/subcategory")
-	public ResponseEntity<List<SubcategoryView>> getAllSubcategories() {
+	public ResponseEntity<List<SubcategoryView>> getAllSubcategories(@RequestParam Optional<String> name) {
 		try {
-			List<SubcategoryView> subcategories = subcategoryService.getAllSubcategories();
+			List<SubcategoryView> subcategories = new ArrayList<SubcategoryView>();
+			if(name.isPresent()) {
+				subcategories = subcategoryService.searchSubcategory(name.get());
+			}else {
+				subcategories = subcategoryService.getAllSubcategories();
+			}
 			if (subcategories.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
