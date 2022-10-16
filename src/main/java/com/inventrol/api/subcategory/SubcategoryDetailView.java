@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public interface SubcategoryDetailView {
 	long getId();
 	String getName();
+	String getTagColor();
 	String getNotice();
 	LocalDate getCreatedDate();
 	LocalDate getUpdatedDate();

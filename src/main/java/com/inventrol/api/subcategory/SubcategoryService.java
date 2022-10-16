@@ -57,6 +57,7 @@ public class SubcategoryService {
 			Subcategory _subcategory = subcategoryData.get();
 			_subcategory.setName(updatedSubcategory.getName());
 			_subcategory.setNotice(updatedSubcategory.getNotice());
+			_subcategory.setTagColor(updatedSubcategory.getTagColor());
 			_subcategory.setUpdatedDate(LocalDate.now());
 			_subcategory.setCategory(categoryData.get());
 			subcategoryRepo.save(_subcategory);

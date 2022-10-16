@@ -1,7 +1,9 @@
 package com.inventrol.api.brand;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +44,24 @@ public class BrandController {
 			if(_brand.isDeleted() == false) {
 				BrandDetailView _brandDetail = brandService.getBrandDetailById(id);
 				return new ResponseEntity<>(_brandDetail, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/brand/{id}/products")
+	public ResponseEntity<Set<BrandDetailView.ProductData>>getProductsByBrandId(@PathVariable("id") long id){
+		Optional<Brand> brandData = brandService.getBrandById(id);
+		if(brandData.isPresent()) {
+			Brand _brand = brandData.get();
+			if(_brand.isDeleted() == false) {
+				BrandDetailView _brandDetail = brandService.getBrandDetailById(id);
+				Set<BrandDetailView.ProductData> _products = new HashSet<BrandDetailView.ProductData>();
+				_products = _brandDetail.getProduct();
+				return new ResponseEntity<>(_products, HttpStatus.OK);
 			}else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}

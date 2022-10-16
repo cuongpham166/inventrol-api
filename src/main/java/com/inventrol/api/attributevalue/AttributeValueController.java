@@ -1,7 +1,9 @@
 package com.inventrol.api.attributevalue;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,6 +46,24 @@ public class AttributeValueController {
 			if(_attributeValue.isDeleted() == false) {
 				AttributeValueDetailView _attributeValueDetail = attributeValueService.getAttributeValueDetailById(id);
 				return new ResponseEntity<>(_attributeValueDetail, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/attribute-value/{id}/products")
+	public ResponseEntity<Set<AttributeValueDetailView.ProductData>>getProductsByAttributeValueId(@PathVariable("id") long id){
+		Optional<AttributeValue> attributeValueData = attributeValueService.getAttributeValueById(id);
+		if(attributeValueData.isPresent()) {
+			AttributeValue _attributeValue = attributeValueData.get();
+			if(_attributeValue.isDeleted() == false) {
+				AttributeValueDetailView _attributeValueDetail = attributeValueService.getAttributeValueDetailById(id);
+				Set<AttributeValueDetailView.ProductData> _products = new HashSet<AttributeValueDetailView.ProductData>();
+				_products = _attributeValueDetail.getProduct();
+				return new ResponseEntity<>(_products, HttpStatus.OK);
 			}else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}

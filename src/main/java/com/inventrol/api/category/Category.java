@@ -35,7 +35,7 @@ public class Category {
 	@OneToMany(mappedBy ="category",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<Subcategory>subcategory = new HashSet<Subcategory>();
 	
-	@Column(name = "name")
+	@Column(name = "name",unique=true)
 	private String name;
 	
 	@Column(name = "notice")

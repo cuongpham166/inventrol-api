@@ -1,7 +1,9 @@
 package com.inventrol.api.supplier;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,6 +46,24 @@ public class SupplierController {
 			if(_supplier.isDeleted() == false) {
 				SupplierDetailView _supplierDetail = supplierService.getSupplierDetailById(id);
 				return new ResponseEntity<>(_supplierDetail, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/supplier/{id}/products")
+	public ResponseEntity<Set<SupplierDetailView.ProductData>> getProductsBySupplierId(@PathVariable("id") long id){
+		Optional<Supplier> supplierData = supplierService.getSupplierById(id);
+		if(supplierData.isPresent()) {
+			Supplier _supplier = supplierData.get();
+			if(_supplier.isDeleted() == false) {
+				SupplierDetailView _supplierDetail = supplierService.getSupplierDetailById(id);
+				Set<SupplierDetailView.ProductData> _products = new HashSet<SupplierDetailView.ProductData>();
+				_products =	_supplierDetail.getProduct();
+				return new ResponseEntity<>(_products, HttpStatus.OK);
 			}else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
