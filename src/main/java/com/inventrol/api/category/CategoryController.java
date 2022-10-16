@@ -1,5 +1,6 @@
 package com.inventrol.api.category;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -22,7 +24,7 @@ public class CategoryController {
 	@Autowired
 	private  CategoryService categoryService;
 
-	@GetMapping("/category")
+	/*@GetMapping("/category")
 	public ResponseEntity<List<CategoryView>> getAllCategories() {
 		try {
 			List<CategoryView> categories = categoryService.getAllCategories();
@@ -33,8 +35,27 @@ public class CategoryController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	}
+	}*/
 	
+	@GetMapping("/category")
+	public ResponseEntity<List<CategoryView>> getAllCategories(@RequestParam Optional<String> name) {
+		try {
+			List<CategoryView> categories = new ArrayList<CategoryView>();
+			if(name.isPresent()) {
+				categories = categoryService.searchCategory(name.get());
+			}else {
+				categories = categoryService.getAllCategories();
+			}
+			if (categories.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(categories, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+		
 	@GetMapping("/category/{id}")
 	public ResponseEntity<CategoryDetailView>getCategoryById(@PathVariable("id") long id){
 		Optional<Category> categoryData = categoryService.getCategoryById(id);

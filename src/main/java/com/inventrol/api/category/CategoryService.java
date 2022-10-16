@@ -32,6 +32,13 @@ public class CategoryService {
 		return categoryDetail;
 	}
 	
+	public List<CategoryView>searchCategory (String name){
+		List<CategoryView>foundCategories = new ArrayList<CategoryView>();
+		categoryRepo.findProjectedByNameContainsIgnoreCase(name, CategoryView.class).forEach(foundCategories::add);
+		List<CategoryView> result = foundCategories.stream().filter(cat -> cat.isDeleted() == false).collect(Collectors.toList());
+		return result;
+	}
+	
 	public Category createCategory (Category newCategory) {
 		newCategory.setCreatedDate(LocalDate.now());
 		Category savedCategory = categoryRepo.save(newCategory);
