@@ -8,6 +8,7 @@ public interface AttributeView {
 	String getName();
 	String getNotice();
 	boolean isDeleted();
+	String getTagColor();
 	LocalDate getCreatedDate();
 	LocalDate getUpdatedDate();
 	Set<AttributeValueData> getAttributevalue();

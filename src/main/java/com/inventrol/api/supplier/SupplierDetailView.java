@@ -31,6 +31,10 @@ public interface SupplierDetailView {
 		String getEmail();
 		String getPhoneNumber();
 		String getMobileNumber();
+		String getStreetName();
+		String getStreetNumber();
+		String getPostcode();
+		String getCity();
 		String getCountry();
 		 
 	    @Value("#{target.streetName + ' ' + target.streetNumber}")

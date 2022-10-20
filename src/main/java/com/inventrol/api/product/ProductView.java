@@ -9,6 +9,7 @@ import com.inventrol.api.product.ProductDetailView.AttributeValueData.AttributeD
 public interface ProductView {
 	long getId();
 	String getName();
+	BigDecimal getVat();
 	 BigDecimal getRetailPrice();
 	 BigDecimal getListingPrice();
 	String getNotice();

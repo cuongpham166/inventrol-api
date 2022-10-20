@@ -9,6 +9,7 @@ public interface SubcategoryView {
 	LocalDate getCreatedDate();
 	LocalDate getUpdatedDate();
 	CategoryData getCategory();
+	String getTagColor();
 	 boolean isDeleted();
 	interface CategoryData{
 		long getId();
