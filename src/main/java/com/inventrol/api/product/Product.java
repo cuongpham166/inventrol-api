@@ -27,6 +27,7 @@ import com.inventrol.api.attributevalue.AttributeValue;
 import com.inventrol.api.brand.Brand;
 import com.inventrol.api.discount.Discount;
 import com.inventrol.api.listingpricerecord.ListingPriceRecord;
+import com.inventrol.api.orderitem.OrderItem;
 import com.inventrol.api.purchaseitem.PurchaseItem;
 import com.inventrol.api.retailpricerecord.RetailPriceRecord;
 import com.inventrol.api.subcategory.Subcategory;
@@ -38,9 +39,9 @@ public class Product {
 
 
 	public Product(Brand brand, Discount discount, Subcategory subcategory, Set<ListingPriceRecord> listingPriceRecord,
-			Set<RetailPriceRecord> retailPriceRecord, Set<PurchaseItem> purchaseItem, Set<Supplier> supplier,
-			Set<AttributeValue> attributeValue, String name, int quantity, int soldNumber, int orderedNumber,
-			String barcode, String sku, String stockStatus, BigDecimal vat, BigDecimal retailPrice,
+			Set<RetailPriceRecord> retailPriceRecord, Set<PurchaseItem> purchaseItem, Set<OrderItem> orderItem,
+			Set<Supplier> supplier, Set<AttributeValue> attributeValue, String name, int quantity, int soldNumber,
+			int orderedNumber, String barcode, String sku, String stockStatus, BigDecimal vat, BigDecimal retailPrice,
 			BigDecimal listingPrice, String notice, LocalDate createdDate, LocalDate updatedDate, boolean deleted) {
 		super();
 		this.brand = brand;
@@ -49,6 +50,7 @@ public class Product {
 		this.listingPriceRecord = listingPriceRecord;
 		this.retailPriceRecord = retailPriceRecord;
 		this.purchaseItem = purchaseItem;
+		this.orderItem = orderItem;
 		this.supplier = supplier;
 		this.attributeValue = attributeValue;
 		this.name = name;
@@ -66,6 +68,8 @@ public class Product {
 		this.updatedDate = updatedDate;
 		this.deleted = deleted;
 	}
+
+
 
 	public Product() {
 		super();
@@ -96,6 +100,8 @@ public class Product {
 	@OneToMany(mappedBy ="product",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<PurchaseItem>purchaseItem = new HashSet<PurchaseItem>();
 	
+	@OneToMany(mappedBy ="product",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	private Set<OrderItem>orderItem = new HashSet<OrderItem>();
 	
 	@ManyToMany
 	@JoinTable(name="product_supplier",
@@ -342,5 +348,13 @@ public class Product {
 
 	public void setPurchaseItem(Set<PurchaseItem> purchaseItem) {
 		this.purchaseItem = purchaseItem;
+	}
+
+	public Set<OrderItem> getOrderItem() {
+		return orderItem;
+	}
+
+	public void setOrderItem(Set<OrderItem> orderItem) {
+		this.orderItem = orderItem;
 	}
 }

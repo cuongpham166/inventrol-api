@@ -63,7 +63,7 @@ public class Purchase {
 	private Supplier supplier;
 	
 	@Column(name = "status")
-	private String status="processing"; // "processing, ready to ship, shipped, completed, returned"
+	private String status="processing"; // "processing, completed, returned"
 	
 	@Column(name="total",precision=10, scale=2)
 	private BigDecimal total;
