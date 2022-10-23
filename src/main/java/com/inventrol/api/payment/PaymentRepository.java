@@ -10,6 +10,5 @@ public interface PaymentRepository extends JpaRepository <Payment,Long> {
 	public List<Payment>findAllByOrderByIdAsc();
 	public <T> List<T> findAllProjectedByOrderByIdAsc(Class<T> type);
 	public <T> T findProjectedById(long id, Class<T> type);
-	public <T> List<T> findProjectedByNameContainsIgnoreCase(String name, Class<T> type);
 
 }

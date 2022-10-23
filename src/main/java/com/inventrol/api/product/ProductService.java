@@ -15,6 +15,8 @@ import com.inventrol.api.attributevalue.AttributeValue;
 import com.inventrol.api.attributevalue.AttributeValueService;
 import com.inventrol.api.brand.Brand;
 import com.inventrol.api.brand.BrandService;
+import com.inventrol.api.discount.Discount;
+import com.inventrol.api.discount.DiscountService;
 import com.inventrol.api.listingpricerecord.ListingPriceRecord;
 import com.inventrol.api.listingpricerecord.ListingPriceRecordRepository;
 import com.inventrol.api.retailpricerecord.RetailPriceRecord;
@@ -34,6 +36,9 @@ public class ProductService {
 	
 	@Autowired
 	private BrandService brandService;
+	
+	@Autowired
+	private DiscountService discountService;
 	
 	@Autowired
 	private AttributeValueService attributeValueService;
@@ -73,11 +78,14 @@ public class ProductService {
 	
 	public void createProduct (Product newProduct) {
 		LocalDate createdDate = LocalDate.now(); 
+		
 		long subcategoryId = newProduct.getSubcategory().getId();
 		long brandId = newProduct.getBrand().getId();
+		long discountId = newProduct.getDiscount().getId();
+		
 		Optional<Subcategory>subcategoryData = subcategoryService.getSubcategoryById(subcategoryId);
 		Optional<Brand>brandData = brandService.getBrandById(brandId);
-
+		Optional<Discount>discountData = discountService.getDiscountById(discountId);
 		productRepo.save(newProduct);
 		
 		//One to Many
@@ -92,15 +100,18 @@ public class ProductService {
 		newRetailPrice.setPrice(newProduct.getRetailPrice());
 		newRetailPrice.setProduct(newProduct);
 		retailPriceRecordRepo.save(newRetailPrice);
+		//One to Many
 				
-		if(subcategoryData.isPresent() && brandData.isPresent()) {
+		if(subcategoryData.isPresent() && brandData.isPresent() && discountData.isPresent()) {
 			newProduct.setCreatedDate(createdDate);
 			//Many to One
 			newProduct.setSubcategory(subcategoryData.get());
 			newProduct.setBrand(brandData.get());
+			newProduct.setDiscount(discountData.get());
 			//Many to One
 			
 			
+			//Many to Many
 			Set<AttributeValue>attributeValueList = newProduct.getAttributeValue();
 			attributeValueList.forEach(attVal ->{
 				Optional<AttributeValue>attributeValueData = attributeValueService.getAttributeValueById(attVal.getId());
@@ -120,6 +131,8 @@ public class ProductService {
 					//_supplier.getProduct().add(newProduct);
 				}
 			});
+			//Many to Many
+			
 			productRepo.save(newProduct);
 		}
 		

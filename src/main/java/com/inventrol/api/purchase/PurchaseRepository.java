@@ -8,6 +8,4 @@ public interface PurchaseRepository extends JpaRepository <Purchase,Long> {
 	public List<Purchase>findAllByOrderByIdAsc();
 	public <T> List<T> findAllProjectedByOrderByIdAsc(Class<T> type);
 	public <T> T findProjectedById(long id, Class<T> type);
-	public <T> List<T> findProjectedByNameContainsIgnoreCase(String name, Class<T> type); 
-
 }

@@ -26,11 +26,10 @@ public class Discount {
 		super();
 	}
 
-	public Discount(Set<Product> product, String name, BigDecimal discountPercent, String notice, boolean deleted,
+	public Discount(Set<Product> product, BigDecimal discountPercent, String notice, boolean deleted,
 			LocalDate createdDate, LocalDate updatedDate) {
 		super();
 		this.product = product;
-		this.name = name;
 		this.discountPercent = discountPercent;
 		this.notice = notice;
 		this.deleted = deleted;
@@ -45,9 +44,7 @@ public class Discount {
 	@OneToMany(mappedBy ="discount",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<Product>product = new HashSet<Product>();
 	
-	@Column(name = "name")
-	private String name;
-	
+
 	@Column(name="discount_percent",precision=5, scale=3)
 	private BigDecimal discountPercent;
 	
@@ -74,14 +71,6 @@ public class Discount {
 
 	public void setProduct(Set<Product> product) {
 		this.product = product;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public BigDecimal getDiscountPercent() {

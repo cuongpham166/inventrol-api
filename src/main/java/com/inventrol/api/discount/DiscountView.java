@@ -1,5 +1,13 @@
 package com.inventrol.api.discount;
 
-public interface DiscountView {
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
+public interface DiscountView {
+	long getId();
+	BigDecimal getDiscountPercent();
+	String getNotice();
+	boolean isDeleted();
+	LocalDate getCreatedDate();
+	LocalDate getUpdatedDate();
 }

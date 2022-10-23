@@ -1,5 +1,7 @@
 package com.inventrol.api.orderitem;
 
-public interface OrderItemView {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface OrderItemView extends JpaRepository<OrderItem,Long> {
 
 }

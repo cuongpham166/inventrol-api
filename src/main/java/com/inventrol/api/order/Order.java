@@ -26,7 +26,7 @@ import com.inventrol.api.orderitem.OrderItem;
 import com.inventrol.api.payment.Payment;
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order {
 	public Order() {
 		super();
@@ -55,7 +55,7 @@ public class Order {
 	@JoinColumn(name="payment_id", nullable=false)
 	private Payment payment;
 	
-	@OneToMany(mappedBy ="purchase",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy ="order",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<OrderItem>orderitem = new HashSet<OrderItem>();
 	
 	@ManyToOne(fetch=FetchType.LAZY, optional=false)
