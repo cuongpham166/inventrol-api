@@ -10,17 +10,19 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.inventrol.api.contact.Contact;
 import com.inventrol.api.product.Product;
+import com.inventrol.api.purchase.Purchase;
 
 @Entity
 @Table(name = "supplier")
 public class Supplier {
 
 
-	public Supplier(Contact contact, Set<Product> product, String name, String contactPerson, String notice,
-			boolean deleted, LocalDate createdDate, LocalDate updatedDate) {
+	public Supplier(Contact contact, Set<Product> product, Set<Purchase> purchase, String name, String contactPerson,
+			String notice, boolean deleted, LocalDate createdDate, LocalDate updatedDate) {
 		super();
 		this.contact = contact;
 		this.product = product;
+		this.purchase = purchase;
 		this.name = name;
 		this.contactPerson = contactPerson;
 		this.notice = notice;
@@ -43,6 +45,9 @@ public class Supplier {
 	
 	@ManyToMany(mappedBy="supplier")
 	private Set<Product>product = new HashSet<Product>();
+	
+	@OneToMany(mappedBy ="supplier",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	private Set<Purchase>purchase = new HashSet<Purchase>();
 	
 	@Column(name = "name")
 	private String name;
@@ -129,6 +134,14 @@ public class Supplier {
 
 	public void setProduct(Set<Product> product) {
 		this.product = product;
+	}
+
+	public Set<Purchase> getPurchase() {
+		return purchase;
+	}
+
+	public void setPurchase(Set<Purchase> purchase) {
+		this.purchase = purchase;
 	}
 
 }

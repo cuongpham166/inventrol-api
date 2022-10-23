@@ -25,7 +25,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.inventrol.api.attributevalue.AttributeValue;
 import com.inventrol.api.brand.Brand;
+import com.inventrol.api.discount.Discount;
 import com.inventrol.api.listingpricerecord.ListingPriceRecord;
+import com.inventrol.api.purchaseitem.PurchaseItem;
 import com.inventrol.api.retailpricerecord.RetailPriceRecord;
 import com.inventrol.api.subcategory.Subcategory;
 import com.inventrol.api.supplier.Supplier;
@@ -33,16 +35,20 @@ import com.inventrol.api.supplier.Supplier;
 @Entity
 @Table(name = "product")
 public class Product {
-	public Product(Brand brand, Subcategory subcategory, Set<ListingPriceRecord> listingPriceRecord,
-			Set<RetailPriceRecord> retailPriceRecord, Set<Supplier> supplier, Set<AttributeValue> attributeValue,
-			String name, int quantity, int soldNumber, int orderedNumber, String barcode, String sku,
-			String stockStatus, BigDecimal vat, BigDecimal retailPrice, BigDecimal listingPrice, String notice,
-			LocalDate createdDate, LocalDate updatedDate, boolean deleted) {
+
+
+	public Product(Brand brand, Discount discount, Subcategory subcategory, Set<ListingPriceRecord> listingPriceRecord,
+			Set<RetailPriceRecord> retailPriceRecord, Set<PurchaseItem> purchaseItem, Set<Supplier> supplier,
+			Set<AttributeValue> attributeValue, String name, int quantity, int soldNumber, int orderedNumber,
+			String barcode, String sku, String stockStatus, BigDecimal vat, BigDecimal retailPrice,
+			BigDecimal listingPrice, String notice, LocalDate createdDate, LocalDate updatedDate, boolean deleted) {
 		super();
 		this.brand = brand;
+		this.discount = discount;
 		this.subcategory = subcategory;
 		this.listingPriceRecord = listingPriceRecord;
 		this.retailPriceRecord = retailPriceRecord;
+		this.purchaseItem = purchaseItem;
 		this.supplier = supplier;
 		this.attributeValue = attributeValue;
 		this.name = name;
@@ -74,6 +80,10 @@ public class Product {
 	private Brand brand;
 	
 	@ManyToOne(fetch=FetchType.LAZY, optional=false)
+	@JoinColumn(name="discount_id", nullable=false)
+	private Discount discount;
+	
+	@ManyToOne(fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="subcategory_id", nullable=false)
 	private Subcategory subcategory;
 	
@@ -82,6 +92,10 @@ public class Product {
 	
 	@OneToMany(mappedBy ="product",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<RetailPriceRecord>retailPriceRecord = new HashSet<RetailPriceRecord>();
+	
+	@OneToMany(mappedBy ="product",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	private Set<PurchaseItem>purchaseItem = new HashSet<PurchaseItem>();
+	
 	
 	@ManyToMany
 	@JoinTable(name="product_supplier",
@@ -313,4 +327,20 @@ public class Product {
     	   this.stockStatus = "In Stock";
        }
     }
+
+	public Discount getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Discount discount) {
+		this.discount = discount;
+	}
+
+	public Set<PurchaseItem> getPurchaseItem() {
+		return purchaseItem;
+	}
+
+	public void setPurchaseItem(Set<PurchaseItem> purchaseItem) {
+		this.purchaseItem = purchaseItem;
+	}
 }
