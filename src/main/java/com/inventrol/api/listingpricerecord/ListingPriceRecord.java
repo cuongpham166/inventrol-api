@@ -2,6 +2,7 @@ package com.inventrol.api.listingpricerecord;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -21,11 +23,12 @@ import com.inventrol.api.product.Product;
 @Entity
 @Table(name = "listing_price_record")
 public class ListingPriceRecord {
-	public ListingPriceRecord(Product product, BigDecimal price, LocalDate createdDate, boolean deleted) {
+
+	public ListingPriceRecord(Product product, BigDecimal price, LocalDateTime createdOn, boolean deleted) {
 		super();
 		this.product = product;
 		this.price = price;
-		this.createdDate = createdDate;
+		this.createdOn = createdOn;
 		this.deleted = deleted;
 	}
 
@@ -44,8 +47,13 @@ public class ListingPriceRecord {
 	@Column(name="price",precision=10, scale=2)
 	private BigDecimal price;
 	
-	@Column(name="created_date")
-	private LocalDate createdDate;
+    @Column(name = "created_on")
+    private LocalDateTime createdOn;
+    
+    @PrePersist
+    public void prePersist() {
+        createdOn = LocalDateTime.now();
+    }
 	
 	@Column(name = "is_deleted")
 	@Value("false")
@@ -69,14 +77,6 @@ public class ListingPriceRecord {
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
-	}
-
-	public LocalDate getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(LocalDate createdDate) {
-		this.createdDate = createdDate;
 	}
 
 	public boolean isDeleted() {

@@ -46,7 +46,6 @@ public class SubcategoryService {
 		return result;
 	}
 	public void createSubcategory(Subcategory newSubcategory) {
-		newSubcategory.setCreatedDate(LocalDate.now());
 		long categoryId = newSubcategory.getCategory().getId();
 		Optional<Category>categoryData = categoryService.getCategoryById(categoryId);
 		if(categoryData.isPresent()) {
@@ -65,7 +64,6 @@ public class SubcategoryService {
 			_subcategory.setName(updatedSubcategory.getName());
 			_subcategory.setNotice(updatedSubcategory.getNotice());
 			_subcategory.setTagColor(updatedSubcategory.getTagColor());
-			_subcategory.setUpdatedDate(LocalDate.now());
 			_subcategory.setCategory(categoryData.get());
 			subcategoryRepo.save(_subcategory);
 		}

@@ -42,7 +42,6 @@ public class AttributeService {
 	}
 	
 	public void createAttribute (Attribute newAttribute) {
-		newAttribute.setCreatedDate(LocalDate.now());
 		attributeRepo.save(newAttribute);
 	}
 	

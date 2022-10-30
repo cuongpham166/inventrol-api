@@ -1,6 +1,7 @@
 package com.inventrol.api.atrribute;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -22,15 +25,17 @@ import com.inventrol.api.attributevalue.AttributeValue;
 @Table(name = "attribute")
 public class Attribute {
 	public Attribute(Set<AttributeValue> attributevalue, String name, String notice, String tagColor, boolean deleted,
-			LocalDate createdDate, LocalDate updatedDate) {
+			LocalDateTime createdOn, String createdBy, LocalDateTime updatedOn, String updatedBy) {
 		super();
 		this.attributevalue = attributevalue;
 		this.name = name;
 		this.notice = notice;
 		this.tagColor = tagColor;
 		this.deleted = deleted;
-		this.createdDate = createdDate;
-		this.updatedDate = updatedDate;
+		this.createdOn = createdOn;
+		this.createdBy = createdBy;
+		this.updatedOn = updatedOn;
+		this.updatedBy = updatedBy;
 	}
 
 	public Attribute() {
@@ -57,12 +62,28 @@ public class Attribute {
 	@Value("false")
 	private boolean deleted;
 	
-	@Column(name="created_date")
-	private LocalDate createdDate;
-	
-	@Column(name="updated_date")
-	private LocalDate updatedDate;
+    @Column(name = "created_on")
+    private LocalDateTime createdOn;
+ 
+    @Column(name = "created_by")
+    private String createdBy;
+     
+    @Column(name = "updated_on")
+    private LocalDateTime updatedOn;
+ 
+    @Column(name = "updated_by")
+    private String updatedBy;
 
+    @PrePersist
+    public void prePersist() {
+        createdOn = LocalDateTime.now();
+    }
+ 
+    @PreUpdate
+    public void preUpdate() {
+        updatedOn = LocalDateTime.now();
+    }
+    
 	public long getId() {
 		return id;
 	}
@@ -99,21 +120,6 @@ public class Attribute {
 		this.deleted = deleted;
 	}
 
-	public LocalDate getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(LocalDate createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public LocalDate getUpdatedDate() {
-		return updatedDate;
-	}
-
-	public void setUpdatedDate(LocalDate updatedDate) {
-		this.updatedDate = updatedDate;
-	}
 
 	public String getTagColor() {
 		return tagColor;
@@ -121,5 +127,37 @@ public class Attribute {
 
 	public void setTagColor(String tagColor) {
 		this.tagColor = tagColor;
+	}
+
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public LocalDateTime getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(LocalDateTime updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 }

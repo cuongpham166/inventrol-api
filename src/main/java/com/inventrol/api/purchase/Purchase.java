@@ -17,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -28,32 +30,30 @@ import com.inventrol.api.supplier.Supplier;
 @Entity
 @Table(name = "purchase")
 public class Purchase {
-	public Purchase() {
+	public Purchase(Set<PurchaseItem> purchaseItem, Supplier supplier, String status, BigDecimal total,
+			String paymentType, String notice, boolean deleted, LocalDateTime createdOn, String createdBy,
+			LocalDateTime updatedOn, String updatedBy) {
 		super();
-	}
-
-	public Purchase(Payment payment, Set<PurchaseItem> purchaseItem, Supplier supplier, String status, BigDecimal total,
-			String notice, LocalDate purchaseDate, LocalDateTime purchaseTime, LocalDate updatedDate, boolean deleted) {
-		super();
-		this.payment = payment;
 		this.purchaseItem = purchaseItem;
 		this.supplier = supplier;
 		this.status = status;
 		this.total = total;
+		this.paymentType = paymentType;
 		this.notice = notice;
-		this.purchaseDate = purchaseDate;
-		this.purchaseTime = purchaseTime;
-		this.updatedDate = updatedDate;
 		this.deleted = deleted;
+		this.createdOn = createdOn;
+		this.createdBy = createdBy;
+		this.updatedOn = updatedOn;
+		this.updatedBy = updatedBy;
+	}
+
+	public Purchase() {
+		super();
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	@OneToOne(fetch=FetchType.LAZY, optional=false)
-	@JoinColumn(name="payment_id", nullable=false)
-	private Payment payment;
 	
 	@OneToMany(mappedBy ="purchase",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<PurchaseItem>purchaseItem = new HashSet<PurchaseItem>();
@@ -63,38 +63,47 @@ public class Purchase {
 	private Supplier supplier;
 	
 	@Column(name = "status")
-	private String status="processing"; // "processing, completed, returned"
+	private String status="in process"; // "in process, completed, returned"
 	
 	@Column(name="total",precision=10, scale=2)
 	private BigDecimal total;
 	
+	@Column(name = "payment_type")
+	private String paymentType;
+	
 	@Column(name = "notice")
 	private String notice;
-	
-	@Column(name="purchase_date")
-	private LocalDate purchaseDate;
-	
-	@Column (name="purchase_time")
-	private LocalDateTime purchaseTime;
-	
-	@Column(name="updated_date")
-	private LocalDate updatedDate;
-	
+		
 	@Column(name = "is_deleted")
 	@Value("false")
 	private boolean deleted;
 
+    @Column(name = "created_on")
+    private LocalDateTime createdOn;
+ 
+    @Column(name = "created_by")
+    private String createdBy;
+     
+    @Column(name = "updated_on")
+    private LocalDateTime updatedOn;
+ 
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @PrePersist
+    public void prePersist() {
+        createdOn = LocalDateTime.now();
+    }
+ 
+    @PreUpdate
+    public void preUpdate() {
+        updatedOn = LocalDateTime.now();
+    }
+    
 	public long getId() {
 		return id;
 	}
 
-	public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
-	}
 
 	public Set<PurchaseItem> getPurchaseItem() {
 		return purchaseItem;
@@ -136,36 +145,52 @@ public class Purchase {
 		this.notice = notice;
 	}
 
-	public LocalDate getPurchaseDate() {
-		return purchaseDate;
-	}
-
-	public void setPurchaseDate(LocalDate purchaseDate) {
-		this.purchaseDate = purchaseDate;
-	}
-
-	public LocalDateTime getPurchaseTime() {
-		return purchaseTime;
-	}
-
-	public void setPurchaseTime(LocalDateTime purchaseTime) {
-		this.purchaseTime = purchaseTime;
-	}
-
-	public LocalDate getUpdatedDate() {
-		return updatedDate;
-	}
-
-	public void setUpdatedDate(LocalDate updatedDate) {
-		this.updatedDate = updatedDate;
-	}
-
 	public boolean isDeleted() {
 		return deleted;
 	}
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public String getPaymentType() {
+		return paymentType;
+	}
+
+	public void setPaymentType(String paymentType) {
+		this.paymentType = paymentType;
+	}
+
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public LocalDateTime getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(LocalDateTime updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 	
 }

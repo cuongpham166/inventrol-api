@@ -1,6 +1,5 @@
 package com.inventrol.api.brand;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,8 +7,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.inventrol.api.atrribute.AttributeView;
 
 @Service
 public class BrandService {
@@ -42,7 +39,6 @@ public class BrandService {
 	}
 	
 	public void createBrand (Brand newBrand) {
-		newBrand.setCreatedDate(LocalDate.now());
 		brandRepo.save(newBrand);
 	}
 }

@@ -1,6 +1,7 @@
 package com.inventrol.api.brand;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -21,15 +24,19 @@ import com.inventrol.api.product.Product;
 @Entity
 @Table(name = "brand")
 public class Brand {
-	public Brand(Set<Product> product, String name, String notice, boolean deleted, LocalDate createdDate,
-			LocalDate updatedDate) {
+
+
+	public Brand(Set<Product> product, String name, String notice, boolean deleted, LocalDateTime createdOn,
+			String createdBy, LocalDateTime updatedOn, String updatedBy) {
 		super();
 		this.product = product;
 		this.name = name;
 		this.notice = notice;
 		this.deleted = deleted;
-		this.createdDate = createdDate;
-		this.updatedDate = updatedDate;
+		this.createdOn = createdOn;
+		this.createdBy = createdBy;
+		this.updatedOn = updatedOn;
+		this.updatedBy = updatedBy;
 	}
 
 	public Brand() {
@@ -53,11 +60,28 @@ public class Brand {
 	@Value("false")
 	private boolean deleted;
 	
-	@Column(name="created_date")
-	private LocalDate createdDate;
-	
-	@Column(name="updated_date")
-	private LocalDate updatedDate;
+    @Column(name = "created_on")
+    private LocalDateTime createdOn;
+ 
+    @Column(name = "created_by")
+    private String createdBy;
+     
+    @Column(name = "updated_on")
+    private LocalDateTime updatedOn;
+ 
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @PrePersist
+    public void prePersist() {
+        createdOn = LocalDateTime.now();
+    }
+ 
+    @PreUpdate
+    public void preUpdate() {
+        updatedOn = LocalDateTime.now();
+    }
+
 
 	public long getId() {
 		return id;
@@ -95,19 +119,37 @@ public class Brand {
 		this.deleted = deleted;
 	}
 
-	public LocalDate getCreatedDate() {
-		return createdDate;
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setCreatedDate(LocalDate createdDate) {
-		this.createdDate = createdDate;
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
 	}
 
-	public LocalDate getUpdatedDate() {
-		return updatedDate;
+	public String getCreatedBy() {
+		return createdBy;
 	}
 
-	public void setUpdatedDate(LocalDate updatedDate) {
-		this.updatedDate = updatedDate;
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
+
+	public LocalDateTime getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(LocalDateTime updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+
 }

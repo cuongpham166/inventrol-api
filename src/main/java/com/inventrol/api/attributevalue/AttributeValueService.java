@@ -46,7 +46,6 @@ public class AttributeValueService {
 	}
 	
 	public void createAttributeValue (AttributeValue newAttributeValue) {
-		newAttributeValue.setCreatedDate(LocalDate.now());
 		long attributeValueId = newAttributeValue.getAttribute().getId();
 		Optional<Attribute>attributeData = attributeService.getAttributeById(attributeValueId);
 		if(attributeData.isPresent()) {

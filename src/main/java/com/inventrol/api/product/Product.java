@@ -2,6 +2,7 @@ package com.inventrol.api.product;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +19,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -42,7 +45,8 @@ public class Product {
 			Set<RetailPriceRecord> retailPriceRecord, Set<PurchaseItem> purchaseItem, Set<OrderItem> orderItem,
 			Set<Supplier> supplier, Set<AttributeValue> attributeValue, String name, int quantity, int soldNumber,
 			int orderedNumber, String barcode, String sku, String stockStatus, BigDecimal vat, BigDecimal retailPrice,
-			BigDecimal listingPrice, String notice, LocalDate createdDate, LocalDate updatedDate, boolean deleted) {
+			BigDecimal listingPrice, String notice, boolean deleted, LocalDateTime createdOn, String createdBy,
+			LocalDateTime updatedOn, String updatedBy) {
 		super();
 		this.brand = brand;
 		this.discount = discount;
@@ -64,11 +68,12 @@ public class Product {
 		this.retailPrice = retailPrice;
 		this.listingPrice = listingPrice;
 		this.notice = notice;
-		this.createdDate = createdDate;
-		this.updatedDate = updatedDate;
 		this.deleted = deleted;
+		this.createdOn = createdOn;
+		this.createdBy = createdBy;
+		this.updatedOn = updatedOn;
+		this.updatedBy = updatedBy;
 	}
-
 
 
 	public Product() {
@@ -147,17 +152,33 @@ public class Product {
 	
 	@Column(name = "notice")
 	private String notice;
-	
-	@Column(name="created_date")
-	private LocalDate createdDate;
-	
-	@Column(name="updated_date")
-	private LocalDate updatedDate;
-	
+		
 	@Column(name = "is_deleted")
 	@Value("false")
 	private boolean deleted;
 
+    @Column(name = "created_on")
+    private LocalDateTime createdOn;
+ 
+    @Column(name = "created_by")
+    private String createdBy;
+     
+    @Column(name = "updated_on")
+    private LocalDateTime updatedOn;
+ 
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @PrePersist
+    public void prePersist() {
+        createdOn = LocalDateTime.now();
+    }
+ 
+    @PreUpdate
+    public void preUpdate() {
+        updatedOn = LocalDateTime.now();
+    }
+    
 	public long getId() {
 		return id;
 	}
@@ -299,21 +320,7 @@ public class Product {
 		this.notice = notice;
 	}
 
-	public LocalDate getCreatedDate() {
-		return createdDate;
-	}
 
-	public void setCreatedDate(LocalDate createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public LocalDate getUpdatedDate() {
-		return updatedDate;
-	}
-
-	public void setUpdatedDate(LocalDate updatedDate) {
-		this.updatedDate = updatedDate;
-	}
 
 	public boolean isDeleted() {
 		return deleted;
@@ -356,5 +363,53 @@ public class Product {
 
 	public void setOrderItem(Set<OrderItem> orderItem) {
 		this.orderItem = orderItem;
+	}
+
+
+
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
+	}
+
+
+
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
+	}
+
+
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+
+
+	public LocalDateTime getUpdatedOn() {
+		return updatedOn;
+	}
+
+
+
+	public void setUpdatedOn(LocalDateTime updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+
+
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 }

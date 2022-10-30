@@ -48,7 +48,6 @@ public class SupplierService {
 	}
 	
 	public void createSupplier(Supplier newSupplier) {
-		newSupplier.setCreatedDate(LocalDate.now());
 		Contact newContact = newSupplier.getContact();
 		newContact.setSupplier(newSupplier);
 		newSupplier.setContact(newContact);

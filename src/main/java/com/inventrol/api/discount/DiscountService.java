@@ -29,7 +29,6 @@ public class DiscountService {
 	}
 	
 	public void createDiscount (Discount newDiscount) {
-		newDiscount.setCreatedDate(LocalDate.now());
 		discountRepo.save(newDiscount);
 	}
 	

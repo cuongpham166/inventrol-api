@@ -1,6 +1,8 @@
 package com.inventrol.api.payment;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,43 +12,62 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.inventrol.api.order.Order;
 import com.inventrol.api.purchase.Purchase;
 
 @Entity
 @Table(name = "payment")
 public class Payment {
+	public Payment(Order order, String status, String paymentType, BigDecimal total, BigDecimal paid,
+			BigDecimal balance, String notice, boolean deleted, LocalDateTime createdOn, String createdBy,
+			LocalDateTime updatedOn, String updatedBy) {
+		super();
+		this.order = order;
+		this.status = status;
+		this.paymentType = paymentType;
+		this.total = total;
+		this.paid = paid;
+		this.balance = balance;
+		this.notice = notice;
+		this.deleted = deleted;
+		this.createdOn = createdOn;
+		this.createdBy = createdBy;
+		this.updatedOn = updatedOn;
+		this.updatedBy = updatedBy;
+	}
+
+
 	public Payment() {
 		super();
 	}
-
-	public Payment(Purchase purchase, String status, String paymentType, String notice, boolean deleted,
-			LocalDate createdDate, LocalDate updatedDate) {
-		super();
-		this.purchase = purchase;
-		this.status = status;
-		this.paymentType = paymentType;
-		this.notice = notice;
-		this.deleted = deleted;
-		this.createdDate = createdDate;
-		this.updatedDate = updatedDate;
-	}
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL,mappedBy="payment")
-	private Purchase purchase;
+	private Order order;
 	
 	@Column(name = "status")
-	private String status = "processing";//"processing, completed, failed, refunded"
+	private String status = "in process";//"in process, completed, failed, refunded"
 
 	@Column(name="payment_type")
 	private String paymentType;
+	
+	@Column(name="total",precision=10, scale=2)
+	private BigDecimal total;
+	
+	@Column(name="paid",precision=10, scale=2)
+	private BigDecimal paid;
+	
+	@Column(name="balance",precision=10, scale=2)
+	private BigDecimal balance;
 	
 	@Column(name = "notice")
 	private String notice;
@@ -55,22 +76,38 @@ public class Payment {
 	@Value("false")
 	private boolean deleted;
 	
-	@Column(name="created_date")
-	private LocalDate createdDate;
-	
-	@Column(name="updated_date")
-	private LocalDate updatedDate;
+    @Column(name = "created_on")
+    private LocalDateTime createdOn;
+ 
+    @Column(name = "created_by")
+    private String createdBy;
+     
+    @Column(name = "updated_on")
+    private LocalDateTime updatedOn;
+ 
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @PrePersist
+    public void prePersist() {
+        createdOn = LocalDateTime.now();
+    }
+ 
+    @PreUpdate
+    public void preUpdate() {
+        updatedOn = LocalDateTime.now();
+    }
 
 	public long getId() {
 		return id;
 	}
 	
-	public Purchase getPurchase() {
-		return purchase;
+	public Order getOrder() {
+		return order;
 	}
 
-	public void setPurchase(Purchase purchase) {
-		this.purchase = purchase;
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	public String getStatus() {
@@ -105,20 +142,66 @@ public class Payment {
 		this.deleted = deleted;
 	}
 
-	public LocalDate getCreatedDate() {
-		return createdDate;
+	public BigDecimal getTotal() {
+		return total;
 	}
 
-	public void setCreatedDate(LocalDate createdDate) {
-		this.createdDate = createdDate;
+	public void setTotal(BigDecimal total) {
+		this.total = total;
 	}
 
-	public LocalDate getUpdatedDate() {
-		return updatedDate;
+	public BigDecimal getPaid() {
+		return paid;
 	}
 
-	public void setUpdatedDate(LocalDate updatedDate) {
-		this.updatedDate = updatedDate;
+	public void setPaid(BigDecimal paid) {
+		this.paid = paid;
+	}
+
+	public BigDecimal getBalance() {
+		return balance;
+	}
+
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
+	}
+	
+	@PreUpdate
+	@PrePersist
+	public void balanceCalc() {
+		balance = paid.subtract (total); 
+	}
+
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public LocalDateTime getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(LocalDateTime updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 
 }

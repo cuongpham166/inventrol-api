@@ -49,13 +49,11 @@ public class CustomerService {
 	}
 	
 	public void createCustomer (Customer newCustomer) {
-		newCustomer.setCreatedDate(LocalDate.now());
 		customerRepo.save(newCustomer);
 	}
 	
 	public void createCustomerAddress (long customerId, CustomerAddress newCustomerAddress) {
 		Customer foundCustomer = findCustomerById(customerId).get();
-		newCustomerAddress.setCreatedDate(LocalDate.now());
 		newCustomerAddress.setCustomer(foundCustomer);
 		if(foundCustomer.getCustomeradress().isEmpty()) {
 			newCustomerAddress.setPrimary(true);

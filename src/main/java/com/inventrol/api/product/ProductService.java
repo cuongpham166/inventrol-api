@@ -90,20 +90,17 @@ public class ProductService {
 		
 		//One to Many
 		ListingPriceRecord newListingPrice = new ListingPriceRecord();
-		newListingPrice.setCreatedDate(createdDate);
 		newListingPrice.setPrice(newProduct.getListingPrice());
 		newListingPrice.setProduct(newProduct);
 		listingPriceRecordRepo.save(newListingPrice);
 		
 		RetailPriceRecord newRetailPrice = new RetailPriceRecord();
-		newRetailPrice.setCreatedDate(createdDate);
 		newRetailPrice.setPrice(newProduct.getRetailPrice());
 		newRetailPrice.setProduct(newProduct);
 		retailPriceRecordRepo.save(newRetailPrice);
 		//One to Many
 				
 		if(subcategoryData.isPresent() && brandData.isPresent() && discountData.isPresent()) {
-			newProduct.setCreatedDate(createdDate);
 			//Many to One
 			newProduct.setSubcategory(subcategoryData.get());
 			newProduct.setBrand(brandData.get());

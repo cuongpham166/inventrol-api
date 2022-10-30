@@ -1,5 +1,6 @@
 package com.inventrol.api.category;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,16 +13,20 @@ import com.inventrol.api.subcategory.Subcategory;
 @Entity
 @Table(name = "category")
 public class Category {
+
+
 	public Category(Set<Subcategory> subcategory, String name, String notice, boolean deleted, String tagColor,
-			LocalDate createdDate, LocalDate updatedDate) {
+			LocalDateTime createdOn, String createdBy, LocalDateTime updatedOn, String updatedBy) {
 		super();
 		this.subcategory = subcategory;
 		this.name = name;
 		this.notice = notice;
 		this.deleted = deleted;
 		this.tagColor = tagColor;
-		this.createdDate = createdDate;
-		this.updatedDate = updatedDate;
+		this.createdOn = createdOn;
+		this.createdBy = createdBy;
+		this.updatedOn = updatedOn;
+		this.updatedBy = updatedBy;
 	}
 
 	public Category() {
@@ -48,11 +53,7 @@ public class Category {
 	@Column(name="tag_color")
 	private String tagColor;
 	
-	@Column(name="created_date")
-	private LocalDate createdDate;
-	
-	@Column(name="updated_date")
-	private LocalDate updatedDate;
+
 
 	public long getId() {
 		return id;
@@ -82,21 +83,27 @@ public class Category {
 		this.deleted = deleted;
 	}
 
-	public LocalDate getCreatedDate() {
-		return createdDate;
-	}
+    @Column(name = "created_on")
+    private LocalDateTime createdOn;
+ 
+    @Column(name = "created_by")
+    private String createdBy;
+     
+    @Column(name = "updated_on")
+    private LocalDateTime updatedOn;
+ 
+    @Column(name = "updated_by")
+    private String updatedBy;
 
-	public void setCreatedDate(LocalDate createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public LocalDate getUpdatedDate() {
-		return updatedDate;
-	}
-
-	public void setUpdatedDate(LocalDate updatedDate) {
-		this.updatedDate = updatedDate;
-	}
+    @PrePersist
+    public void prePersist() {
+        createdOn = LocalDateTime.now();
+    }
+ 
+    @PreUpdate
+    public void preUpdate() {
+        updatedOn = LocalDateTime.now();
+    }
 
 	public Set<Subcategory> getSubcategory() {
 		return subcategory;
@@ -112,6 +119,38 @@ public class Category {
 
 	public void setTagColor(String tagColor) {
 		this.tagColor = tagColor;
+	}
+
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public LocalDateTime getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(LocalDateTime updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 
 

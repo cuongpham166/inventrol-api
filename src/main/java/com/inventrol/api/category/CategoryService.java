@@ -40,7 +40,6 @@ public class CategoryService {
 	}
 	
 	public Category createCategory (Category newCategory) {
-		newCategory.setCreatedDate(LocalDate.now());
 		Category savedCategory = categoryRepo.save(newCategory);
 		return savedCategory;
 	}
@@ -50,7 +49,6 @@ public class CategoryService {
 		Category _category = categoryData.get();
 		_category.setName(updatedCategory.getName());
 		_category.setNotice(updatedCategory.getNotice());
-		_category.setUpdatedDate(LocalDate.now());
 		Category savedCategory = categoryRepo.save(_category);
 		return savedCategory;
 	}
