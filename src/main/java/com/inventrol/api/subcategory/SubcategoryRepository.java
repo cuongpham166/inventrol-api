@@ -12,6 +12,7 @@ public interface SubcategoryRepository extends JpaRepository <Subcategory,Long>{
 	
 	public Boolean existsSubcategoryByName (String name);
 	public Optional<Subcategory>findByName (String name);
+	public Boolean existsSubcategoryByTagColor(String tagColor);
 	
 	public <T> List<T> findAllProjectedByOrderByIdAsc(Class<T> type);
 	public <T> T findProjectedById(long id, Class<T> type);

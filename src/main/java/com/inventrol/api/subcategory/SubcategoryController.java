@@ -75,7 +75,11 @@ public class SubcategoryController {
 		try {
 			if(subcategoryRepo.existsSubcategoryByName(newSubcategory.getName())) {
 				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
-			}else {
+			}
+			else if(subcategoryRepo.existsSubcategoryByTagColor(newSubcategory.getTagColor())) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This color is already in use"));
+			}
+			else {
 				if(categoryRepo.existsCategoryByName(newSubcategory.getCategory().getName())) {
 					subcategoryService.createSubcategory(newSubcategory);
 					return ResponseEntity.ok().body(new MessageResponse("Success:  A new subcategory has been created"));

@@ -3,6 +3,8 @@ package com.inventrol.api.category;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public interface CategoryView {
 	long getId();
 	String getName();

@@ -11,6 +11,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 	public List<Category> findAllByOrderByIdAsc();
 	
 	public Boolean existsCategoryByName (String name);
+	public Boolean existsCategoryByTagColor(String tagColor);
 	public Optional<Category>findByName (String name);
 	
 	public <T> List<T> findAllProjectedByOrderByIdAsc(Class<T> type);

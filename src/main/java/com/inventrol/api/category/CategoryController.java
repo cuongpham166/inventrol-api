@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inventrol.api.auth.MessageResponse;
+import com.inventrol.api.subcategory.SubcategoryRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -28,7 +29,7 @@ public class CategoryController {
 	
 	@Autowired
 	private CategoryRepository categoryRepo;
-	
+		
 	@GetMapping("/category")
 	public ResponseEntity<List<CategoryView>> getAllCategories(@RequestParam Optional<String> name) {
 		try {
@@ -69,6 +70,9 @@ public class CategoryController {
 		try{
 			if(categoryRepo.existsCategoryByName(newCategory.getName())) {
 				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
+			}
+			if(categoryRepo.existsCategoryByTagColor(newCategory.getTagColor())) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This color is already in use"));
 			}
 			categoryService.createCategory(newCategory);
 			return ResponseEntity.ok().body(new MessageResponse("Success:  A new category has been created"));
