@@ -5,6 +5,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.inventrol.api.subcategory.SubcategoryView.CategoryData;
+
 public interface CategoryView {
 	long getId();
 	String getName();
@@ -18,7 +20,12 @@ public interface CategoryView {
 	Set<SubcategoryData> getSubcategory();
 		interface SubcategoryData {
 			long getId();
-			String getName();	
+			String getName();
+			String getNotice();
+			LocalDateTime getCreatedOn();
+			String getCreatedBy();
+			LocalDateTime getUpdatedOn();
+			String getUpdatedBy();
 			String getTagColor();
 		}
 	 

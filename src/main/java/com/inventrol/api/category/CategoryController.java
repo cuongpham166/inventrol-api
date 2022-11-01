@@ -87,9 +87,6 @@ public class CategoryController {
 		if(categoryData.isPresent()) {
 			Category _category = categoryData.get();
 			if(_category.isDeleted() == false) {
-				if(categoryRepo.existsCategoryByName(updatedCategory.getName())){
-					return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
-				}
 				categoryService.updateCategory(id, updatedCategory);
 				return ResponseEntity.ok().body(new MessageResponse("Success: Category has been updated"));
 			}else {

@@ -97,15 +97,11 @@ public class SubcategoryController {
 		if(subcategoryData.isPresent()) {
 			Subcategory _subcategory = subcategoryData.get();
 			if(_subcategory.isDeleted() == false) {
-				if(subcategoryRepo.existsSubcategoryByName(updatedSubcategory.getName())) {
-					return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
-				}else {
-					if(categoryRepo.existsCategoryByName(updatedSubcategory.getCategory().getName())) {
+				if(categoryRepo.existsCategoryByName(updatedSubcategory.getCategory().getName())) {
 						subcategoryService.updateSubcategory(id, updatedSubcategory);
 						return ResponseEntity.ok().body(new MessageResponse("Success: Subcategory has been updated"));
-					}
-					return ResponseEntity.badRequest().body(new MessageResponse("Error: This category does not exist"));
 				}
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This category does not exist"));
 			}else {
 				return ResponseEntity.notFound().build();
 			}

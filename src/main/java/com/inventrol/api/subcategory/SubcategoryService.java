@@ -62,8 +62,8 @@ public class SubcategoryService {
 	
 	public void updateSubcategory (long id, Subcategory updatedSubcategory) {
 		Optional<Subcategory>subcategoryData = getSubcategoryById(id);
-		long categoryId = updatedSubcategory.getCategory().getId();
-		Optional<Category>categoryData = categoryService.getCategoryById(categoryId);
+		String categoryName = updatedSubcategory.getCategory().getName();
+		Optional<Category>categoryData = categoryRepo.findByName(categoryName);
 		if(subcategoryData.isPresent() && categoryData.isPresent()) {
 			Subcategory _subcategory = subcategoryData.get();
 			_subcategory.setName(updatedSubcategory.getName());

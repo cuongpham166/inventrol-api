@@ -13,7 +13,7 @@ public interface SubcategoryView {
 	String getUpdatedBy();
 	CategoryData getCategory();
 	String getTagColor();
-	 boolean isDeleted();
+	boolean isDeleted();
 	interface CategoryData{
 		long getId();
 		String getName();
