@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.inventrol.api.atrribute.Attribute;
+import com.inventrol.api.atrribute.AttributeRepository;
 import com.inventrol.api.atrribute.AttributeService;
 import com.inventrol.api.atrribute.AttributeView;
 
@@ -20,6 +21,9 @@ public class AttributeValueService {
 	
 	@Autowired
 	private AttributeService attributeService;
+	
+	@Autowired
+	private AttributeRepository attributeRepo;
 	
 	public Optional<AttributeValue> getAttributeValueById(long id){
 		Optional<AttributeValue>foundAttributeValue = attributeValueRepo.findById(id);
@@ -46,8 +50,8 @@ public class AttributeValueService {
 	}
 	
 	public void createAttributeValue (AttributeValue newAttributeValue) {
-		long attributeValueId = newAttributeValue.getAttribute().getId();
-		Optional<Attribute>attributeData = attributeService.getAttributeById(attributeValueId);
+		String attributeName = newAttributeValue.getAttribute().getName();
+		Optional<Attribute>attributeData = attributeRepo.findByName(attributeName);
 		if(attributeData.isPresent()) {
 			Attribute foundAttribute = attributeData.get();
 			newAttributeValue.setAttribute(foundAttribute);

@@ -58,13 +58,14 @@ public class Subcategory {
 	@OneToMany(mappedBy ="subcategory",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<Product>product = new HashSet<Product>();
 	
-	@Column(name = "name")
+	@Column(name = "name",unique=true, nullable=false)
 	private String name;
 	
 	@Column(name = "notice")
 	private String notice;
 	
 	@Column(name="tag_color")
+	@Value("#7a3db8")
 	private String tagColor;
 	
 	@Column(name = "is_deleted")

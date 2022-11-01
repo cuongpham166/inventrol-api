@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inventrol.api.auth.MessageResponse;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
@@ -23,6 +25,9 @@ public class AttributeController {
 
 	@Autowired
 	private AttributeService attributeService;
+	
+	@Autowired
+	private AttributeRepository attributeRepo;
 	
 	@GetMapping("/attribute")
 	public ResponseEntity<List<AttributeView>> getAllAttributes(@RequestParam Optional<String> name) {
@@ -59,12 +64,15 @@ public class AttributeController {
 	}
 	
 	@PostMapping("/attribute")
-	public ResponseEntity<Attribute> createAttribute(@RequestBody Attribute newAttribute){
+	public ResponseEntity<?> createAttribute(@RequestBody Attribute newAttribute){
 		try{
+			if(attributeRepo.existsAttributeByName(newAttribute.getName())) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
+			}
 			attributeService.createAttribute(newAttribute);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return ResponseEntity.ok().body(new MessageResponse("Success:  A new attribute has been created"));
 		}catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
 		}
 	}
 }

@@ -1,13 +1,16 @@
 package com.inventrol.api.subcategory;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public interface SubcategoryView {
 	long getId();
 	String getName();
 	String getNotice();
-	LocalDate getCreatedDate();
-	LocalDate getUpdatedDate();
+	LocalDateTime getCreatedOn();
+	String getCreatedBy();
+	LocalDateTime getUpdatedOn();
+	String getUpdatedBy();
 	CategoryData getCategory();
 	String getTagColor();
 	 boolean isDeleted();

@@ -18,14 +18,16 @@ import com.inventrol.api.purchase.Purchase;
 public class Supplier {
 
 	public Supplier(Contact contact, Set<Product> product, Set<Purchase> purchase, String name, String contactPerson,
-			String notice, boolean deleted, LocalDateTime createdOn, String createdBy, LocalDateTime updatedOn,
-			String updatedBy) {
+			String website, String email, String notice, boolean deleted, LocalDateTime createdOn, String createdBy,
+			LocalDateTime updatedOn, String updatedBy) {
 		super();
 		this.contact = contact;
 		this.product = product;
 		this.purchase = purchase;
 		this.name = name;
 		this.contactPerson = contactPerson;
+		this.website = website;
+		this.email = email;
 		this.notice = notice;
 		this.deleted = deleted;
 		this.createdOn = createdOn;
@@ -33,6 +35,7 @@ public class Supplier {
 		this.updatedOn = updatedOn;
 		this.updatedBy = updatedBy;
 	}
+
 
 	public Supplier() {
 		super();
@@ -57,6 +60,12 @@ public class Supplier {
 	
 	@Column(name = "contact_person")
 	private String contactPerson;
+	
+	@Column(name = "website")
+	private String website;
+	
+	@Column(name = "email")
+	private String email;
 	
 	@Column(name = "notice")
 	private String notice;
@@ -179,6 +188,22 @@ public class Supplier {
 
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

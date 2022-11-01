@@ -31,14 +31,16 @@ import com.inventrol.api.supplier.Supplier;
 @Table(name = "purchase")
 public class Purchase {
 	public Purchase(Set<PurchaseItem> purchaseItem, Supplier supplier, String status, BigDecimal total,
-			String paymentType, String notice, boolean deleted, LocalDateTime createdOn, String createdBy,
-			LocalDateTime updatedOn, String updatedBy) {
+			String paymentType, String courier, String trackingNumber, String notice, boolean deleted,
+			LocalDateTime createdOn, String createdBy, LocalDateTime updatedOn, String updatedBy) {
 		super();
 		this.purchaseItem = purchaseItem;
 		this.supplier = supplier;
 		this.status = status;
 		this.total = total;
 		this.paymentType = paymentType;
+		this.courier = courier;
+		this.trackingNumber = trackingNumber;
 		this.notice = notice;
 		this.deleted = deleted;
 		this.createdOn = createdOn;
@@ -70,6 +72,12 @@ public class Purchase {
 	
 	@Column(name = "payment_type")
 	private String paymentType;
+	
+	@Column(name = "courier")
+	private String courier;
+	
+	@Column(name = "tracking_number")
+	private String trackingNumber;
 	
 	@Column(name = "notice")
 	private String notice;
@@ -191,6 +199,22 @@ public class Purchase {
 
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public String getCourier() {
+		return courier;
+	}
+
+	public void setCourier(String courier) {
+		this.courier = courier;
+	}
+
+	public String getTrackingNumber() {
+		return trackingNumber;
+	}
+
+	public void setTrackingNumber(String trackingNumber) {
+		this.trackingNumber = trackingNumber;
 	}
 	
 }

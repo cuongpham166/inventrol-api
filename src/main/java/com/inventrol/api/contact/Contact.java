@@ -14,14 +14,11 @@ import com.inventrol.api.supplier.Supplier;
 public class Contact {
 
 
-	public Contact(Supplier supplier, String email, String website, String phoneNumber, String mobileNumber,
-			String streetName, String streetNumber, String additionalAddressLine, String postcode, String city,
-			String country, boolean deleted, LocalDateTime createdOn, String createdBy, LocalDateTime updatedOn,
-			String updatedBy) {
+	public Contact(Supplier supplier, String phoneNumber, String mobileNumber, String streetName,
+			String streetNumber, String additionalAddressLine, String postcode, String city, String country,
+			boolean deleted, LocalDateTime createdOn, String createdBy, LocalDateTime updatedOn, String updatedBy) {
 		super();
 		this.supplier = supplier;
-		this.email = email;
-		this.website = website;
 		this.phoneNumber = phoneNumber;
 		this.mobileNumber = mobileNumber;
 		this.streetName = streetName;
@@ -37,6 +34,7 @@ public class Contact {
 		this.updatedBy = updatedBy;
 	}
 
+
 	public Contact() {
 		super();
 	}
@@ -47,12 +45,6 @@ public class Contact {
 	
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL,mappedBy="contact")
 	private Supplier supplier;
-	
-	@Column(name = "email")
-	private String email;
-	
-	@Column(name = "website")
-	private String website;
 	
 	@Column(name = "phone_number")
 	private String phoneNumber;
@@ -113,22 +105,6 @@ public class Contact {
 
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getWebsite() {
-		return website;
-	}
-
-	public void setWebsite(String website) {
-		this.website = website;
 	}
 
 	public String getPhoneNumber() {

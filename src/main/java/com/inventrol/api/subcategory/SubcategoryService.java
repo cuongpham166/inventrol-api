@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.inventrol.api.category.CategoryService;
 import com.inventrol.api.atrribute.AttributeView;
 import com.inventrol.api.category.Category;
+import com.inventrol.api.category.CategoryRepository;
 
 @Service
 public class SubcategoryService {
@@ -21,6 +22,9 @@ public class SubcategoryService {
 	
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private CategoryRepository categoryRepo;
 	
 	public Optional<Subcategory> getSubcategoryById(long id){
 		Optional<Subcategory> foundSubcategory = subcategoryRepo.findById(id);
@@ -45,9 +49,10 @@ public class SubcategoryService {
 		List<SubcategoryView> result = foundSubcategories.stream().filter(cat -> cat.isDeleted() == false).collect(Collectors.toList());
 		return result;
 	}
+		
 	public void createSubcategory(Subcategory newSubcategory) {
-		long categoryId = newSubcategory.getCategory().getId();
-		Optional<Category>categoryData = categoryService.getCategoryById(categoryId);
+		String categoryName = newSubcategory.getCategory().getName();
+		Optional<Category>categoryData = categoryRepo.findByName(categoryName);
 		if(categoryData.isPresent()) {
 			Category foundCategory = categoryData.get(); 
 			newSubcategory.setCategory(foundCategory);

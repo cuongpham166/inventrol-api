@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inventrol.api.auth.MessageResponse;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
@@ -26,7 +28,9 @@ public class SupplierController {
 	@Autowired 
 	private SupplierService supplierService;
 	
-
+	@Autowired
+	private SupplierRepository supplierRepo;
+	
 	@GetMapping("/supplier")
 	public ResponseEntity<List<SupplierView>> getAllSuppliers(@RequestParam Optional<String> name) {
 		try {
@@ -80,12 +84,15 @@ public class SupplierController {
 	}
 	
 	@PostMapping("/supplier")
-	public ResponseEntity<Supplier> createSupplier(@RequestBody Supplier newSupplier){
+	public ResponseEntity<?> createSupplier(@RequestBody Supplier newSupplier){
 		try{
+			if(supplierRepo.existsSupplierByName(newSupplier.getName())) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
+			}
 			supplierService.createSupplier(newSupplier);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return ResponseEntity.ok().body(new MessageResponse("Success:  A new supplier has been created"));
 		}catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
 		}
 	}
 }

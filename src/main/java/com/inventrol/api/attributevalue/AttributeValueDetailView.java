@@ -2,6 +2,7 @@ package com.inventrol.api.attributevalue;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import com.inventrol.api.brand.BrandDetailView.ProductData.AttributeValueData;
@@ -15,8 +16,10 @@ public interface AttributeValueDetailView {
 	String getName();
 	String getNotice();
 	boolean isDeleted();
-	LocalDate getCreatedDate();
-	LocalDate getUpdatedDate();
+	LocalDateTime getCreatedOn();
+	String getCreatedBy();
+	LocalDateTime getUpdatedOn();
+	String getUpdatedBy();
 	
 	AttributeData getAttribute();
 	Set<ProductData>getProduct();

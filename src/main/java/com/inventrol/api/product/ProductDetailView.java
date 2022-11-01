@@ -2,6 +2,7 @@ package com.inventrol.api.product;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -20,8 +21,10 @@ public interface ProductDetailView {
 	String getNotice();
 	String getStockStatus();
 	boolean isDeleted();
-	LocalDate getCreatedDate();
-	LocalDate getUpdatedDate();
+	LocalDateTime getCreatedOn();
+	String getCreatedBy();
+	LocalDateTime getUpdatedOn();
+	String getUpdatedBy();
 	
 	SubcategoryData getSubcategory();
 	Set<AttributeValueData>getAttributeValue();

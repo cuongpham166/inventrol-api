@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inventrol.api.auth.MessageResponse;
 import com.inventrol.api.category.Category;
 import com.inventrol.api.category.CategoryDetailView;
+import com.inventrol.api.category.CategoryRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -27,6 +29,12 @@ public class SubcategoryController {
 
 	@Autowired
 	private SubcategoryService subcategoryService;
+	
+	@Autowired
+	private SubcategoryRepository subcategoryRepo;
+	
+	@Autowired
+	private CategoryRepository categoryRepo;
 	
 	@GetMapping("/subcategory")
 	public ResponseEntity<List<SubcategoryView>> getAllSubcategories(@RequestParam Optional<String> name) {
@@ -63,29 +71,42 @@ public class SubcategoryController {
 	}
 	
 	@PostMapping("/subcategory")
-	public ResponseEntity<Subcategory> createSubcategory (@RequestBody Subcategory newSubcategory){
+	public ResponseEntity<?> createSubcategory (@RequestBody Subcategory newSubcategory){
 		try {
-			subcategoryService.createSubcategory(newSubcategory);
-			return new ResponseEntity<>(HttpStatus.CREATED);
-			
+			if(subcategoryRepo.existsSubcategoryByName(newSubcategory.getName())) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
+			}else {
+				if(categoryRepo.existsCategoryByName(newSubcategory.getCategory().getName())) {
+					subcategoryService.createSubcategory(newSubcategory);
+					return ResponseEntity.ok().body(new MessageResponse("Success:  A new subcategory has been created"));
+				}
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This category does not exist"));
+			}
 		}catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
 		}
 	}
 	
 	@PutMapping("/subcategory/{id}")
-	public ResponseEntity<Subcategory>updateSubcategory(@PathVariable("id") long id,@RequestBody Subcategory updatedSubcategory ){
+	public ResponseEntity<?>updateSubcategory(@PathVariable("id") long id,@RequestBody Subcategory updatedSubcategory ){
 		Optional<Subcategory>subcategoryData = subcategoryService.getSubcategoryById(id);
 		if(subcategoryData.isPresent()) {
 			Subcategory _subcategory = subcategoryData.get();
 			if(_subcategory.isDeleted() == false) {
-				subcategoryService.updateSubcategory(id, updatedSubcategory);
-				return new ResponseEntity<>(HttpStatus.OK);
+				if(subcategoryRepo.existsSubcategoryByName(updatedSubcategory.getName())) {
+					return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
+				}else {
+					if(categoryRepo.existsCategoryByName(updatedSubcategory.getCategory().getName())) {
+						subcategoryService.updateSubcategory(id, updatedSubcategory);
+						return ResponseEntity.ok().body(new MessageResponse("Success: Subcategory has been updated"));
+					}
+					return ResponseEntity.badRequest().body(new MessageResponse("Error: This category does not exist"));
+				}
 			}else {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				return ResponseEntity.notFound().build();
 			}
 		}else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return ResponseEntity.notFound().build();
 		}
 	}
 	

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inventrol.api.auth.MessageResponse;
 import com.inventrol.api.customeraddress.CustomerAddress;
 
 
@@ -26,6 +27,9 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired
+	private CustomerRepository customerRepo;
 	
 	@GetMapping("/customer")
 	public ResponseEntity<List<CustomerView>> getAllCustomers(@RequestParam Optional<String> name) {
@@ -64,12 +68,15 @@ public class CustomerController {
 	}
 
 	@PostMapping("/customer")
-	public ResponseEntity<Customer> createCustomer(@RequestBody Customer newCustomer){
+	public ResponseEntity<?> createCustomer(@RequestBody Customer newCustomer){
 		try{
+			if(customerRepo.existsCustomerByName(newCustomer.getName())) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
+			}
 			customerService.createCustomer(newCustomer);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return ResponseEntity.ok().body(new MessageResponse("Success:  A new customer has been created"));
 		}catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
 		}
 	}
 	

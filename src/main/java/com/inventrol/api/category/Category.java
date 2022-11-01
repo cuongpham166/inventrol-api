@@ -40,7 +40,7 @@ public class Category {
 	@OneToMany(mappedBy ="category",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<Subcategory>subcategory = new HashSet<Subcategory>();
 	
-	@Column(name = "name",unique=true)
+	@Column(name = "name",unique=true, nullable=false)
 	private String name;
 	
 	@Column(name = "notice")
@@ -51,6 +51,7 @@ public class Category {
 	private boolean deleted;
 	
 	@Column(name="tag_color")
+	@Value("#7a3db8")
 	private String tagColor;
 	
 

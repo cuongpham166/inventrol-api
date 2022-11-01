@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inventrol.api.auth.MessageResponse;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
@@ -23,19 +25,9 @@ public class CategoryController {
 
 	@Autowired
 	private  CategoryService categoryService;
-
-	/*@GetMapping("/category")
-	public ResponseEntity<List<CategoryView>> getAllCategories() {
-		try {
-			List<CategoryView> categories = categoryService.getAllCategories();
-			if (categories.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-			return new ResponseEntity<>(categories, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}*/
+	
+	@Autowired
+	private CategoryRepository categoryRepo;
 	
 	@GetMapping("/category")
 	public ResponseEntity<List<CategoryView>> getAllCategories(@RequestParam Optional<String> name) {
@@ -73,45 +65,55 @@ public class CategoryController {
 	}
 	
 	@PostMapping("/category")
-	public ResponseEntity<Category> createCategory(@RequestBody Category newCategory){
+	public ResponseEntity<?> createCategory(@RequestBody Category newCategory){
 		try{
+			if(categoryRepo.existsCategoryByName(newCategory.getName())) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
+			}
 			categoryService.createCategory(newCategory);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return ResponseEntity.ok().body(new MessageResponse("Success:  A new category has been created"));
 		}catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
 		}
 	}
 	
 	@PutMapping("/category/{id}")
-	public ResponseEntity<Category>updateCategory(@PathVariable("id") long id,@RequestBody Category updatedCategory ){
+	public ResponseEntity<?>updateCategory(@PathVariable("id") long id,@RequestBody Category updatedCategory ){
 		Optional<Category>categoryData = categoryService.getCategoryById(id);
 		if(categoryData.isPresent()) {
 			Category _category = categoryData.get();
-			if(_category.isDeleted()==false) {
+			if(_category.isDeleted() == false) {
+				if(categoryRepo.existsCategoryByName(updatedCategory.getName())){
+					return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
+				}
 				categoryService.updateCategory(id, updatedCategory);
-				return new ResponseEntity<>(HttpStatus.OK);
+				return ResponseEntity.ok().body(new MessageResponse("Success: Category has been updated"));
 			}else {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				return ResponseEntity.notFound().build();
+				//return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 
 		}else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return ResponseEntity.notFound().build();
+			//return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 	
 	@PutMapping("/category/{id}/delete")
-	public ResponseEntity<Category>deleteCategory(@PathVariable("id") long id ){
+	public ResponseEntity<?>deleteCategory(@PathVariable("id") long id ){
 		Optional<Category>categoryData = categoryService.getCategoryById(id);
 		if(categoryData.isPresent()) {
-			Category _category  = categoryData.get();
+			Category _category = categoryData.get();
 			if(_category.isDeleted() == false) {
 				 categoryService.softDeleteCategory(id);
-					return new ResponseEntity<>(HttpStatus.OK);
+				 return ResponseEntity.ok().body(new MessageResponse("Success: Category has been deleted"));
 			}else {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				return ResponseEntity.notFound().build();
+				//return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 		}else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return ResponseEntity.notFound().build();
+			//return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package com.inventrol.api.atrribute;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public interface AttributeView {
@@ -9,8 +10,10 @@ public interface AttributeView {
 	String getNotice();
 	boolean isDeleted();
 	String getTagColor();
-	LocalDate getCreatedDate();
-	LocalDate getUpdatedDate();
+	LocalDateTime getCreatedOn();
+	String getCreatedBy();
+	LocalDateTime getUpdatedOn();
+	String getUpdatedBy();
 	Set<AttributeValueData> getAttributevalue();
 	interface AttributeValueData{
 		long getId();

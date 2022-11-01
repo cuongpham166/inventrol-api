@@ -2,6 +2,7 @@ package com.inventrol.api.supplier;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -17,8 +18,10 @@ public interface SupplierDetailView {
 	String getName();
 	String getContactPerson();
 	String getNotice();
-	LocalDate getCreatedDate();
-	LocalDate getUpdatedDate();
+	LocalDateTime getCreatedOn();
+	String getCreatedBy();
+	LocalDateTime getUpdatedOn();
+	String getUpdatedBy();
 	ContactData getContact();
 	boolean isDeleted();
 	

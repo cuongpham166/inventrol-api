@@ -1,6 +1,7 @@
 package com.inventrol.api.customer;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public interface CustomerView {
@@ -9,7 +10,9 @@ public interface CustomerView {
 	String getEmail();
 	String getMobileNumber();
 	String getNotice();
-	LocalDate getCreatedDate();
-	LocalDate getUpdatedDate();
+	LocalDateTime getCreatedOn();
+	String getCreatedBy();
+	LocalDateTime getUpdatedOn();
+	String getUpdatedBy();
 	boolean isDeleted();
 }

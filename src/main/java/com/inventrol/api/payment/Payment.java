@@ -91,11 +91,13 @@ public class Payment {
     @PrePersist
     public void prePersist() {
         createdOn = LocalDateTime.now();
+        balance = paid.subtract (total); 
     }
  
     @PreUpdate
     public void preUpdate() {
         updatedOn = LocalDateTime.now();
+        balance = paid.subtract (total); 
     }
 
 	public long getId() {
@@ -166,12 +168,6 @@ public class Payment {
 		this.balance = balance;
 	}
 	
-	@PreUpdate
-	@PrePersist
-	public void balanceCalc() {
-		balance = paid.subtract (total); 
-	}
-
 	public LocalDateTime getCreatedOn() {
 		return createdOn;
 	}

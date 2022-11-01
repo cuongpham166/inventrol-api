@@ -18,12 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inventrol.api.auth.MessageResponse;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class BrandController {
 	@Autowired
 	private  BrandService brandService;
+	
+	@Autowired
+	private BrandRepository brandRepo;
 
 	@GetMapping("/brand")
 	public ResponseEntity<List<BrandView>> getAllBrands(@RequestParam Optional<String> name) {
@@ -78,12 +83,15 @@ public class BrandController {
 	}
 	
 	@PostMapping("/brand")
-	public ResponseEntity<Brand> createBrand(@RequestBody Brand newBrand){
+	public ResponseEntity<?> createBrand(@RequestBody Brand newBrand){
 		try{
+			if(brandRepo.existsBrandByName(newBrand.getName())) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
+			}
 			brandService.createBrand(newBrand);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return ResponseEntity.ok().body(new MessageResponse("Success:  A new brand has been created"));
 		}catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
 		}
 	}
 }
