@@ -17,6 +17,12 @@ public interface AttributeView {
 	Set<AttributeValueData> getAttributevalue();
 	interface AttributeValueData{
 		long getId();
-		String getName();		
+		String getName();	
+		String getNotice();
+		boolean isDeleted();
+		LocalDateTime getCreatedOn();
+		String getCreatedBy();
+		LocalDateTime getUpdatedOn();
+		String getUpdatedBy();
 	}
 }

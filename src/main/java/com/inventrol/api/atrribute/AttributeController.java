@@ -69,6 +69,9 @@ public class AttributeController {
 			if(attributeRepo.existsAttributeByName(newAttribute.getName())) {
 				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
 			}
+			if(attributeRepo.existsAttributeByTagColor(newAttribute.getTagColor())) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This color is already in use"));
+			}
 			attributeService.createAttribute(newAttribute);
 			return ResponseEntity.ok().body(new MessageResponse("Success:  A new attribute has been created"));
 		}catch (Exception e) {

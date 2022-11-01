@@ -11,6 +11,7 @@ public interface AttributeRepository extends JpaRepository <Attribute,Long> {
 	public List<Attribute>findAllByOrderByIdAsc();
 	
 	public Boolean existsAttributeByName (String name);
+	public Boolean existsAttributeByTagColor(String tagColor);
 	public Optional <Attribute> findByName (String name);
 	
 	public <T> List<T> findAllProjectedByOrderByIdAsc(Class<T> type);
