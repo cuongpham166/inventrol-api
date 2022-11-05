@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inventrol.api.auth.MessageResponse;
+
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -24,6 +26,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private ProductRepository productRepo;
 	
 	@GetMapping("/product")
 	public ResponseEntity<List<ProductView>> getAllProducts(@RequestParam Optional<String> name) {
@@ -60,13 +65,16 @@ public class ProductController {
 	}
 	
 	@PostMapping("/product")
-	public ResponseEntity<Product> createProduct (@RequestBody Product newProduct){
+	public ResponseEntity<?> createProduct ( @RequestBody Product newProduct){
 		try {
-			productService.createProduct(newProduct);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			if(productRepo.existsProductByName(newProduct.getName())) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
+			}
+			productService.createNewProduct(newProduct);
+			return ResponseEntity.ok().body(new MessageResponse("Success:  A new product has been created"));
 			
 		}catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
 		}
 	}
 }

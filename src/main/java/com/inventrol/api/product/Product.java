@@ -141,7 +141,7 @@ public class Product {
 	@Transient
 	private String stockStatus;
 	
-	@Column(name="vat",precision=5, scale=3)
+	@Column(name="vat",precision=3, scale=2)
 	private BigDecimal vat;
 	
 	@Column(name="retail_price",precision=10, scale=2)

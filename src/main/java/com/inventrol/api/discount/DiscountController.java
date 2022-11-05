@@ -1,5 +1,6 @@
 package com.inventrol.api.discount;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inventrol.api.auth.MessageResponse;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
@@ -20,6 +23,9 @@ public class DiscountController {
 
 	@Autowired
 	private DiscountService discountService;
+	
+	@Autowired
+	private DiscountRepository discountRepo;
 	
 	@GetMapping("/discount")
 	public ResponseEntity<List<DiscountView>> getAllDiscounts() {
@@ -36,10 +42,19 @@ public class DiscountController {
 	}
 	
 	@PostMapping("/discount")
-	public ResponseEntity<Discount> createDiscount(@RequestBody Discount newDiscount){
-		try{
+	public ResponseEntity<?> createDiscount(@RequestBody Discount newDiscount){
+		try{						
+			BigDecimal newDiscountValue = newDiscount.getDiscountPercent();
+			if(discountRepo.existsDiscountByDiscountPercent(newDiscount.getDiscountPercent())) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This value already exists"));
+			}
+			
+			if(newDiscountValue.compareTo(BigDecimal.valueOf(1.00)) > 0) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This value must be equal or smaller than 1.00"));
+			}
+			
 			discountService.createDiscount(newDiscount);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return ResponseEntity.ok().body(new MessageResponse("Success:  A new discount value has been created"));
 		}catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

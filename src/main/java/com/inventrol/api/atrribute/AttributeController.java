@@ -47,6 +47,21 @@ public class AttributeController {
 		}
 	}
 	
+	@GetMapping("/attribute/attribute-values")
+	public ResponseEntity<List<AttributeValueOptionView>> getAllAttributeValuesByAttribute() {
+		try {
+			List<AttributeValueOptionView>attributeValues = new ArrayList<AttributeValueOptionView>();
+			attributeValues = attributeService.getAllAttributeValuesByAttribute();
+			if(attributeValues.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(attributeValues, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
+	
 	@GetMapping("/attribute/{id}")
 	public ResponseEntity<AttributeDetailView>getAttributeById(@PathVariable("id") long id){
 		Optional<Attribute> attributeData = attributeService.getAttributeById(id);

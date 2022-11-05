@@ -29,9 +29,7 @@ public interface SupplierDetailView {
 	
 	interface ContactData{
 		long getId();
-		String getWebsite();
 		String getAdditionalAddressLine();
-		String getEmail();
 		String getPhoneNumber();
 		String getMobileNumber();
 		String getStreetName();

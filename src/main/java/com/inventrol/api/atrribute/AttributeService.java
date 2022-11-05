@@ -29,6 +29,13 @@ public class AttributeService {
 		return result;
 	}
 	
+	public List<AttributeValueOptionView> getAllAttributeValuesByAttribute (){
+		List<AttributeValueOptionView>attributeValues = new ArrayList<AttributeValueOptionView>();
+		attributeRepo.findAllProjectedByOrderByIdAsc(AttributeValueOptionView.class).forEach(attributeValues::add);
+		List<AttributeValueOptionView> result = attributeValues.stream().filter(cat -> cat.isDeleted() == false).collect(Collectors.toList());
+		return result;
+	}
+	
 	public List<AttributeView>searchAttribute (String name){
 		List<AttributeView>foundAttributes = new ArrayList<AttributeView>();
 		attributeRepo.findProjectedByNameContainsIgnoreCase(name, AttributeView.class).forEach(foundAttributes::add);

@@ -51,7 +51,7 @@ public class Discount {
 	private Set<Product>product = new HashSet<Product>();
 	
 
-	@Column(name="discount_percent",precision=5, scale=3)
+	@Column(name="discount_percent",precision=3, scale=2)
 	private BigDecimal discountPercent;
 	
 	@Column(name = "notice")
