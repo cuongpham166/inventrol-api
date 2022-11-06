@@ -83,7 +83,7 @@ public class ProductService {
 	}
 	
 
-	public void createNewProduct (Product newProduct) {
+	public void createNewProduct (Product newProduct) { //objects must contain ID
 		String subcatgoryName = newProduct.getSubcategory().getName();
 		String brandName = newProduct.getBrand().getName();
 		BigDecimal discountPercent = newProduct.getDiscount().getDiscountPercent();
@@ -92,22 +92,19 @@ public class ProductService {
 		Optional<Brand>brandData= brandRepo.findByName(brandName);
 		Optional<Discount>discountData = discountRepo.findByDiscountPercent(discountPercent);
 		
-		productRepo.save(newProduct);
 		
 		//One to Many
 		RetailPriceRecord newRetailPrice = new RetailPriceRecord();
 		newRetailPrice.setPrice(newProduct.getRetailPrice());
 		newRetailPrice.setProduct(newProduct);
 		newProduct.getRetailPriceRecord().add(newRetailPrice);
-		retailPriceRecordRepo.save(newRetailPrice);
-		
+
 		ListingPriceRecord newListingPrice = new ListingPriceRecord();
 		newListingPrice.setPrice(newProduct.getListingPrice());
 		newListingPrice.setProduct(newProduct);
 		newProduct.getListingPriceRecord().add(newListingPrice);
-		listingPriceRecordRepo.save(newListingPrice);
 		//One to Many
-		
+		productRepo.save(newProduct);
 	
 		if(subcategoryData.isPresent() && brandData.isPresent() && discountData.isPresent()) {
 			//Many to One
@@ -122,7 +119,6 @@ public class ProductService {
 			newProduct.setDiscount(discountData.get());
 			discountData.get().getProduct().add(newProduct);
 			discountRepo.save(discountData.get());
-			//productRepo.save(newProduct);
 			//Many to One
 			
 			//Many to Many
@@ -152,61 +148,7 @@ public class ProductService {
 		}
 	}
 	
-	/*public void createProduct (Product newProduct) {
-		
-		long subcategoryId = newProduct.getSubcategory().getId();
-		long brandId = newProduct.getBrand().getId();
-		long discountId = newProduct.getDiscount().getId();
-		
-		Optional<Subcategory>subcategoryData = subcategoryService.getSubcategoryById(subcategoryId);
-		Optional<Brand>brandData = brandService.getBrandById(brandId);
-		Optional<Discount>discountData = discountService.getDiscountById(discountId);
-		productRepo.save(newProduct);
-		
-		//One to Many
-		ListingPriceRecord newListingPrice = new ListingPriceRecord();
-		newListingPrice.setPrice(newProduct.getListingPrice());
-		newListingPrice.setProduct(newProduct);
-		listingPriceRecordRepo.save(newListingPrice);
-		
-		RetailPriceRecord newRetailPrice = new RetailPriceRecord();
-		newRetailPrice.setPrice(newProduct.getRetailPrice());
-		newRetailPrice.setProduct(newProduct);
-		retailPriceRecordRepo.save(newRetailPrice);
-		//One to Many
-				
-		if(subcategoryData.isPresent() && brandData.isPresent() && discountData.isPresent()) {
-			//Many to One
-			newProduct.setSubcategory(subcategoryData.get());
-			newProduct.setBrand(brandData.get());
-			newProduct.setDiscount(discountData.get());
-			//Many to One
-			
-			
-			//Many to Many
-			Set<AttributeValue>attributeValueList = newProduct.getAttributeValue();
-			attributeValueList.forEach(attVal ->{
-				Optional<AttributeValue>attributeValueData = attributeValueService.getAttributeValueById(attVal.getId());
-				if(attributeValueData.isPresent()) {
-					AttributeValue _attributeValue = attributeValueData.get();
-					newProduct.getAttributeValue().add(_attributeValue);
-					//_attributeValue.getProduct().add(newProduct);
-				}
-			});
-			
-			Set<Supplier>supplierList = newProduct.getSupplier();
-			supplierList.forEach(supp ->{
-				Optional<Supplier>supplierData = supplierService.getSupplierById(supp.getId());
-				if(supplierData.isPresent()) {
-					Supplier _supplier = supplierData.get();
-					newProduct.getSupplier().add(_supplier);
-					//_supplier.getProduct().add(newProduct);
-				}
-			});
-			//Many to Many
-			
-			productRepo.save(newProduct);
-		}
-		
-	}*/
+	
+
+
 }

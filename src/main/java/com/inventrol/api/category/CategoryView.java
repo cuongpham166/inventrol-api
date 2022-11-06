@@ -18,15 +18,15 @@ public interface CategoryView {
 	String getTagColor();
 	boolean isDeleted();
 	Set<SubcategoryData> getSubcategory();
-		interface SubcategoryData {
-			long getId();
-			String getName();
-			String getNotice();
-			LocalDateTime getCreatedOn();
-			String getCreatedBy();
-			LocalDateTime getUpdatedOn();
-			String getUpdatedBy();
-			String getTagColor();
-		}
+	interface SubcategoryData {
+		long getId();
+		String getName();
+		String getNotice();
+		LocalDateTime getCreatedOn();
+		String getCreatedBy();
+		LocalDateTime getUpdatedOn();
+		String getUpdatedBy();
+		String getTagColor();
+	}
 	 
 }

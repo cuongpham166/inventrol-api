@@ -27,6 +27,13 @@ public class CategoryService {
 		return result;
 	}
 	
+	public List<SubcategoryOptionView> getAllSubcategoriesByCategory (){
+		List<SubcategoryOptionView>subcategories = new ArrayList<SubcategoryOptionView>();
+		categoryRepo.findAllProjectedByOrderByIdAsc(SubcategoryOptionView.class).forEach(subcategories::add);
+		List<SubcategoryOptionView> result = subcategories.stream().filter(cat -> cat.isDeleted() == false).collect(Collectors.toList());
+		return result;
+	}
+	
 	public CategoryDetailView getCategoryDetailById(long id) {
 		CategoryDetailView categoryDetail = categoryRepo.findProjectedById(id, CategoryDetailView.class);
 		return categoryDetail;

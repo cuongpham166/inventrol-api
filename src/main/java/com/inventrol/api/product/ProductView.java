@@ -11,21 +11,27 @@ public interface ProductView {
 	long getId();
 	String getName();
 	BigDecimal getVat();
-	 BigDecimal getRetailPrice();
-	 BigDecimal getListingPrice();
+	BigDecimal getRetailPrice();
+	BigDecimal getListingPrice();
 	String getNotice();
 	String getStockStatus();
 	boolean isDeleted();
-	 String getSku();
-	 int getQuantity();
-		LocalDateTime getCreatedOn();
-		String getCreatedBy();
-		LocalDateTime getUpdatedOn();
-		String getUpdatedBy();
+	String getSku();
+	String getBarcode();
+	int getQuantity();
+	LocalDateTime getCreatedOn();
+	String getCreatedBy();
+	LocalDateTime getUpdatedOn();
+	String getUpdatedBy();
 	SubcategoryData getSubcategory();
 	Set<AttributeValueData>getAttributeValue();
 	BrandData getBrand();
-	
+	DiscountData getDiscount();
+	interface DiscountData{
+		long getId();
+		BigDecimal getDiscountPercent();
+		boolean isDeleted();
+	}
 	interface SubcategoryData{
 		long getId();
 		String getName();	

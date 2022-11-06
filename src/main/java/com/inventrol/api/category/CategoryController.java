@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inventrol.api.auth.MessageResponse;
-import com.inventrol.api.subcategory.SubcategoryRepository;
+
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -47,6 +47,21 @@ public class CategoryController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@GetMapping("/category/subcategories")
+	public ResponseEntity<List<SubcategoryOptionView>> getAllSubcategoriesByCategory() {
+		try {
+			List<SubcategoryOptionView>subcategories = new ArrayList<SubcategoryOptionView>();
+			subcategories = categoryService.getAllSubcategoriesByCategory();
+			if(subcategories.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(subcategories, HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 		
 	@GetMapping("/category/{id}")
