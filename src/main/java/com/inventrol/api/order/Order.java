@@ -27,18 +27,24 @@ import javax.persistence.Table;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.inventrol.api.customer.Customer;
+import com.inventrol.api.orderhistory.OrderHistory;
 import com.inventrol.api.orderitem.OrderItem;
 import com.inventrol.api.payment.Payment;
+import com.inventrol.api.shipping.Shipping;
 
 @Entity
 @Table(name = "orders")
 public class Order {
-	public Order(Payment payment, Set<OrderItem> orderitem, Customer customer, OrderAddress shippingAddress,
-			OrderAddress billingAddress, String status, BigDecimal total, BigDecimal totalIncludingVat, String courier,
-			String trackingNumber, String notice, boolean deleted, LocalDateTime createdOn, String createdBy,
-			LocalDateTime updatedOn, String updatedBy) {
+
+
+	public Order(Payment payment, Shipping shipping, Set<OrderHistory> orderhistory, Set<OrderItem> orderitem,
+			Customer customer, OrderAddress shippingAddress, OrderAddress billingAddress, String status,
+			BigDecimal total, BigDecimal totalIncludingVat, String notice, boolean deleted, LocalDateTime createdOn,
+			String createdBy, LocalDateTime updatedOn, String updatedBy) {
 		super();
 		this.payment = payment;
+		this.shipping = shipping;
+		this.orderhistory = orderhistory;
 		this.orderitem = orderitem;
 		this.customer = customer;
 		this.shippingAddress = shippingAddress;
@@ -46,8 +52,6 @@ public class Order {
 		this.status = status;
 		this.total = total;
 		this.totalIncludingVat = totalIncludingVat;
-		this.courier = courier;
-		this.trackingNumber = trackingNumber;
 		this.notice = notice;
 		this.deleted = deleted;
 		this.createdOn = createdOn;
@@ -67,6 +71,13 @@ public class Order {
 	@OneToOne(fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="payment_id", nullable=false)
 	private Payment payment;
+	
+	@OneToOne(fetch=FetchType.LAZY, optional=false)
+	@JoinColumn(name="shipping_id", nullable=false)
+	private Shipping shipping;
+	
+	@OneToMany(mappedBy ="order",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	private Set<OrderHistory>orderhistory = new HashSet<OrderHistory>();
 	
 	@OneToMany(mappedBy ="order",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<OrderItem>orderitem = new HashSet<OrderItem>();
@@ -107,12 +118,6 @@ public class Order {
 	
 	@Column(name="total_including_vat",precision=10, scale=2)
 	private BigDecimal totalIncludingVat;
-	
-	@Column(name = "courier")
-	private String courier;
-	
-	@Column(name = "tracking_number")
-	private String trackingNumber;
 	
 	@Column(name = "notice")
 	private String notice;
@@ -232,22 +237,6 @@ public class Order {
 		this.billingAddress = billingAddress;
 	}
 
-	public String getCourier() {
-		return courier;
-	}
-
-	public void setCourier(String courier) {
-		this.courier = courier;
-	}
-
-	public String getTrackingNumber() {
-		return trackingNumber;
-	}
-
-	public void setTrackingNumber(String trackingNumber) {
-		this.trackingNumber = trackingNumber;
-	}
-
 
 	public LocalDateTime getCreatedOn() {
 		return createdOn;
@@ -286,5 +275,21 @@ public class Order {
 
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public Shipping getShipping() {
+		return shipping;
+	}
+
+	public void setShipping(Shipping shipping) {
+		this.shipping = shipping;
+	}
+
+	public Set<OrderHistory> getOrderhistory() {
+		return orderhistory;
+	}
+
+	public void setOrderhistory(Set<OrderHistory> orderhistory) {
+		this.orderhistory = orderhistory;
 	}
 }

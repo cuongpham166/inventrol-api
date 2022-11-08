@@ -12,6 +12,7 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
 	
 	public Boolean existsSupplierByName (String name);
 	public Optional <Supplier>findByName(String name);
+	public Supplier findOneByName (String name);
 	
 	public <T> List<T> findAllProjectedByOrderByIdAsc(Class<T> type);
 	public <T> T findProjectedById(long id, Class<T> type);

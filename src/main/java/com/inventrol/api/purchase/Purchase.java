@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -32,7 +33,8 @@ import com.inventrol.api.supplier.Supplier;
 public class Purchase {
 	public Purchase(Set<PurchaseItem> purchaseItem, Supplier supplier, String status, BigDecimal total,
 			String paymentType, String courier, String trackingNumber, String notice, boolean deleted,
-			LocalDateTime createdOn, String createdBy, LocalDateTime updatedOn, String updatedBy) {
+			LocalDateTime createdOn, LocalDateTime restockedOn, String createdBy, LocalDateTime updatedOn,
+			String updatedBy) {
 		super();
 		this.purchaseItem = purchaseItem;
 		this.supplier = supplier;
@@ -44,6 +46,7 @@ public class Purchase {
 		this.notice = notice;
 		this.deleted = deleted;
 		this.createdOn = createdOn;
+		this.restockedOn = restockedOn;
 		this.createdBy = createdBy;
 		this.updatedOn = updatedOn;
 		this.updatedBy = updatedBy;
@@ -65,7 +68,7 @@ public class Purchase {
 	private Supplier supplier;
 	
 	@Column(name = "status")
-	private String status="in process"; // "in process, completed, returned"
+	private String status="Processing"; // "processing, confirmed, shipped, checking, completed, returned"
 	
 	@Column(name="total",precision=10, scale=2)
 	private BigDecimal total;
@@ -89,6 +92,9 @@ public class Purchase {
     @Column(name = "created_on")
     private LocalDateTime createdOn;
  
+    @Column(name = "restocked_on")
+    private LocalDateTime restockedOn;
+    
     @Column(name = "created_by")
     private String createdBy;
      
@@ -98,6 +104,11 @@ public class Purchase {
     @Column(name = "updated_by")
     private String updatedBy;
 
+    @Transient
+    public int getNumberOfItems() {
+        return this.purchaseItem.size();
+    }
+    
     @PrePersist
     public void prePersist() {
         createdOn = LocalDateTime.now();
@@ -215,6 +226,14 @@ public class Purchase {
 
 	public void setTrackingNumber(String trackingNumber) {
 		this.trackingNumber = trackingNumber;
+	}
+
+	public LocalDateTime getRestockedOn() {
+		return restockedOn;
+	}
+
+	public void setRestockedOn(LocalDateTime restockedOn) {
+		this.restockedOn = restockedOn;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.inventrol.api.supplier;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inventrol.api.auth.MessageResponse;
+import com.inventrol.api.product.Product;
+import com.inventrol.api.purchase.Purchase;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -95,4 +98,27 @@ public class SupplierController {
 			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
 		}
 	}
+	
+	@PostMapping("/supplier/{supplierId}/purchase/add")
+	public ResponseEntity<BigDecimal> createPurchase(@PathVariable("supplierId") long supplierId, @RequestBody Purchase newPurchase){
+		Optional <Supplier>supplierData = supplierRepo.findById(supplierId);
+		if(supplierData.isPresent()) {
+			BigDecimal totalCost = supplierService.createPurchase(supplierId, newPurchase);
+			return new ResponseEntity<>(totalCost, HttpStatus.OK);
+		}else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	@PostMapping("/supplier/{supplierId}/purchase/add-test")
+	public ResponseEntity<BigDecimal> createPurchaseTest(@PathVariable("supplierId") long supplierId, @RequestBody Purchase newPurchase){
+		Optional <Supplier>supplierData = supplierRepo.findById(supplierId);
+		if(supplierData.isPresent()) {
+			BigDecimal totalCost = supplierService.createPurchaseTest(supplierId, newPurchase);
+			return new ResponseEntity<>(totalCost, HttpStatus.OK);
+		}else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
 }

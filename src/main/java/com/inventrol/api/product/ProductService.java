@@ -91,8 +91,7 @@ public class ProductService {
 		Optional<Subcategory>subcategoryData = subcategoryRepo.findByName(subcatgoryName);
 		Optional<Brand>brandData= brandRepo.findByName(brandName);
 		Optional<Discount>discountData = discountRepo.findByDiscountPercent(discountPercent);
-		
-		
+			
 		//One to Many
 		RetailPriceRecord newRetailPrice = new RetailPriceRecord();
 		newRetailPrice.setPrice(newProduct.getRetailPrice());
@@ -105,6 +104,8 @@ public class ProductService {
 		newProduct.getListingPriceRecord().add(newListingPrice);
 		//One to Many
 		productRepo.save(newProduct);
+		
+		
 	
 		if(subcategoryData.isPresent() && brandData.isPresent() && discountData.isPresent()) {
 			//Many to One

@@ -12,6 +12,7 @@ public interface ProductRepository extends JpaRepository <Product, Long> {
 	
 	public Boolean existsProductByName (String name);	
 	public Optional<Product>findByName (String name);
+	public Product findOneByName (String name);
 	
 	public <T> List<T> findAllProjectedByOrderByIdAsc(Class<T> type);
 	public <T> T findProjectedById(long id, Class<T> type);
