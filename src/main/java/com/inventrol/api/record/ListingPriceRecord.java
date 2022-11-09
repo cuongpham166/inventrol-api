@@ -1,4 +1,4 @@
-package com.inventrol.api.retailpricerecord;
+package com.inventrol.api.record;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,14 +17,14 @@ import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.inventrol.api.brand.Brand;
 import com.inventrol.api.product.Product;
 
 @Entity
-@Table(name = "retail_price_record")
-public class RetailPriceRecord {
+@Table(name = "listing_price_record")
+public class ListingPriceRecord {
 
-
-	public RetailPriceRecord(Product product, BigDecimal price, LocalDateTime createdOn, boolean deleted) {
+	public ListingPriceRecord(Product product, BigDecimal price, LocalDateTime createdOn, boolean deleted) {
 		super();
 		this.product = product;
 		this.price = price;
@@ -32,7 +32,7 @@ public class RetailPriceRecord {
 		this.deleted = deleted;
 	}
 
-	public RetailPriceRecord() {
+	public ListingPriceRecord() {
 		super();
 	}
 
@@ -79,20 +79,11 @@ public class RetailPriceRecord {
 		this.price = price;
 	}
 
-
 	public boolean isDeleted() {
 		return deleted;
 	}
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
-	}
-
-	public LocalDateTime getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(LocalDateTime createdOn) {
-		this.createdOn = createdOn;
 	}
 }

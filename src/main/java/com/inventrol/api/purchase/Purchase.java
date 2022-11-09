@@ -24,6 +24,7 @@ import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.inventrol.api.order.OrderHistory;
 import com.inventrol.api.payment.Payment;
 import com.inventrol.api.purchaseitem.PurchaseItem;
 import com.inventrol.api.supplier.Supplier;
@@ -31,26 +32,22 @@ import com.inventrol.api.supplier.Supplier;
 @Entity
 @Table(name = "purchase")
 public class Purchase {
-	public Purchase(Set<PurchaseItem> purchaseItem, Supplier supplier, String status, BigDecimal total,
-			String paymentType, String courier, String trackingNumber, String notice, boolean deleted,
-			LocalDateTime createdOn, LocalDateTime restockedOn, String createdBy, LocalDateTime updatedOn,
-			String updatedBy) {
+	public Purchase(PurchaseShipping purchaseshipping, Set<PurchaseItem> purchaseItem,
+			Set<PurchaseHistory> purchasehistory, Supplier supplier, BigDecimal total, String paymentType,
+			String notice, boolean deleted, LocalDateTime createdOn, String createdBy) {
 		super();
+		this.purchaseshipping = purchaseshipping;
 		this.purchaseItem = purchaseItem;
+		this.purchasehistory = purchasehistory;
 		this.supplier = supplier;
-		this.status = status;
 		this.total = total;
 		this.paymentType = paymentType;
-		this.courier = courier;
-		this.trackingNumber = trackingNumber;
 		this.notice = notice;
 		this.deleted = deleted;
 		this.createdOn = createdOn;
-		this.restockedOn = restockedOn;
 		this.createdBy = createdBy;
-		this.updatedOn = updatedOn;
-		this.updatedBy = updatedBy;
 	}
+
 
 	public Purchase() {
 		super();
@@ -60,27 +57,25 @@ public class Purchase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
+	@OneToOne(fetch=FetchType.LAZY, optional=false)
+	@JoinColumn(name="purchase_shipping_id", nullable=false)
+	private PurchaseShipping purchaseshipping;
+	
 	@OneToMany(mappedBy ="purchase",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<PurchaseItem>purchaseItem = new HashSet<PurchaseItem>();
+	
+	@OneToMany(mappedBy ="purchase",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	private Set<PurchaseHistory>purchasehistory = new HashSet<PurchaseHistory>();
 	
 	@ManyToOne(fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="supplier_id", nullable=false)
 	private Supplier supplier;
-	
-	@Column(name = "status")
-	private String status="Processing"; // "processing, confirmed, shipped, checking, completed, returned"
-	
+		
 	@Column(name="total",precision=10, scale=2)
 	private BigDecimal total;
 	
 	@Column(name = "payment_type")
 	private String paymentType;
-	
-	@Column(name = "courier")
-	private String courier;
-	
-	@Column(name = "tracking_number")
-	private String trackingNumber;
 	
 	@Column(name = "notice")
 	private String notice;
@@ -92,17 +87,9 @@ public class Purchase {
     @Column(name = "created_on")
     private LocalDateTime createdOn;
  
-    @Column(name = "restocked_on")
-    private LocalDateTime restockedOn;
-    
     @Column(name = "created_by")
     private String createdBy;
      
-    @Column(name = "updated_on")
-    private LocalDateTime updatedOn;
- 
-    @Column(name = "updated_by")
-    private String updatedBy;
 
     @Transient
     public int getNumberOfItems() {
@@ -113,11 +100,7 @@ public class Purchase {
     public void prePersist() {
         createdOn = LocalDateTime.now();
     }
- 
-    @PreUpdate
-    public void preUpdate() {
-        updatedOn = LocalDateTime.now();
-    }
+
     
 	public long getId() {
 		return id;
@@ -138,14 +121,6 @@ public class Purchase {
 
 	public void setSupplier(Supplier supplier) {
 		this.supplier = supplier;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public BigDecimal getTotal() {
@@ -196,44 +171,19 @@ public class Purchase {
 		this.createdBy = createdBy;
 	}
 
-	public LocalDateTime getUpdatedOn() {
-		return updatedOn;
+	public PurchaseShipping getPurchaseshipping() {
+		return purchaseshipping;
 	}
 
-	public void setUpdatedOn(LocalDateTime updatedOn) {
-		this.updatedOn = updatedOn;
+	public void setPurchaseshipping(PurchaseShipping purchaseshipping) {
+		this.purchaseshipping = purchaseshipping;
 	}
 
-	public String getUpdatedBy() {
-		return updatedBy;
+	public Set<PurchaseHistory> getPurchasehistory() {
+		return purchasehistory;
 	}
 
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
+	public void setPurchasehistory(Set<PurchaseHistory> purchasehistory) {
+		this.purchasehistory = purchasehistory;
 	}
-
-	public String getCourier() {
-		return courier;
-	}
-
-	public void setCourier(String courier) {
-		this.courier = courier;
-	}
-
-	public String getTrackingNumber() {
-		return trackingNumber;
-	}
-
-	public void setTrackingNumber(String trackingNumber) {
-		this.trackingNumber = trackingNumber;
-	}
-
-	public LocalDateTime getRestockedOn() {
-		return restockedOn;
-	}
-
-	public void setRestockedOn(LocalDateTime restockedOn) {
-		this.restockedOn = restockedOn;
-	}
-	
 }

@@ -28,4 +28,6 @@ public class PurchaseService {
 		List<PurchaseView> results = purchases.stream().filter(res -> res.isDeleted() == false).collect(Collectors.toList());
 		return results;
 	}
+	
+
 }

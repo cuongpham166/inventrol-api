@@ -27,7 +27,6 @@ import javax.persistence.Table;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.inventrol.api.customer.Customer;
-import com.inventrol.api.orderhistory.OrderHistory;
 import com.inventrol.api.orderitem.OrderItem;
 import com.inventrol.api.payment.Payment;
 import com.inventrol.api.shipping.Shipping;

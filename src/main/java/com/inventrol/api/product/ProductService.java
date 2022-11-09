@@ -21,10 +21,10 @@ import com.inventrol.api.brand.BrandService;
 import com.inventrol.api.discount.Discount;
 import com.inventrol.api.discount.DiscountRepository;
 import com.inventrol.api.discount.DiscountService;
-import com.inventrol.api.listingpricerecord.ListingPriceRecord;
-import com.inventrol.api.listingpricerecord.ListingPriceRecordRepository;
-import com.inventrol.api.retailpricerecord.RetailPriceRecord;
-import com.inventrol.api.retailpricerecord.RetailPriceRecordRepository;
+import com.inventrol.api.record.ListingPriceRecord;
+import com.inventrol.api.record.ListingPriceRecordRepository;
+import com.inventrol.api.record.RetailPriceRecord;
+import com.inventrol.api.record.RetailPriceRecordRepository;
 import com.inventrol.api.subcategory.Subcategory;
 import com.inventrol.api.subcategory.SubcategoryRepository;
 import com.inventrol.api.subcategory.SubcategoryService;
@@ -36,6 +36,9 @@ import com.inventrol.api.supplier.SupplierService;
 public class ProductService {
 	@Autowired
 	private ProductRepository productRepo;
+	
+	@Autowired
+	private ProductStock productstockRepo;
 	
 	@Autowired
 	private ListingPriceRecordRepository listingPriceRecordRepo;
@@ -91,6 +94,11 @@ public class ProductService {
 		Optional<Subcategory>subcategoryData = subcategoryRepo.findByName(subcatgoryName);
 		Optional<Brand>brandData= brandRepo.findByName(brandName);
 		Optional<Discount>discountData = discountRepo.findByDiscountPercent(discountPercent);
+		
+		//One to One
+		ProductStock newProductStock = new ProductStock();
+		newProduct.setProductstock(newProductStock);
+		//One to One
 			
 		//One to Many
 		RetailPriceRecord newRetailPrice = new RetailPriceRecord();

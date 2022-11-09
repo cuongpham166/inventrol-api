@@ -18,6 +18,7 @@ import com.inventrol.api.product.Product;
 import com.inventrol.api.product.ProductRepository;
 import com.inventrol.api.purchase.Purchase;
 import com.inventrol.api.purchase.PurchaseRepository;
+import com.inventrol.api.purchase.PurchaseShipping;
 import com.inventrol.api.purchaseitem.PurchaseItem;
 
 @Service
@@ -137,6 +138,9 @@ public class SupplierService {
 			item.setPurchase(newPurchase);
 			newPurchase.getPurchaseItem().add(item);
 		});
+		
+		PurchaseShipping newPurchaseshipping = new PurchaseShipping();
+		newPurchase.setPurchaseshipping(newPurchaseshipping);
 		
 		newPurchase.setTotal(totalCost);
 		newPurchase.setSupplier(foundSupplier);

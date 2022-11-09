@@ -1,4 +1,4 @@
-package com.inventrol.api.orderhistory;
+package com.inventrol.api.purchase;
 
 import java.time.LocalDateTime;
 
@@ -15,18 +15,17 @@ import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import com.inventrol.api.order.Order;
 
 @Entity
-@Table(name = "order_history")
-public class OrderHistory {
-	public OrderHistory() {
+@Table(name = "purchase_history")
+public class PurchaseHistory {
+	public PurchaseHistory() {
 		super();
 	}
 
-	public OrderHistory(Order order, String status, boolean deleted, LocalDateTime createdOn) {
+	public PurchaseHistory(Purchase purchase, String status, boolean deleted, LocalDateTime createdOn) {
 		super();
-		this.order = order;
+		this.purchase = purchase;
 		this.status = status;
 		this.deleted = deleted;
 		this.createdOn = createdOn;
@@ -37,8 +36,8 @@ public class OrderHistory {
 	private long id;
 	
 	@ManyToOne(fetch=FetchType.LAZY, optional=false)
-	@JoinColumn(name="order_id", nullable=false)
-	private Order order;
+	@JoinColumn(name="purchase_id", nullable=false)
+	private Purchase purchase;
 	
 	@Column(name = "status")
 	private String status;
@@ -55,12 +54,12 @@ public class OrderHistory {
         createdOn = LocalDateTime.now();
     }
 
-	public Order getOrder() {
-		return order;
+	public Purchase getPurchase() {
+		return purchase;
 	}
 
-	public void setOrder(Order order) {
-		this.order = order;
+	public void setPurchase(Purchase purchase) {
+		this.purchase = purchase;
 	}
 
 	public String getStatus() {

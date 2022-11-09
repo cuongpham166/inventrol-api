@@ -16,10 +16,6 @@ public interface PurchaseView {
 	String getPaymentType();
 	LocalDateTime getCreatedOn();
 	String getCreatedBy();
-	LocalDateTime getUpdatedOn();
-	String getUpdatedBy();
-	String getCourier();
-	String getTrackingNumber();
 	boolean isDeleted();
 	interface PurchaseItemData {
 		long getId();

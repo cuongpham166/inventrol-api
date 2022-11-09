@@ -11,9 +11,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.inventrol.api.customeraddress.CustomerAddress;
-import com.inventrol.api.customeraddress.CustomerAddressRepository;
-
 
 @Service
 public class CustomerService {

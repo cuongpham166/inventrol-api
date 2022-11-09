@@ -14,11 +14,9 @@ public interface ProductView {
 	BigDecimal getRetailPrice();
 	BigDecimal getListingPrice();
 	String getNotice();
-	String getStockStatus();
 	boolean isDeleted();
 	String getSku();
 	String getBarcode();
-	int getQuantity();
 	LocalDateTime getCreatedOn();
 	String getCreatedBy();
 	LocalDateTime getUpdatedOn();

@@ -1,4 +1,4 @@
-package com.inventrol.api.customeraddress;
+package com.inventrol.api.customer;
 
 public interface CustomerAddressView {
 

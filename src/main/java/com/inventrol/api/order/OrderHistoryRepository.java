@@ -1,4 +1,4 @@
-package com.inventrol.api.orderhistory;
+package com.inventrol.api.order;
 
 public interface OrderHistoryRepository {
 

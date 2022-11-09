@@ -10,16 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 public interface ProductDetailView {
 	long getId();
 	String getName();
-	int getQuantity();
-	int getSoldNumber();
-	int getOrderedNumber();
 	String getBarcode();
 	String getSku();
 	BigDecimal getVat();
 	BigDecimal getRetailPrice();
 	BigDecimal getListingPrice(); 
 	String getNotice();
-	String getStockStatus();
 	boolean isDeleted();
 	LocalDateTime getCreatedOn();
 	String getCreatedBy();

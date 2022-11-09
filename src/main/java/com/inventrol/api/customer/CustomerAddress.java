@@ -1,4 +1,4 @@
-package com.inventrol.api.customeraddress;
+package com.inventrol.api.customer;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,8 +16,6 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
-
-import com.inventrol.api.customer.Customer;
 
 @Entity
 @Table(name = "customer_address")
