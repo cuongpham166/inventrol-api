@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.inventrol.api.auth.MessageResponse;
 import com.inventrol.api.product.Product;
 import com.inventrol.api.purchase.Purchase;
+import com.inventrol.api.purchaseitem.PurchaseItem;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -99,8 +100,26 @@ public class SupplierController {
 		}
 	}
 	
+	@GetMapping("/supplier/{supplierId}/purchase/add")
+	public ResponseEntity<Set<SupplierDetailView.ProductData>> createNewPurchase(@PathVariable("supplierId") long supplierId){
+		Optional<Supplier> supplierData = supplierService.getSupplierById(supplierId);
+		if(supplierData.isPresent()) {
+			Supplier _supplier = supplierData.get();
+			if(_supplier.isDeleted() == false) {
+				SupplierDetailView _supplierDetail = supplierService.getSupplierDetailById(supplierId);
+				Set<SupplierDetailView.ProductData> _products = new HashSet<SupplierDetailView.ProductData>();
+				_products =	_supplierDetail.getProduct();
+				return new ResponseEntity<>(_products, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	@PostMapping("/supplier/{supplierId}/purchase/add")
-	public ResponseEntity<BigDecimal> createPurchase(@PathVariable("supplierId") long supplierId, @RequestBody Purchase newPurchase){
+	public ResponseEntity<BigDecimal> saveNewPurchase(@PathVariable("supplierId") long supplierId, @RequestBody Purchase newPurchase){
 		Optional <Supplier>supplierData = supplierRepo.findById(supplierId);
 		if(supplierData.isPresent()) {
 			BigDecimal totalCost = supplierService.createPurchase(supplierId, newPurchase);
@@ -114,7 +133,7 @@ public class SupplierController {
 	public ResponseEntity<BigDecimal> createPurchaseTest(@PathVariable("supplierId") long supplierId, @RequestBody Purchase newPurchase){
 		Optional <Supplier>supplierData = supplierRepo.findById(supplierId);
 		if(supplierData.isPresent()) {
-			BigDecimal totalCost = supplierService.createPurchaseTest(supplierId, newPurchase);
+			BigDecimal totalCost = supplierService.createPurchaseTestNew(supplierId, newPurchase);
 			return new ResponseEntity<>(totalCost, HttpStatus.OK);
 		}else {
 			return ResponseEntity.notFound().build();

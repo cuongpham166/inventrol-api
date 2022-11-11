@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.inventrol.api.product.ProductView.ProductStockData;
+
 public interface ProductDetailView {
 	long getId();
 	String getName();
@@ -28,6 +30,18 @@ public interface ProductDetailView {
 	Set<ListingPriceRecordData>getListingPriceRecord();
 	Set<RetailPriceRecordData>getRetailPriceRecord();
 	Set<SupplierData>getSupplier();
+	ProductStockData getProductstock();
+	
+	interface ProductStockData {
+		int getQuantity();
+		int getSoldNumber();
+		int getOrderedNumber();
+		String getStockStatus();
+		String getNotice();
+		boolean isDeleted();
+		LocalDateTime getUpdatedOn();
+		String getUpdatedBy();
+	}
 	
 	interface SubcategoryData{
 		long getId();

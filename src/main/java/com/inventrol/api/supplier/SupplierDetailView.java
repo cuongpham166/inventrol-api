@@ -51,14 +51,13 @@ public interface SupplierDetailView {
 		BigDecimal getRetailPrice();
 		BigDecimal getListingPrice();
 		String getNotice();
-		String getStockStatus();
 		boolean isDeleted();
 		String getSku();
-		int getQuantity();
-
+		String getBarcode();
 		SubcategoryData getSubcategory();
 		Set<AttributeValueData>getAttributeValue();
 		BrandData getBrand();
+
 		
 		interface SubcategoryData{
 			long getId();

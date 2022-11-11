@@ -25,6 +25,18 @@ public interface ProductView {
 	Set<AttributeValueData>getAttributeValue();
 	BrandData getBrand();
 	DiscountData getDiscount();
+	ProductStockData getProductstock();
+	
+	interface ProductStockData {
+		int getQuantity();
+		int getSoldNumber();
+		int getOrderedNumber();
+		String getStockStatus();
+		String getNotice();
+		boolean isDeleted();
+		LocalDateTime getUpdatedOn();
+		String getUpdatedBy();
+	}
 	interface DiscountData{
 		long getId();
 		BigDecimal getDiscountPercent();

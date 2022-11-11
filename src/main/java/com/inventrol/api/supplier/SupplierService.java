@@ -17,8 +17,11 @@ import com.inventrol.api.contact.ContactRepository;
 import com.inventrol.api.product.Product;
 import com.inventrol.api.product.ProductRepository;
 import com.inventrol.api.purchase.Purchase;
+import com.inventrol.api.purchase.PurchaseHistory;
+import com.inventrol.api.purchase.PurchaseHistoryRepository;
 import com.inventrol.api.purchase.PurchaseRepository;
 import com.inventrol.api.purchase.PurchaseShipping;
+import com.inventrol.api.purchase.PurchaseShippingRepository;
 import com.inventrol.api.purchaseitem.PurchaseItem;
 
 @Service
@@ -37,6 +40,12 @@ public class SupplierService {
 	
 	@Autowired
 	private PurchaseRepository purchaseRepo;
+	
+	@Autowired
+	private PurchaseHistoryRepository purchasehistoryRepo;
+	
+	@Autowired
+	private PurchaseShippingRepository purchaseshippingRepo;
 	
 	public Optional<Supplier> getSupplierById(long id){
 		Optional<Supplier>foundSupplier = supplierRepo.findById(id);
@@ -61,6 +70,7 @@ public class SupplierService {
 		return supplierDetail;
 	}
 	
+
 	public void createSupplier(Supplier newSupplier) {
 		Contact newContact = newSupplier.getContact();
 		newContact.setSupplier(newSupplier);
@@ -127,6 +137,40 @@ public class SupplierService {
 		return totalCost;
 	}
 	
+	public BigDecimal createPurchaseTestNew (long supplierId, Purchase newPurchase) {
+		Set<PurchaseItem>purchaseItems = newPurchase.getPurchaseItem();
+		BigDecimal totalCost = getTotalListingPriceTest (purchaseItems);
+		
+		Optional<Supplier>supplierData = supplierRepo.findById(supplierId);
+		Supplier foundSupplier = supplierData.get();
+		
+		PurchaseShipping newPurchaseshipping = new PurchaseShipping();
+		newPurchaseshipping.setPurchase(newPurchase);
+		newPurchase.setPurchaseshipping(newPurchaseshipping);
+		//purchaseshippingRepo.save(newPurchaseshipping);
+		
+		newPurchase.setSupplier(foundSupplier);
+		newPurchase.setTotal(totalCost);
+		
+		PurchaseHistory newPurchasehistory = new PurchaseHistory();
+		newPurchasehistory.setPurchase(newPurchase);
+		newPurchase.getPurchasehistory().add(newPurchasehistory);
+		
+		//purchaseRepo.save(newPurchase);
+		
+		purchaseItems.forEach(item ->{
+			Product foundProduct = productRepo.findOneByName(item.getProduct().getName());
+			foundProduct.getPurchaseItem().add(item);
+			item.setPurchase(newPurchase);
+			newPurchase.getPurchaseItem().add(item);
+			//productRepo.save(foundProduct);
+		});
+		
+		return totalCost;
+	}
+	
+	
+	
 	public BigDecimal createPurchaseTest(long supplierId, Purchase newPurchase) {
 		Set<PurchaseItem>purchaseItems = newPurchase.getPurchaseItem();
 		BigDecimal totalCost = getTotalListingPriceTest (purchaseItems);
@@ -140,10 +184,18 @@ public class SupplierService {
 		});
 		
 		PurchaseShipping newPurchaseshipping = new PurchaseShipping();
+		newPurchaseshipping.setPurchase(newPurchase);
 		newPurchase.setPurchaseshipping(newPurchaseshipping);
+		purchaseshippingRepo.save(newPurchaseshipping);
+		
+		PurchaseHistory newPurchasehistory = new PurchaseHistory();
+		newPurchasehistory.setPurchase(newPurchase);
+		newPurchase.getPurchasehistory().add(newPurchasehistory);
+		
 		
 		newPurchase.setTotal(totalCost);
 		newPurchase.setSupplier(foundSupplier);
+		
 		purchaseRepo.save(newPurchase);
 		
 		purchaseItems.forEach(item ->{

@@ -40,7 +40,7 @@ public class PurchaseHistory {
 	private Purchase purchase;
 	
 	@Column(name = "status")
-	private String status;
+	private String status = "Purchase made";
 	
 	@Column(name = "is_deleted")
 	@Value("false")

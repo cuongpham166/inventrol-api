@@ -38,7 +38,7 @@ public class ProductService {
 	private ProductRepository productRepo;
 	
 	@Autowired
-	private ProductStock productstockRepo;
+	private ProductStockRepository productstockRepo;
 	
 	@Autowired
 	private ListingPriceRecordRepository listingPriceRecordRepo;
@@ -97,7 +97,9 @@ public class ProductService {
 		
 		//One to One
 		ProductStock newProductStock = new ProductStock();
+		newProductStock.setProduct(newProduct);
 		newProduct.setProductstock(newProductStock);
+		productstockRepo.save(newProductStock);
 		//One to One
 			
 		//One to Many
