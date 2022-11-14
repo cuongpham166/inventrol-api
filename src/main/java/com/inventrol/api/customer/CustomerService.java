@@ -45,16 +45,28 @@ public class CustomerService {
 		return customerDetail;
 	}
 	
-	public void createCustomer (Customer newCustomer) {
-		customerRepo.save(newCustomer);
+	public CustomerAddressView getAddressByCustomerId(long id) {
+		CustomerAddressView customerAddresses = customerRepo.findProjectedById(id, CustomerAddressView.class);
+		return customerAddresses;
+	}
+	
+	public void createCustomer (NewCustomerPayload newCustomerPayload) {
+		Customer customer = newCustomerPayload.getCustomer();
+		CustomerAddress customerAddress = newCustomerPayload.getCustomerAddress();
+		
+		Customer savedCustomer = customerRepo.save(customer);
+		
+		customerAddress.setPrimary(true);
+		
+		customerAddress.setCustomer(savedCustomer);
+		savedCustomer.getCustomeradress().add(customerAddress);
+		customerAddressRepo.save(customerAddress);
 	}
 	
 	public void createCustomerAddress (long customerId, CustomerAddress newCustomerAddress) {
 		Customer foundCustomer = findCustomerById(customerId).get();
+		foundCustomer.getCustomeradress().add(newCustomerAddress);
 		newCustomerAddress.setCustomer(foundCustomer);
-		if(foundCustomer.getCustomeradress().isEmpty()) {
-			newCustomerAddress.setPrimary(true);
-		}
 		customerAddressRepo.save(newCustomerAddress);		
 	}
 	

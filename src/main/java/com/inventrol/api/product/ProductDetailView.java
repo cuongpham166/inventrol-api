@@ -31,6 +31,13 @@ public interface ProductDetailView {
 	Set<RetailPriceRecordData>getRetailPriceRecord();
 	Set<SupplierData>getSupplier();
 	ProductStockData getProductstock();
+	DiscountData  getDiscount();
+	
+	interface DiscountData{
+		long getId();
+		BigDecimal getDiscountPercent();
+		boolean isDeleted();
+	}
 	
 	interface ProductStockData {
 		int getQuantity();
@@ -73,12 +80,12 @@ public interface ProductDetailView {
 	
 	interface ListingPriceRecordData{
 		BigDecimal getPrice();
-		LocalDate getCreatedDate();
+		 LocalDateTime getCreatedOn();
 	}
 	
 	interface RetailPriceRecordData{
 		BigDecimal getPrice();
-		LocalDate getCreatedDate();		
+		 LocalDateTime getCreatedOn();
 	}
 	
 	interface SupplierData{
@@ -86,12 +93,13 @@ public interface ProductDetailView {
 		String getName();	
 		String getContactPerson();
 		String getNotice();
+		 String getEmail();
+		 String getWebsite();
 		boolean isDeleted();
 		ContactData getContact();
 		interface ContactData {
-			String getWebsite();
+			
 			String getAdditionalAddressLine();
-			String getEmail();
 			String getPhoneNumber();
 			String getMobileNumber();
 			String getCountry();

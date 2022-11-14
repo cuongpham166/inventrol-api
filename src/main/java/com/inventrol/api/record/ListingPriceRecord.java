@@ -86,4 +86,12 @@ public class ListingPriceRecord {
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
+
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
+	}
 }

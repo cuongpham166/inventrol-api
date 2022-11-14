@@ -9,8 +9,8 @@ public interface SupplierView {
 	long getId();
 	String getName();
 	String getContactPerson();
+	 String getEmail();
 	String getNotice();
-	String getEmail();
 	LocalDateTime getCreatedOn();
 	String getCreatedBy();
 	LocalDateTime getUpdatedOn();

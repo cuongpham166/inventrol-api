@@ -25,8 +25,8 @@ public interface CustomerDetailView {
 		String getCity();
 		String getCountry();
 		String getNotice();
-		LocalDate getCreatedDate();
-		LocalDate getUpdatedDate();
+		LocalDateTime getCreatedOn();
+		LocalDateTime getUpdatedOn();
 		boolean isPrimary();
 		boolean isDeleted();
 	}

@@ -66,13 +66,42 @@ public class CustomerController {
 		}
 	}
 
-	@PostMapping("/customer")
+	@GetMapping("/customer/{id}/address")
+	public ResponseEntity<CustomerAddressView>getAllAddressesByCustomerId(@PathVariable("id") long id){
+		Optional<Customer> customerData = customerService.findCustomerById(id);
+		if(customerData.isPresent()) {
+			Customer _customer = customerData.get();
+			if(_customer.isDeleted() == false) {
+				CustomerAddressView _customerAddress= customerService.getAddressByCustomerId(id);
+				return new ResponseEntity<>(_customerAddress, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	/*@PostMapping("/customer")
 	public ResponseEntity<?> createCustomer(@RequestBody Customer newCustomer){
 		try{
 			if(customerRepo.existsCustomerByName(newCustomer.getName())) {
 				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
 			}
 			customerService.createCustomer(newCustomer);
+			return ResponseEntity.ok().body(new MessageResponse("Success:  A new customer has been created"));
+		}catch (Exception e) {
+			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
+		}
+	}*/
+	
+	@PostMapping("/customer")
+	public ResponseEntity<?> createCustomer(@RequestBody NewCustomerPayload newCustomerPayload){
+		try{
+			if(customerRepo.existsCustomerByName(newCustomerPayload.getCustomer().getName())) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
+			}
+			customerService.createCustomer(newCustomerPayload);
 			return ResponseEntity.ok().body(new MessageResponse("Success:  A new customer has been created"));
 		}catch (Exception e) {
 			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
