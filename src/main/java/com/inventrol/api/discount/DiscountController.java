@@ -44,13 +44,13 @@ public class DiscountController {
 	@PostMapping("/discount")
 	public ResponseEntity<?> createDiscount(@RequestBody Discount newDiscount){
 		try{						
-			BigDecimal newDiscountValue = newDiscount.getDiscountPercent();
+			int newDiscountValue = newDiscount.getDiscountPercent();
 			if(discountRepo.existsDiscountByDiscountPercent(newDiscount.getDiscountPercent())) {
 				return ResponseEntity.badRequest().body(new MessageResponse("Error: This value already exists"));
 			}
 			
-			if(newDiscountValue.compareTo(BigDecimal.valueOf(1.00)) > 0) {
-				return ResponseEntity.badRequest().body(new MessageResponse("Error: This value must be equal or smaller than 1.00"));
+			if(newDiscountValue > 100) {
+				return ResponseEntity.badRequest().body(new MessageResponse("Error: This value must be equal or smaller than 100%"));
 			}
 			
 			discountService.createDiscount(newDiscount);

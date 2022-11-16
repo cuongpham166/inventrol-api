@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -92,6 +93,21 @@ public class BrandController {
 			return ResponseEntity.ok().body(new MessageResponse("Success:  A new brand has been created"));
 		}catch (Exception e) {
 			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
+		}
+	}
+	
+	@PutMapping("/brand/{brandId}")
+	public ResponseEntity<?>updateBrand(@PathVariable("brandId")long brandId,@RequestBody Brand updatedBrand ){
+		Optional<Brand>brandData = brandService.getBrandById(brandId);
+		if(brandData.isPresent()) {
+			Brand _brand = brandData.get();
+			if(_brand.isDeleted() == false) {
+				brandService.updateBrand(brandId, updatedBrand);
+				return ResponseEntity.ok().body(new MessageResponse("Success: Category has been updated"));
+			}
+			return ResponseEntity.notFound().build();
+		}else {
+			return ResponseEntity.notFound().build();
 		}
 	}
 }

@@ -12,8 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface DiscountRepository extends JpaRepository<Discount, Long>{
 	public List<Discount>findAllByOrderByIdAsc();
 	
-	public Boolean existsDiscountByDiscountPercent (BigDecimal percent);
-	public Optional<Discount>findByDiscountPercent (BigDecimal percent);
+	public Boolean existsDiscountByDiscountPercent (int percent);
+	public Optional<Discount>findByDiscountPercent (int percent);
 	
 	public <T> List<T> findAllProjectedByOrderByIdAsc(Class<T> type);
 	public <T> T findProjectedById(long id, Class<T> type);

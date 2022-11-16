@@ -89,7 +89,7 @@ public class ProductService {
 	public void createNewProduct (Product newProduct) { //objects must contain ID
 		String subcatgoryName = newProduct.getSubcategory().getName();
 		String brandName = newProduct.getBrand().getName();
-		BigDecimal discountPercent = newProduct.getDiscount().getDiscountPercent();
+		int discountPercent = newProduct.getDiscount().getDiscountPercent();
 		
 		Optional<Subcategory>subcategoryData = subcategoryRepo.findByName(subcatgoryName);
 		Optional<Brand>brandData= brandRepo.findByName(brandName);

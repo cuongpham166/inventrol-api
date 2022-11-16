@@ -41,4 +41,11 @@ public class BrandService {
 	public void createBrand (Brand newBrand) {
 		brandRepo.save(newBrand);
 	}
+	
+	public void updateBrand (long brandId, Brand updatedBrand) {
+		Brand foundBrand = getBrandById(brandId).get();
+		foundBrand.setName(updatedBrand.getName());
+		foundBrand.setNotice(updatedBrand.getNotice());
+		brandRepo.save(foundBrand);
+	}
 }

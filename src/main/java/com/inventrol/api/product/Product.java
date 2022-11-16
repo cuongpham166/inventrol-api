@@ -44,7 +44,7 @@ public class Product {
 	public Product(ProductStock productstock, Brand brand, Discount discount, Subcategory subcategory,
 			Set<ListingPriceRecord> listingPriceRecord, Set<RetailPriceRecord> retailPriceRecord,
 			Set<PurchaseItem> purchaseItem, Set<OrderItem> orderItem, Set<Supplier> supplier,
-			Set<AttributeValue> attributeValue, String name, String barcode, String sku, BigDecimal vat,
+			Set<AttributeValue> attributeValue, String name, String barcode, String sku, int vat,
 			BigDecimal retailPrice, BigDecimal listingPrice, String notice, boolean deleted, LocalDateTime createdOn,
 			String createdBy, LocalDateTime updatedOn, String updatedBy) {
 		super();
@@ -123,8 +123,6 @@ public class Product {
 	@Column(name = "name")
 	private String name;
 	
-
-	
 	@Column(name="barcode")
 	private String barcode;
 	
@@ -132,8 +130,8 @@ public class Product {
 	private String sku;
 	
 
-	@Column(name="vat",precision=3, scale=2)
-	private BigDecimal vat;
+	@Column(name="vat")
+	private int vat;
 	
 	@Column(name="retail_price",precision=10, scale=2)
 	private BigDecimal retailPrice;
@@ -246,11 +244,11 @@ public class Product {
 		this.sku = sku;
 	}
 
-	public BigDecimal getVat() {
+	public int getVat() {
 		return vat;
 	}
 
-	public void setVat(BigDecimal vat) {
+	public void setVat(int vat) {
 		this.vat = vat;
 	}
 

@@ -78,6 +78,36 @@ public class SupplierService {
 		contactRepo.save(newContact);
 	}
 	
+	public void updateSupplier (long supplierId, Supplier updatedSupplier) {
+		Supplier foundSupplier = getSupplierById(supplierId).get();
+		
+		foundSupplier.setContactPerson(updatedSupplier.getContactPerson());
+		foundSupplier.setEmail(updatedSupplier.getEmail());
+		foundSupplier.setName(updatedSupplier.getName());
+		foundSupplier.setNotice(updatedSupplier.getNotice());
+		foundSupplier.setWebsite(updatedSupplier.getWebsite());
+		
+		supplierRepo.save(foundSupplier);
+	}
+	
+	public void updateSupplierContact (long supplierId, long contactId, Contact updatedContact) {
+		Supplier foundSupplier = getSupplierById(supplierId).get();
+		Contact foundContact = contactRepo.findById(contactId).get();
+		
+		foundContact.setAdditionalAddressLine(updatedContact.getAdditionalAddressLine());
+		foundContact.setCity(updatedContact.getCity());
+		foundContact.setCountry(updatedContact.getCountry());
+		foundContact.setMobileNumber(updatedContact.getMobileNumber());
+		foundContact.setPhoneNumber(updatedContact.getPhoneNumber());
+		foundContact.setPostcode(updatedContact.getPostcode());
+		foundContact.setStreetName(updatedContact.getStreetName());
+		foundContact.setStreetNumber(updatedContact.getStreetNumber());
+		
+		foundContact.setSupplier(foundSupplier);
+		foundSupplier.setContact(foundContact);
+		contactRepo.save(foundContact);
+		
+	}
 	public BigDecimal getTotalListingPrice (Set<PurchaseItem>purchaseItems) {
 		BigDecimal totalCost = BigDecimal.ZERO;
 		/*BigDecimal totalCost = BigDecimal.ZERO;

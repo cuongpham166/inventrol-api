@@ -25,7 +25,7 @@ import com.inventrol.api.product.Product;
 @Entity
 @Table(name = "discount")
 public class Discount {
-	public Discount(Set<Product> product, BigDecimal discountPercent, String notice, boolean deleted,
+	public Discount(Set<Product> product, int discountPercent, String notice, boolean deleted,
 			LocalDateTime createdOn, String createdBy, LocalDateTime updatedOn, String updatedBy) {
 		super();
 		this.product = product;
@@ -51,8 +51,8 @@ public class Discount {
 	private Set<Product>product = new HashSet<Product>();
 	
 
-	@Column(name="discount_percent",precision=3, scale=2)
-	private BigDecimal discountPercent;
+	@Column(name="discount_percent")
+	private int discountPercent;
 	
 	@Column(name = "notice")
 	private String notice;
@@ -95,11 +95,11 @@ public class Discount {
 		this.product = product;
 	}
 
-	public BigDecimal getDiscountPercent() {
+	public int getDiscountPercent() {
 		return discountPercent;
 	}
 
-	public void setDiscountPercent(BigDecimal discountPercent) {
+	public void setDiscountPercent(int discountPercent) {
 		this.discountPercent = discountPercent;
 	}
 

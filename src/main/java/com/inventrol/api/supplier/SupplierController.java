@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inventrol.api.auth.MessageResponse;
+import com.inventrol.api.contact.Contact;
+import com.inventrol.api.contact.ContactRepository;
 import com.inventrol.api.product.Product;
 import com.inventrol.api.purchase.Purchase;
 import com.inventrol.api.purchaseitem.PurchaseItem;
@@ -34,6 +37,9 @@ public class SupplierController {
 	
 	@Autowired
 	private SupplierRepository supplierRepo;
+	
+	@Autowired
+	private ContactRepository contactRepo;
 	
 	@GetMapping("/supplier")
 	public ResponseEntity<List<SupplierView>> getAllSuppliers(@RequestParam Optional<String> name) {
@@ -98,6 +104,39 @@ public class SupplierController {
 		}catch (Exception e) {
 			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
 		}
+	}
+	
+	@PutMapping("/supplier/{supplierId}")
+	public ResponseEntity<?>updateSuppleir(@PathVariable("supplierId")long supplierId, @RequestBody Supplier updatedSupplier){
+		Optional<Supplier>supplierData = supplierService.getSupplierById(supplierId);
+		if(supplierData.isPresent()) {
+			Supplier _supplier = supplierData.get();
+			if(_supplier.isDeleted() == false) {
+				supplierService.updateSupplier(supplierId, updatedSupplier);
+				return ResponseEntity.ok().body(new MessageResponse("Success: Supplier has been updated"));
+			}
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	@PutMapping("/supplier/{supplierId}/contact/{contactId}")
+	public ResponseEntity<?>updateSupplierContact(@PathVariable("supplierId")long supplierId, @PathVariable("contactId")long contactId ,@RequestBody Contact updatedContact){
+		Optional<Supplier>supplierData = supplierService.getSupplierById(supplierId);
+		Optional<Contact>contactData = contactRepo.findById(contactId);
+		if (supplierData.isPresent() && contactData.isPresent()) {
+			Supplier _supplier = supplierData.get();
+			Contact _contact = contactData.get();
+			if(_supplier.isDeleted() == false && _contact.isDeleted() == false && _contact.getSupplier().getId() == supplierId) {
+				supplierService.updateSupplierContact(supplierId, contactId, updatedContact);
+				return ResponseEntity.ok().body(new MessageResponse("Success: Contact has been updated"));
+			}
+			return ResponseEntity.notFound().build();
+			
+		}else {
+			return ResponseEntity.notFound().build();
+		}
+		
 	}
 	
 	@GetMapping("/supplier/{supplierId}/purchase/add")

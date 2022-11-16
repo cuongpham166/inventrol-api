@@ -38,8 +38,9 @@ public class Order {
 
 	public Order(Payment payment, Shipping shipping, Set<OrderHistory> orderhistory, Set<OrderItem> orderitem,
 			Customer customer, OrderAddress shippingAddress, OrderAddress billingAddress, String status,
-			BigDecimal total, BigDecimal totalIncludingVat, String notice, boolean deleted, LocalDateTime createdOn,
-			String createdBy, LocalDateTime updatedOn, String updatedBy) {
+			BigDecimal total, BigDecimal totalIncludingVat, BigDecimal shippingCost, BigDecimal discount,
+			BigDecimal vat, String notice, boolean deleted, LocalDateTime createdOn, String createdBy,
+			LocalDateTime updatedOn, String updatedBy) {
 		super();
 		this.payment = payment;
 		this.shipping = shipping;
@@ -51,6 +52,9 @@ public class Order {
 		this.status = status;
 		this.total = total;
 		this.totalIncludingVat = totalIncludingVat;
+		this.shippingCost = shippingCost;
+		this.discount = discount;
+		this.vat = vat;
 		this.notice = notice;
 		this.deleted = deleted;
 		this.createdOn = createdOn;
@@ -117,6 +121,15 @@ public class Order {
 	
 	@Column(name="total_including_vat",precision=10, scale=2)
 	private BigDecimal totalIncludingVat;
+	
+	@Column(name="shipping_cost",precision=10, scale=2)
+	private BigDecimal shippingCost;
+	
+	@Column(name="discount",precision=10, scale=2)
+	private BigDecimal discount;
+	
+	@Column(name="vat",precision=10, scale=2)
+	private BigDecimal vat;
 	
 	@Column(name = "notice")
 	private String notice;
@@ -290,5 +303,29 @@ public class Order {
 
 	public void setOrderhistory(Set<OrderHistory> orderhistory) {
 		this.orderhistory = orderhistory;
+	}
+
+	public BigDecimal getShippingCost() {
+		return shippingCost;
+	}
+
+	public void setShippingCost(BigDecimal shippingCost) {
+		this.shippingCost = shippingCost;
+	}
+
+	public BigDecimal getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(BigDecimal discount) {
+		this.discount = discount;
+	}
+
+	public BigDecimal getVat() {
+		return vat;
+	}
+
+	public void setVat(BigDecimal vat) {
+		this.vat = vat;
 	}
 }

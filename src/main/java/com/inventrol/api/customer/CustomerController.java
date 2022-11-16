@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -95,6 +96,21 @@ public class CustomerController {
 		}
 	}*/
 	
+	@PutMapping("/customer/{customerId}")
+	public ResponseEntity<?>updateCustomer(@PathVariable("customerId") long customerId, @RequestBody Customer updatedCustomer){
+		Optional<Customer>customerData = customerService.findCustomerById(customerId);
+		if(customerData.isPresent()) {
+			Customer foundCustomer = customerData.get();
+			if(foundCustomer.isDeleted()==false) {
+				customerService.updateCustomer(customerId, updatedCustomer);
+				return ResponseEntity.ok().body(new MessageResponse("Success: Customer has been updated"));
+			}
+			return ResponseEntity.notFound().build();
+		}
+		else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 	@PostMapping("/customer")
 	public ResponseEntity<?> createCustomer(@RequestBody NewCustomerPayload newCustomerPayload){
 		try{
@@ -124,4 +140,40 @@ public class CustomerController {
 		}
 	}
 
+	@GetMapping("/customer/{customerId}/address/{addressId}")
+	public ResponseEntity<CustomerAddressDetailView>getAddressDetailByCustomerId(@PathVariable("customerId") long customerId,@PathVariable("addressId") long addressId){
+		Optional<Customer> customerData = customerService.findCustomerById(customerId);
+		Optional<CustomerAddress> customerAddressData = customerService.findCustomerAddressById(addressId);
+		if(customerData.isPresent() && customerAddressData.isPresent()) {
+			CustomerAddress foundCustomerAddress  = customerAddressData.get();
+			if(foundCustomerAddress.getCustomer().getId() == customerId) {
+				CustomerAddressDetailView customerAddressDetail = customerService.getCustomerAddressDetailById(addressId);
+				return new ResponseEntity<>(customerAddressDetail, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@PutMapping("/customer/{customerId}/address/{addressId}")
+	public ResponseEntity<?>updateCustomerAddress(@PathVariable("customerId") long customerId,@PathVariable("addressId") long addressId, @RequestBody CustomerAddress updatedCustomerAddress){
+		Optional<Customer> customerData = customerService.findCustomerById(customerId);
+		Optional<CustomerAddress> customerAddressData = customerService.findCustomerAddressById(addressId);
+		if(customerData.isPresent() && customerAddressData.isPresent()) {
+			CustomerAddress foundCustomerAddress  = customerAddressData.get();
+			if(foundCustomerAddress.getCustomer().getId() == customerId) {
+				customerService.updateCustomerAddress(customerId, addressId, updatedCustomerAddress);
+				return ResponseEntity.ok().body(new MessageResponse("Success: Customer's address has been updated"));
+			}else {
+				return ResponseEntity.notFound().build();
+			}
+		}else {
+			return ResponseEntity.notFound().build();
+		}
+		
+		
+	}
+	
 }

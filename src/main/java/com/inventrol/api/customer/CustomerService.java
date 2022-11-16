@@ -20,10 +20,15 @@ public class CustomerService {
 	
 	@Autowired
 	private CustomerAddressRepository customerAddressRepo;
-	
+
 	public Optional<Customer>findCustomerById(long id){
 		Optional<Customer>foundCustomer = customerRepo.findById(id);
 		return foundCustomer;
+	}
+	
+	public Optional<CustomerAddress>findCustomerAddressById(long id){
+		Optional<CustomerAddress>foundCustomerAddress = customerAddressRepo.findById(id);
+		return foundCustomerAddress;
 	}
 	
 	public List<CustomerView>getAllCustomer(){
@@ -70,4 +75,34 @@ public class CustomerService {
 		customerAddressRepo.save(newCustomerAddress);		
 	}
 	
+	public CustomerAddressDetailView getCustomerAddressDetailById(long id) {
+		CustomerAddressDetailView customerAddressDetail = customerAddressRepo.findProjectedById(id, CustomerAddressDetailView.class);
+		return customerAddressDetail;
+	}
+	
+
+	public void updateCustomer (long customerId, Customer updatedCustomer) {
+		Customer foundCustomer = findCustomerById(customerId).get();
+		foundCustomer.setEmail(updatedCustomer.getEmail());
+		foundCustomer.setMobileNumber(updatedCustomer.getMobileNumber());
+		foundCustomer.setName(updatedCustomer.getName());
+		foundCustomer.setNotice(updatedCustomer.getNotice());
+		customerRepo.save(foundCustomer);
+	}
+	
+	public void updateCustomerAddress (long customerId, long addressId, CustomerAddress updatedCustomerAddress) {
+		Customer foundCustomer = findCustomerById(customerId).get();
+		CustomerAddress _customerAddress = findCustomerAddressById(addressId).get();
+		
+		_customerAddress.setAdditionalAddressLine(updatedCustomerAddress.getAdditionalAddressLine());
+		_customerAddress.setCity(updatedCustomerAddress.getCity());
+		_customerAddress.setCountry(updatedCustomerAddress.getCountry());
+		_customerAddress.setNotice(updatedCustomerAddress.getNotice());
+		_customerAddress.setPostcode(updatedCustomerAddress.getPostcode());
+		_customerAddress.setStreetName(updatedCustomerAddress.getStreetName());
+		_customerAddress.setStreetNumber(updatedCustomerAddress.getStreetNumber());
+		_customerAddress.setCustomer(foundCustomer);
+		
+		customerAddressRepo.save(_customerAddress);
+	}
 }

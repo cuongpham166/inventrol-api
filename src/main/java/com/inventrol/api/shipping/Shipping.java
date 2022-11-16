@@ -26,14 +26,13 @@ public class Shipping {
 		super();
 	}
 
-	public Shipping(Order order, String service, String packageType, String trackingNumber, BigDecimal shippingCost,
+	public Shipping(Order order, String service, String packageType, String trackingNumber,
 			String notice, boolean deleted, LocalDateTime createdOn, LocalDateTime updatedOn) {
 		super();
 		this.order = order;
 		this.service = service;
 		this.packageType = packageType;
 		this.trackingNumber = trackingNumber;
-		this.shippingCost = shippingCost;
 		this.notice = notice;
 		this.deleted = deleted;
 		this.createdOn = createdOn;
@@ -55,9 +54,6 @@ public class Shipping {
 	
 	@Column(name = "tracking_number")
 	private String trackingNumber;
-	
-	@Column(name="shipping_cost",precision=10, scale=2)
-	private BigDecimal shippingCost;
 	
 	@Column(name = "notice")
 	private String notice;
@@ -112,14 +108,6 @@ public class Shipping {
 
 	public void setTrackingNumber(String trackingNumber) {
 		this.trackingNumber = trackingNumber;
-	}
-
-	public BigDecimal getShippingCost() {
-		return shippingCost;
-	}
-
-	public void setShippingCost(BigDecimal shippingCost) {
-		this.shippingCost = shippingCost;
 	}
 
 	public String getNotice() {
