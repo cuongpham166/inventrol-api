@@ -25,7 +25,7 @@ import com.inventrol.api.contact.Contact;
 import com.inventrol.api.contact.ContactRepository;
 import com.inventrol.api.product.Product;
 import com.inventrol.api.purchase.Purchase;
-import com.inventrol.api.purchaseitem.PurchaseItem;
+import com.inventrol.api.purchase.PurchaseItem;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController

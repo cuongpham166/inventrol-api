@@ -27,16 +27,13 @@ import javax.persistence.Table;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.inventrol.api.customer.Customer;
-import com.inventrol.api.orderitem.OrderItem;
-import com.inventrol.api.payment.Payment;
-import com.inventrol.api.shipping.Shipping;
 
 @Entity
 @Table(name = "orders")
 public class Order {
 
 
-	public Order(Payment payment, Shipping shipping, Set<OrderHistory> orderhistory, Set<OrderItem> orderitem,
+	public Order(OrderPayment payment, OrderShipping shipping, Set<OrderHistory> orderhistory, Set<OrderItem> orderitem,
 			Customer customer, OrderAddress shippingAddress, OrderAddress billingAddress, String status,
 			BigDecimal total, BigDecimal totalIncludingVat, BigDecimal shippingCost, BigDecimal discount,
 			BigDecimal vat, String notice, boolean deleted, LocalDateTime createdOn, String createdBy,
@@ -73,11 +70,11 @@ public class Order {
 	
 	@OneToOne(fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="payment_id", nullable=false)
-	private Payment payment;
+	private OrderPayment payment;
 	
 	@OneToOne(fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="shipping_id", nullable=false)
-	private Shipping shipping;
+	private OrderShipping shipping;
 	
 	@OneToMany(mappedBy ="order",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<OrderHistory>orderhistory = new HashSet<OrderHistory>();
@@ -164,11 +161,11 @@ public class Order {
 		return id;
 	}
 
-	public Payment getPayment() {
+	public OrderPayment getPayment() {
 		return payment;
 	}
 
-	public void setPayment(Payment payment) {
+	public void setPayment(OrderPayment payment) {
 		this.payment = payment;
 	}
 
@@ -289,11 +286,11 @@ public class Order {
 		this.updatedBy = updatedBy;
 	}
 
-	public Shipping getShipping() {
+	public OrderShipping getShipping() {
 		return shipping;
 	}
 
-	public void setShipping(Shipping shipping) {
+	public void setShipping(OrderShipping shipping) {
 		this.shipping = shipping;
 	}
 

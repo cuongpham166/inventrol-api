@@ -1,4 +1,4 @@
-package com.inventrol.api.payment;
+package com.inventrol.api.order;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,13 +18,12 @@ import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import com.inventrol.api.order.Order;
 import com.inventrol.api.purchase.Purchase;
 
 @Entity
 @Table(name = "payment")
-public class Payment {
-	public Payment(Order order, String status, String paymentType, BigDecimal total, BigDecimal paid,
+public class OrderPayment {
+	public OrderPayment(Order order, String status, String paymentType, BigDecimal total, BigDecimal paid,
 			BigDecimal balance, String notice, boolean deleted, LocalDateTime createdOn, String createdBy,
 			LocalDateTime updatedOn, String updatedBy) {
 		super();
@@ -43,7 +42,7 @@ public class Payment {
 	}
 
 
-	public Payment() {
+	public OrderPayment() {
 		super();
 	}
 	

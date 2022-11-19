@@ -101,6 +101,7 @@ public class CustomerService {
 		_customerAddress.setPostcode(updatedCustomerAddress.getPostcode());
 		_customerAddress.setStreetName(updatedCustomerAddress.getStreetName());
 		_customerAddress.setStreetNumber(updatedCustomerAddress.getStreetNumber());
+		_customerAddress.setPrimary(updatedCustomerAddress.isPrimary());
 		_customerAddress.setCustomer(foundCustomer);
 		
 		customerAddressRepo.save(_customerAddress);

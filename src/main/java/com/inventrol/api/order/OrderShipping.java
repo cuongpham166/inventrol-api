@@ -1,6 +1,5 @@
-package com.inventrol.api.shipping;
+package com.inventrol.api.order;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
@@ -17,16 +16,14 @@ import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import com.inventrol.api.order.Order;
-
 @Entity
 @Table(name = "shipping")
-public class Shipping {
-	public Shipping() {
+public class OrderShipping {
+	public OrderShipping() {
 		super();
 	}
 
-	public Shipping(Order order, String service, String packageType, String trackingNumber,
+	public OrderShipping(Order order, String service, String packageType, String trackingNumber,
 			String notice, boolean deleted, LocalDateTime createdOn, LocalDateTime updatedOn) {
 		super();
 		this.order = order;

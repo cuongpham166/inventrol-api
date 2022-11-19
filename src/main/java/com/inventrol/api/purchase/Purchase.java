@@ -18,15 +18,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import com.inventrol.api.order.OrderHistory;
-import com.inventrol.api.payment.Payment;
-import com.inventrol.api.purchaseitem.PurchaseItem;
 import com.inventrol.api.supplier.Supplier;
 
 @Entity

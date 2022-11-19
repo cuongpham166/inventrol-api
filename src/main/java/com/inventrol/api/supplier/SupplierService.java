@@ -19,10 +19,10 @@ import com.inventrol.api.product.ProductRepository;
 import com.inventrol.api.purchase.Purchase;
 import com.inventrol.api.purchase.PurchaseHistory;
 import com.inventrol.api.purchase.PurchaseHistoryRepository;
+import com.inventrol.api.purchase.PurchaseItem;
 import com.inventrol.api.purchase.PurchaseRepository;
 import com.inventrol.api.purchase.PurchaseShipping;
 import com.inventrol.api.purchase.PurchaseShippingRepository;
-import com.inventrol.api.purchaseitem.PurchaseItem;
 
 @Service
 public class SupplierService {

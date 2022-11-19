@@ -1,4 +1,4 @@
-package com.inventrol.api.orderitem;
+package com.inventrol.api.order;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.inventrol.api.order.Order;
 import com.inventrol.api.product.Product;
 
 @Entity

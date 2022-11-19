@@ -1,4 +1,4 @@
-package com.inventrol.api.purchaseitem;
+package com.inventrol.api.purchase;
 
 import java.util.List;
 
