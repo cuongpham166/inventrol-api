@@ -102,7 +102,7 @@ public class SupplierController {
 			supplierService.createSupplier(newSupplier);
 			return ResponseEntity.ok().body(new MessageResponse("Success:  A new supplier has been created"));
 		}catch (Exception e) {
-			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
+			return ResponseEntity.internalServerError().body(new MessageResponse(e.getMessage()));
 		}
 	}
 	
@@ -156,27 +156,23 @@ public class SupplierController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+		
 	@PostMapping("/supplier/{supplierId}/purchase/add")
-	public ResponseEntity<BigDecimal> saveNewPurchase(@PathVariable("supplierId") long supplierId, @RequestBody Purchase newPurchase){
-		Optional <Supplier>supplierData = supplierRepo.findById(supplierId);
-		if(supplierData.isPresent()) {
-			BigDecimal totalCost = supplierService.createPurchase(supplierId, newPurchase);
-			return new ResponseEntity<>(totalCost, HttpStatus.OK);
-		}else {
-			return ResponseEntity.notFound().build();
+	public ResponseEntity<?> saveNewPurchase(@PathVariable("supplierId") long supplierId, @RequestBody Purchase newPurchase){
+		try{
+			Optional <Supplier>supplierData = supplierRepo.findById(supplierId);
+			if(supplierData.isPresent()) {
+				supplierService.saveNewPurchase(supplierId, newPurchase);
+				return ResponseEntity.ok().body(new MessageResponse("Success:  A new purchase has been created"));
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}			
 		}
-	}
-	
-	@PostMapping("/supplier/{supplierId}/purchase/add-test")
-	public ResponseEntity<BigDecimal> createPurchaseTest(@PathVariable("supplierId") long supplierId, @RequestBody Purchase newPurchase){
-		Optional <Supplier>supplierData = supplierRepo.findById(supplierId);
-		if(supplierData.isPresent()) {
-			BigDecimal totalCost = supplierService.createPurchaseTestNew(supplierId, newPurchase);
-			return new ResponseEntity<>(totalCost, HttpStatus.OK);
-		}else {
-			return ResponseEntity.notFound().build();
+		catch (Exception e) {
+			return ResponseEntity.internalServerError().body(new MessageResponse(e.getMessage()));
 		}
+
 	}
+
 	
 }

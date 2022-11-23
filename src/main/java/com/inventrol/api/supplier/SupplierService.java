@@ -20,6 +20,7 @@ import com.inventrol.api.purchase.Purchase;
 import com.inventrol.api.purchase.PurchaseHistory;
 import com.inventrol.api.purchase.PurchaseHistoryRepository;
 import com.inventrol.api.purchase.PurchaseItem;
+import com.inventrol.api.purchase.PurchaseItemRepository;
 import com.inventrol.api.purchase.PurchaseRepository;
 import com.inventrol.api.purchase.PurchaseShipping;
 import com.inventrol.api.purchase.PurchaseShippingRepository;
@@ -46,6 +47,9 @@ public class SupplierService {
 	
 	@Autowired
 	private PurchaseShippingRepository purchaseshippingRepo;
+	
+	@Autowired
+	private PurchaseItemRepository purchaseitemRepo;
 	
 	public Optional<Supplier> getSupplierById(long id){
 		Optional<Supplier>foundSupplier = supplierRepo.findById(id);
@@ -108,27 +112,11 @@ public class SupplierService {
 		contactRepo.save(foundContact);
 		
 	}
-	public BigDecimal getTotalListingPrice (Set<PurchaseItem>purchaseItems) {
-		BigDecimal totalCost = BigDecimal.ZERO;
-		/*BigDecimal totalCost = BigDecimal.ZERO;
-		BigDecimal itemCost = BigDecimal.ZERO;
-		
-		purchaseItems.forEach(item ->{
-			Optional <Product> productData = productRepo.findById(item.getProduct().getId());
-			Product foundProduct = productData.get();
-			BigDecimal itemPrice = foundProduct.getListingPrice();
-			int itemQuantity = item.getQuantity();
-			itemCost = itemPrice.multiply(BigDecimal.valueOf(itemQuantity));
-			totalCost = totalCost.add(itemCost);
-		});*/
-		return totalCost;
-	}
+
 	
-	public BigDecimal getTotalListingPriceTest (Set<PurchaseItem>purchaseItems) {
+	public BigDecimal getTotalListingPrice (Set<PurchaseItem>purchaseItems) {
 		purchaseItems.forEach(item ->{
-			long productId = productRepo.findOneByName(item.getProduct().getName()).getId();
-			Optional <Product> productData = productRepo.findById(productId);
-			Product foundProduct = productData.get();
+			Product foundProduct = productRepo.findById(item.getProduct().getId()).get();
 			BigDecimal itemPrice = foundProduct.getListingPrice();
 			int itemQuantity = item.getQuantity();
 			BigDecimal itemCost = BigDecimal.ZERO;
@@ -138,105 +126,44 @@ public class SupplierService {
 		return totalCost;
 	}
 	
-
-	
-	public BigDecimal createPurchase(long supplierId, Purchase newPurchase) {
+	public void saveNewPurchase (long supplierId, Purchase newPurchase) {
+		Supplier foundSupplier = supplierRepo.findById(supplierId).get();
 		Set<PurchaseItem>purchaseItems = newPurchase.getPurchaseItem();
 		BigDecimal totalCost = getTotalListingPrice (purchaseItems);
 		
-	
-		Optional<Supplier>supplierData = supplierRepo.findById(supplierId);
-		Supplier foundSupplier = supplierData.get();
+		newPurchase.setTotal(totalCost);
+		newPurchase.setSupplier(foundSupplier);
 		
 		purchaseItems.forEach(item ->{
 			item.setPurchase(newPurchase);
 			newPurchase.getPurchaseItem().add(item);
 		});
 		
-		newPurchase.setTotal(totalCost);
-		newPurchase.setSupplier(foundSupplier);
-		purchaseRepo.save(newPurchase);
+		PurchaseShipping newPurchaseShipping = newPurchase.getPurchaseshipping();
+		newPurchaseShipping.setStatus("Processing");
+		newPurchaseShipping.setPurchase(newPurchase);
+		newPurchase.setPurchaseshipping(newPurchaseShipping);
+		purchaseshippingRepo.save(newPurchaseShipping);
+		Purchase savedPurchase = purchaseRepo.save(newPurchase);
+		
+		PurchaseHistory newPurchaseHistory = new PurchaseHistory();
+		newPurchaseHistory.setStatus("Purchase made");
+		newPurchaseHistory.setPurchase(savedPurchase);
+		savedPurchase.getPurchasehistory().add(newPurchaseHistory);
+		purchasehistoryRepo.save(newPurchaseHistory);
 		
 		purchaseItems.forEach(item ->{
 			Optional <Product> productData = productRepo.findById(item.getProduct().getId());
-			Product foundProduct = productData.get();
-			foundProduct.getPurchaseItem().add(item);
-			productRepo.save(foundProduct);
+			if(productData.isPresent()) {
+				Product foundProduct = productData.get();
+				foundProduct.getPurchaseItem().add(item);
+				item.setProduct(foundProduct);
+				productRepo.save(foundProduct);
+			}
 		});
-		
-		return totalCost;
-	}
-	
-	public BigDecimal createPurchaseTestNew (long supplierId, Purchase newPurchase) {
-		Set<PurchaseItem>purchaseItems = newPurchase.getPurchaseItem();
-		BigDecimal totalCost = getTotalListingPriceTest (purchaseItems);
-		
-		Optional<Supplier>supplierData = supplierRepo.findById(supplierId);
-		Supplier foundSupplier = supplierData.get();
-		
-		PurchaseShipping newPurchaseshipping = new PurchaseShipping();
-		newPurchaseshipping.setPurchase(newPurchase);
-		newPurchase.setPurchaseshipping(newPurchaseshipping);
-		//purchaseshippingRepo.save(newPurchaseshipping);
-		
-		newPurchase.setSupplier(foundSupplier);
-		newPurchase.setTotal(totalCost);
-		
-		PurchaseHistory newPurchasehistory = new PurchaseHistory();
-		newPurchasehistory.setPurchase(newPurchase);
-		newPurchase.getPurchasehistory().add(newPurchasehistory);
-		
-		//purchaseRepo.save(newPurchase);
-		
-		purchaseItems.forEach(item ->{
-			Product foundProduct = productRepo.findOneByName(item.getProduct().getName());
-			foundProduct.getPurchaseItem().add(item);
-			item.setPurchase(newPurchase);
-			newPurchase.getPurchaseItem().add(item);
-			//productRepo.save(foundProduct);
-		});
-		
-		return totalCost;
 	}
 	
 	
-	
-	public BigDecimal createPurchaseTest(long supplierId, Purchase newPurchase) {
-		Set<PurchaseItem>purchaseItems = newPurchase.getPurchaseItem();
-		BigDecimal totalCost = getTotalListingPriceTest (purchaseItems);
-		
-		Optional<Supplier>supplierData = supplierRepo.findById(supplierId);
-		Supplier foundSupplier = supplierData.get();
-		
-		purchaseItems.forEach(item ->{
-			item.setPurchase(newPurchase);
-			newPurchase.getPurchaseItem().add(item);
-		});
-		
-		PurchaseShipping newPurchaseshipping = new PurchaseShipping();
-		newPurchaseshipping.setPurchase(newPurchase);
-		newPurchase.setPurchaseshipping(newPurchaseshipping);
-		purchaseshippingRepo.save(newPurchaseshipping);
-		
-		PurchaseHistory newPurchasehistory = new PurchaseHistory();
-		newPurchasehistory.setPurchase(newPurchase);
-		newPurchase.getPurchasehistory().add(newPurchasehistory);
-		
-		
-		newPurchase.setTotal(totalCost);
-		newPurchase.setSupplier(foundSupplier);
-		
-		purchaseRepo.save(newPurchase);
-		
-		purchaseItems.forEach(item ->{
-			long productId = productRepo.findOneByName(item.getProduct().getName()).getId();
-			Optional <Product> productData = productRepo.findById(productId);
-			Product foundProduct = productData.get();
-			foundProduct.getPurchaseItem().add(item);
-			productRepo.save(foundProduct);
-		});
-		//purchaseRepo.save(newPurchase); //save purchase ở đây không được. phải save purchase trước rồi mới save product sau
-		return totalCost;
-	}
+
 	
 }

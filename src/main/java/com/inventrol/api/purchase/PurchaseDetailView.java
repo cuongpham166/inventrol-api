@@ -4,18 +4,39 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.inventrol.api.attributevalue.AttributeValue;
+
 public interface PurchaseDetailView {
 	long getId();
-	Set<PurchaseItemData> getPurchaseItem();
+	
 	SupplierData getSupplier();
+	PurchaseShippingData getPurchaseshipping();
+	Set<PurchaseItemData> getPurchaseItem();
+	Set<PurchaseHistoryData> getPurchasehistory();
+	
 	int getNumberOfItems();
-	String getStatus();
 	BigDecimal getTotal();
 	String getNotice();
 	String getPaymentType();
 	LocalDateTime getCreatedOn();
 	String getCreatedBy();
 	boolean isDeleted();
+	
+	interface PurchaseShippingData{
+		long getId();
+		String getService();
+		String getTrackingNumber();
+		String getStatus();
+		String getNotice();
+		LocalDateTime getUpdatedOn();
+	}
+	
+	interface PurchaseHistoryData {
+		long getId();
+		String getStatus();
+		LocalDateTime getCreatedOn();
+	}
+	
 	interface PurchaseItemData {
 		long getId();
 		int getQuantity();
@@ -23,7 +44,27 @@ public interface PurchaseDetailView {
 		interface ProductData{
 			long getId();
 			String getName();
+			String getBarcode();
 			BigDecimal getListingPrice();
+			BrandData getBrand();
+			SubcategoryData getSubcategory();
+			
+			Set<AttributeValue> getAttributeValue();
+			interface BrandData {
+				long getId();
+				String getName();
+			}
+			
+			interface SubcategoryData {
+				long getId();
+				String getName();
+				 String getTagColor();
+			}
+			
+			interface AttributeValue {
+				long getId();
+				String getName();
+			}
 		}
 	}
 	

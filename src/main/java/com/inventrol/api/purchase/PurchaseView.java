@@ -9,14 +9,18 @@ public interface PurchaseView {
 	long getId();
 	Set<PurchaseItemData> getPurchaseItem();
 	SupplierData getSupplier();
+	PurchaseShippingData getPurchaseshipping();
 	int getNumberOfItems();
-	String getStatus();
 	BigDecimal getTotal();
 	String getNotice();
 	String getPaymentType();
 	LocalDateTime getCreatedOn();
 	String getCreatedBy();
 	boolean isDeleted();
+	
+	interface PurchaseShippingData{
+		String getStatus();
+	}
 	interface PurchaseItemData {
 		long getId();
 		int getQuantity();

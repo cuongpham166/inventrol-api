@@ -49,7 +49,7 @@ public class PurchaseShipping {
 	private String trackingNumber;
 	
 	@Column(name = "status")
-	private String status="Processing"; // "processing, confirmed, shipped, checking, completed, returned"
+	private String status; // "processing, shipped, delivered, checking, completed, returned, cancelled"
 	
 	@Column(name = "notice")
 	private String notice;

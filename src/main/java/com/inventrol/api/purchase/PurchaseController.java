@@ -10,9 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inventrol.api.auth.MessageResponse;
 import com.inventrol.api.subcategory.Subcategory;
 import com.inventrol.api.subcategory.SubcategoryDetailView;
 
@@ -53,5 +56,25 @@ public class PurchaseController {
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@PutMapping("/purchase/{purchaseId}/shipping/{shippingId}")
+	public ResponseEntity<?>updatePurchaseShipping(@PathVariable("purchaseId")long purchaseId, @PathVariable("shippingId")long shippingId, @RequestBody PurchaseShipping updatedPurchaseShipping){
+		try{
+			Optional<Purchase>purchaseData = purchaseService.getPurchaseById(purchaseId);
+			Optional<PurchaseShipping>purchaseShippingData = purchaseService.getPurchaseShippingById(shippingId);
+			if(purchaseData.isPresent() && purchaseShippingData.isPresent()) {
+				Purchase foundPurchase = purchaseData.get();
+				if(foundPurchase.getPurchaseshipping().getId() == shippingId) {
+					purchaseService.updatePurchaseShipping(purchaseId, shippingId, updatedPurchaseShipping);
+					return ResponseEntity.ok().body(new MessageResponse("Success: Purchase's shipping has been updated"));
+				}
+				return ResponseEntity.notFound().build();
+			}
+			return ResponseEntity.notFound().build();
+		}catch (Exception e) {
+			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  "+ e.getMessage()));
+		}
+		
 	}
 }
