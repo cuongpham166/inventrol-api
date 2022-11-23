@@ -85,15 +85,12 @@ public class ProductService {
 		return productDetail;
 	}
 	
-
-	public void createNewProduct (Product newProduct) { //objects must contain ID
-		String subcatgoryName = newProduct.getSubcategory().getName();
-		String brandName = newProduct.getBrand().getName();
-		int discountPercent = newProduct.getDiscount().getDiscountPercent();
-		
-		Optional<Subcategory>subcategoryData = subcategoryRepo.findByName(subcatgoryName);
-		Optional<Brand>brandData= brandRepo.findByName(brandName);
-		Optional<Discount>discountData = discountRepo.findByDiscountPercent(discountPercent);
+	
+	
+	public void saveNewProduct (Product newProduct){
+		Optional<Subcategory>subcategoryData = subcategoryRepo.findById(newProduct.getSubcategory().getId());
+		Optional<Brand>brandData= brandRepo.findById(newProduct.getBrand().getId());
+		Optional<Discount>discountData = discountRepo.findById(newProduct.getDiscount().getId());
 		
 		//One to One
 		ProductStock newProductStock = new ProductStock();
@@ -101,7 +98,7 @@ public class ProductService {
 		newProduct.setProductstock(newProductStock);
 		productstockRepo.save(newProductStock);
 		//One to One
-			
+		
 		//One to Many
 		RetailPriceRecord newRetailPrice = new RetailPriceRecord();
 		newRetailPrice.setPrice(newProduct.getRetailPrice());
@@ -115,8 +112,6 @@ public class ProductService {
 		//One to Many
 		productRepo.save(newProduct);
 		
-		
-	
 		if(subcategoryData.isPresent() && brandData.isPresent() && discountData.isPresent()) {
 			//Many to One
 			newProduct.setSubcategory(subcategoryData.get());
@@ -135,7 +130,7 @@ public class ProductService {
 			//Many to Many
 			Set<AttributeValue>attributeValueList = newProduct.getAttributeValue();
 			attributeValueList.forEach(attVal ->{
-				Optional<AttributeValue>attributeValueData = attributeValueRepo.findByName(attVal.getName());
+				Optional<AttributeValue>attributeValueData = attributeValueRepo.findById(attVal.getId());
 				if(attributeValueData.isPresent()) {
 					AttributeValue _attributeValue = attributeValueData.get();
 					newProduct.getAttributeValue().add(_attributeValue);
@@ -146,7 +141,7 @@ public class ProductService {
 			
 			Set<Supplier>supplierList = newProduct.getSupplier();
 			supplierList.forEach(supp ->{
-				Optional<Supplier>supplierData = supplierRepo.findByName(supp.getName());
+				Optional<Supplier>supplierData = supplierRepo.findById(supp.getId());
 				if(supplierData.isPresent()) {
 					Supplier _supplier = supplierData.get();
 					newProduct.getSupplier().add(_supplier);
@@ -155,11 +150,8 @@ public class ProductService {
 				}
 			});
 			//Many to Many
-			//productRepo.save(newProduct);
 		}
 	}
 	
-	
-
 
 }

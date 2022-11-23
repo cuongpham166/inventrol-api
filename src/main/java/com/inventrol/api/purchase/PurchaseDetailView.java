@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.inventrol.api.attributevalue.AttributeValue;
 
 public interface PurchaseDetailView {
@@ -71,5 +73,16 @@ public interface PurchaseDetailView {
 	interface SupplierData{
 		long getId();
 		String getName();
+		String getContactPerson();
+		String getWebsite();
+		String getEmail();
+		ContactData getContact();
+		interface ContactData {
+			String getPhoneNumber();
+			String getMobileNumber();
+			String getAdditionalAddressLine();
+		    @Value("#{target.streetName + '. ' + target.streetNumber + ', ' +target.postcode+ ' '+target.city+ ', '+target.country}")
+		    String getAddress();
+		}
 	}
 }

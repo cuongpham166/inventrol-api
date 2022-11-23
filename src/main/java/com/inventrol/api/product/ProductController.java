@@ -70,11 +70,11 @@ public class ProductController {
 			if(productRepo.existsProductByName(newProduct.getName())) {
 				return ResponseEntity.badRequest().body(new MessageResponse("Error: This name already exists"));
 			}
-			productService.createNewProduct(newProduct);
+			productService.saveNewProduct(newProduct);
 			return ResponseEntity.ok().body(new MessageResponse("Success:  A new product has been created"));
 			
 		}catch (Exception e) {
-			return ResponseEntity.internalServerError().body(new MessageResponse("Error:  Internal Server Error"));
+			return ResponseEntity.internalServerError().body(new MessageResponse("Error: "+e.getMessage()));
 		}
 	}
 }
