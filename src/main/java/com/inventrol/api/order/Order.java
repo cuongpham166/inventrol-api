@@ -27,17 +27,19 @@ import javax.persistence.Table;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.inventrol.api.customer.Customer;
+import com.inventrol.api.order.orderaddress.OrderAddress;
+import com.inventrol.api.order.orderhistory.OrderHistory;
+import com.inventrol.api.order.orderitem.OrderItem;
+import com.inventrol.api.order.orderpayment.OrderPayment;
+import com.inventrol.api.order.ordershipping.OrderShipping;
 
 @Entity
 @Table(name = "orders")
 public class Order {
-
-
 	public Order(OrderPayment payment, OrderShipping shipping, Set<OrderHistory> orderhistory, Set<OrderItem> orderitem,
-			Customer customer, OrderAddress shippingAddress, OrderAddress billingAddress, String status,
-			BigDecimal total, BigDecimal totalIncludingVat, BigDecimal shippingCost, BigDecimal discount,
-			BigDecimal vat, String notice, boolean deleted, LocalDateTime createdOn, String createdBy,
-			LocalDateTime updatedOn, String updatedBy) {
+			Customer customer, OrderAddress shippingAddress, OrderAddress billingAddress, BigDecimal subtotal,
+			BigDecimal total, BigDecimal shippingCost, BigDecimal discount, BigDecimal vat, String notice,
+			boolean deleted, LocalDateTime createdOn, String createdBy) {
 		super();
 		this.payment = payment;
 		this.shipping = shipping;
@@ -46,9 +48,8 @@ public class Order {
 		this.customer = customer;
 		this.shippingAddress = shippingAddress;
 		this.billingAddress = billingAddress;
-		this.status = status;
+		this.subtotal = subtotal;
 		this.total = total;
-		this.totalIncludingVat = totalIncludingVat;
 		this.shippingCost = shippingCost;
 		this.discount = discount;
 		this.vat = vat;
@@ -56,8 +57,6 @@ public class Order {
 		this.deleted = deleted;
 		this.createdOn = createdOn;
 		this.createdBy = createdBy;
-		this.updatedOn = updatedOn;
-		this.updatedBy = updatedBy;
 	}
 
 	public Order() {
@@ -110,14 +109,12 @@ public class Order {
 	}) 
 	private OrderAddress billingAddress;
 	
-	@Column(name = "status")
-	private String status= "in process"; // "in process, ready to ship, shipped, completed, returned"
+	
+	@Column(name="subtotal",precision=10, scale=2)
+	private BigDecimal subtotal;
 	
 	@Column(name="total",precision=10, scale=2)
 	private BigDecimal total;
-	
-	@Column(name="total_including_vat",precision=10, scale=2)
-	private BigDecimal totalIncludingVat;
 	
 	@Column(name="shipping_cost",precision=10, scale=2)
 	private BigDecimal shippingCost;
@@ -141,32 +138,14 @@ public class Order {
     @Column(name = "created_by")
     private String createdBy;
      
-    @Column(name = "updated_on")
-    private LocalDateTime updatedOn;
- 
-    @Column(name = "updated_by")
-    private String updatedBy;
 
     @PrePersist
     public void prePersist() {
         createdOn = LocalDateTime.now();
     }
  
-    @PreUpdate
-    public void preUpdate() {
-        updatedOn = LocalDateTime.now();
-    }
-    
 	public long getId() {
 		return id;
-	}
-
-	public OrderPayment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(OrderPayment payment) {
-		this.payment = payment;
 	}
 
 	public Set<OrderItem> getOrderitem() {
@@ -185,22 +164,6 @@ public class Order {
 		this.customer = customer;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public BigDecimal getTotal() {
-		return total;
-	}
-
-	public void setTotal(BigDecimal total) {
-		this.total = total;
-	}
-
 	public String getNotice() {
 		return notice;
 	}
@@ -217,15 +180,6 @@ public class Order {
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
-
-	public BigDecimal getTotalIncludingVat() {
-		return totalIncludingVat;
-	}
-
-	public void setTotalIncludingVat(BigDecimal totalIncludingVat) {
-		this.totalIncludingVat = totalIncludingVat;
-	}
-
 
 	public OrderAddress getShippingAddress() {
 		return shippingAddress;
@@ -267,33 +221,6 @@ public class Order {
 	}
 
 
-	public LocalDateTime getUpdatedOn() {
-		return updatedOn;
-	}
-
-
-	public void setUpdatedOn(LocalDateTime updatedOn) {
-		this.updatedOn = updatedOn;
-	}
-
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public OrderShipping getShipping() {
-		return shipping;
-	}
-
-	public void setShipping(OrderShipping shipping) {
-		this.shipping = shipping;
-	}
-
 	public Set<OrderHistory> getOrderhistory() {
 		return orderhistory;
 	}
@@ -324,5 +251,37 @@ public class Order {
 
 	public void setVat(BigDecimal vat) {
 		this.vat = vat;
+	}
+
+	public BigDecimal getSubtotal() {
+		return subtotal;
+	}
+
+	public void setSubtotal(BigDecimal subtotal) {
+		this.subtotal = subtotal;
+	}
+
+	public BigDecimal getTotal() {
+		return total;
+	}
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+
+	public OrderPayment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(OrderPayment payment) {
+		this.payment = payment;
+	}
+
+	public OrderShipping getShipping() {
+		return shipping;
+	}
+
+	public void setShipping(OrderShipping shipping) {
+		this.shipping = shipping;
 	}
 }

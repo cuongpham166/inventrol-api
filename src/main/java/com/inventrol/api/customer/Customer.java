@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.inventrol.api.customer.customeraddress.CustomerAddress;
 import com.inventrol.api.order.Order;
 
 @Entity

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inventrol.api.auth.MessageResponse;
+import com.inventrol.api.purchase.purchaseshipping.PurchaseShipping;
 import com.inventrol.api.subcategory.Subcategory;
 import com.inventrol.api.subcategory.SubcategoryDetailView;
 

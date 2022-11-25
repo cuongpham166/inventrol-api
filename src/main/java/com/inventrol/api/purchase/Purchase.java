@@ -24,6 +24,9 @@ import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.inventrol.api.purchase.purchasehistory.PurchaseHistory;
+import com.inventrol.api.purchase.purchaseitem.PurchaseItem;
+import com.inventrol.api.purchase.purchaseshipping.PurchaseShipping;
 import com.inventrol.api.supplier.Supplier;
 
 @Entity

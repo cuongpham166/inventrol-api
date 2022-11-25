@@ -8,8 +8,13 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.inventrol.api.purchase.purchasehistory.PurchaseHistory;
+import com.inventrol.api.purchase.purchasehistory.PurchaseHistoryRepository;
+import com.inventrol.api.purchase.purchaseshipping.PurchaseShipping;
+import com.inventrol.api.purchase.purchaseshipping.PurchaseShippingRepository;
+
 @Service
-public class PurchaseService {
+public class PurchaseService implements PurchaseInterface{
 	@Autowired 
 	private PurchaseRepository purchaseRepo;
 	

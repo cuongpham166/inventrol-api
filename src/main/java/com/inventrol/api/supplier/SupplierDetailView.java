@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.inventrol.api.product.ProductView.AttributeValueData;
 import com.inventrol.api.product.ProductView.BrandData;
+import com.inventrol.api.product.ProductView.DiscountData;
+import com.inventrol.api.product.ProductView.ProductStockData;
 import com.inventrol.api.product.ProductView.SubcategoryData;
 import com.inventrol.api.product.ProductView.AttributeValueData.AttributeData;
 import com.inventrol.api.product.ProductView.SubcategoryData.CategoryData;
@@ -17,8 +19,7 @@ public interface SupplierDetailView {
 	long getId();
 	String getName();
 	String getContactPerson();
-	
-	 String getEmail();
+	String getEmail();
 	String getNotice();
 	LocalDateTime getCreatedOn();
 	String getCreatedBy();
@@ -50,17 +51,35 @@ public interface SupplierDetailView {
 	interface ProductData {
 		long getId();
 		String getName();
+		BigDecimal getVat();
 		BigDecimal getRetailPrice();
 		BigDecimal getListingPrice();
 		String getNotice();
 		boolean isDeleted();
 		String getSku();
 		String getBarcode();
+		LocalDateTime getCreatedOn();
+		String getCreatedBy();
+		LocalDateTime getUpdatedOn();
+		String getUpdatedBy();
 		SubcategoryData getSubcategory();
 		Set<AttributeValueData>getAttributeValue();
 		BrandData getBrand();
-
+		DiscountData getDiscount();
+		ProductStockData getProductstock();
 		
+		interface ProductStockData {
+			String getStockStatus();
+			boolean isDeleted();
+			LocalDateTime getUpdatedOn();
+			String getUpdatedBy();
+		}
+		
+		interface DiscountData{
+			long getId();
+			BigDecimal getDiscountPercent();
+			boolean isDeleted();
+		}
 		interface SubcategoryData{
 			long getId();
 			String getName();	
@@ -87,6 +106,6 @@ public interface SupplierDetailView {
 		interface BrandData{
 			long getId();
 			String getName();
-		}		
+		}
 	}
 }

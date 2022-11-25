@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class DiscountService {
+public class DiscountService implements DiscountInterface {
 
 	@Autowired
 	private DiscountRepository discountRepo;

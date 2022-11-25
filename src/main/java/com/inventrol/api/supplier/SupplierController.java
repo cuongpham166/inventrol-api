@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inventrol.api.auth.MessageResponse;
-import com.inventrol.api.contact.Contact;
-import com.inventrol.api.contact.ContactRepository;
 import com.inventrol.api.product.Product;
 import com.inventrol.api.purchase.Purchase;
-import com.inventrol.api.purchase.PurchaseItem;
+import com.inventrol.api.purchase.purchaseitem.PurchaseItem;
+import com.inventrol.api.supplier.suppliercontact.SupplierContact;
+import com.inventrol.api.supplier.suppliercontact.SupplierContactRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -39,7 +39,7 @@ public class SupplierController {
 	private SupplierRepository supplierRepo;
 	
 	@Autowired
-	private ContactRepository contactRepo;
+	private SupplierContactRepository contactRepo;
 	
 	@GetMapping("/supplier")
 	public ResponseEntity<List<SupplierView>> getAllSuppliers(@RequestParam Optional<String> name) {
@@ -121,12 +121,12 @@ public class SupplierController {
 	}
 	
 	@PutMapping("/supplier/{supplierId}/contact/{contactId}")
-	public ResponseEntity<?>updateSupplierContact(@PathVariable("supplierId")long supplierId, @PathVariable("contactId")long contactId ,@RequestBody Contact updatedContact){
+	public ResponseEntity<?>updateSupplierContact(@PathVariable("supplierId")long supplierId, @PathVariable("contactId")long contactId ,@RequestBody SupplierContact updatedContact){
 		Optional<Supplier>supplierData = supplierService.getSupplierById(supplierId);
-		Optional<Contact>contactData = contactRepo.findById(contactId);
+		Optional<SupplierContact>contactData = contactRepo.findById(contactId);
 		if (supplierData.isPresent() && contactData.isPresent()) {
 			Supplier _supplier = supplierData.get();
-			Contact _contact = contactData.get();
+			SupplierContact _contact = contactData.get();
 			if(_supplier.isDeleted() == false && _contact.isDeleted() == false && _contact.getSupplier().getId() == supplierId) {
 				supplierService.updateSupplierContact(supplierId, contactId, updatedContact);
 				return ResponseEntity.ok().body(new MessageResponse("Success: Contact has been updated"));
@@ -163,7 +163,7 @@ public class SupplierController {
 			Optional <Supplier>supplierData = supplierRepo.findById(supplierId);
 			if(supplierData.isPresent()) {
 				supplierService.saveNewPurchase(supplierId, newPurchase);
-				return ResponseEntity.ok().body(new MessageResponse("Success:  A new purchase has been created"));
+				return ResponseEntity.ok().body(new MessageResponse("Success:  A new purchase has been made"));
 			}else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}			

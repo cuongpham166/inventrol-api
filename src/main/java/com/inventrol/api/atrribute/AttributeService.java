@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.inventrol.api.category.CategoryView;
 
 @Service
-public class AttributeService {
+public class AttributeService implements AttributeInterface {
 	
 	@Autowired
 	private AttributeRepository attributeRepo;

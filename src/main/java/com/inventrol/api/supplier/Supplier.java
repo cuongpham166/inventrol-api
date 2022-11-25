@@ -9,15 +9,15 @@ import javax.persistence.*;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import com.inventrol.api.contact.Contact;
 import com.inventrol.api.product.Product;
 import com.inventrol.api.purchase.Purchase;
+import com.inventrol.api.supplier.suppliercontact.SupplierContact;
 
 @Entity
 @Table(name = "supplier")
 public class Supplier {
 
-	public Supplier(Contact contact, Set<Product> product, Set<Purchase> purchase, String name, String contactPerson,
+	public Supplier(SupplierContact contact, Set<Product> product, Set<Purchase> purchase, String name, String contactPerson,
 			String website, String email, String notice, boolean deleted, LocalDateTime createdOn, String createdBy,
 			LocalDateTime updatedOn, String updatedBy) {
 		super();
@@ -47,7 +47,7 @@ public class Supplier {
 	
 	@OneToOne(fetch=FetchType.LAZY, optional=false)
 	@JoinColumn(name="contact_id", nullable=false)
-	private Contact contact;
+	private SupplierContact contact;
 	
 	@ManyToMany(mappedBy="supplier")
 	private Set<Product>product = new HashSet<Product>();
@@ -100,11 +100,11 @@ public class Supplier {
 		return id;
 	}
 	
-	public Contact getContact() {
+	public SupplierContact getContact() {
 		return contact;
 	}
 
-	public void setContact(Contact contact) {
+	public void setContact(SupplierContact contact) {
 		this.contact = contact;
 	}
 

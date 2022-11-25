@@ -1,6 +1,5 @@
 package com.inventrol.api.subcategory;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,20 +8,15 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.inventrol.api.category.CategoryService;
-import com.inventrol.api.atrribute.AttributeView;
 import com.inventrol.api.category.Category;
 import com.inventrol.api.category.CategoryRepository;
 
 @Service
-public class SubcategoryService {
+public class SubcategoryService implements SubcategoryInterface {
 
 	@Autowired
 	private SubcategoryRepository subcategoryRepo;
-	
-	@Autowired
-	private CategoryService categoryService;
-	
+		
 	@Autowired
 	private CategoryRepository categoryRepo;
 	

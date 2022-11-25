@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inventrol.api.auth.MessageResponse;
+import com.inventrol.api.customer.customeraddress.CustomerAddress;
+import com.inventrol.api.customer.customeraddress.CustomerAddressDetailView;
+import com.inventrol.api.customer.customeraddress.CustomerAddressView;
+import com.inventrol.api.order.Order;
 
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -83,6 +87,7 @@ public class CustomerController {
 		}
 	}
 	
+	
 	/*@PostMapping("/customer")
 	public ResponseEntity<?> createCustomer(@RequestBody Customer newCustomer){
 		try{
@@ -111,6 +116,8 @@ public class CustomerController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	
 	@PostMapping("/customer")
 	public ResponseEntity<?> createCustomer(@RequestBody NewCustomerPayload newCustomerPayload){
 		try{
@@ -162,7 +169,7 @@ public class CustomerController {
 		Optional<Customer> customerData = customerService.findCustomerById(customerId);
 		Optional<CustomerAddress> customerAddressData = customerService.findCustomerAddressById(addressId);
 		if(customerData.isPresent() && customerAddressData.isPresent()) {
-			CustomerAddress foundCustomerAddress  = customerAddressData.get();
+			CustomerAddress foundCustomerAddress = customerAddressData.get();
 			if(foundCustomerAddress.getCustomer().getId() == customerId) {
 				customerService.updateCustomerAddress(customerId, addressId, updatedCustomerAddress);
 				return ResponseEntity.ok().body(new MessageResponse("Success: Customer's address has been updated"));
@@ -172,8 +179,44 @@ public class CustomerController {
 		}else {
 			return ResponseEntity.notFound().build();
 		}
-		
-		
 	}
+	
+	@PutMapping("/customer/{customerId}/address/{addressId}/primary")
+	public ResponseEntity<?>setPrimaryAddress(@PathVariable("customerId") long customerId,@PathVariable("addressId") long addressId){
+		Optional<Customer> customerData = customerService.findCustomerById(customerId);
+		Optional<CustomerAddress> customerAddressData = customerService.findCustomerAddressById(addressId);
+		if(customerData.isPresent() && customerAddressData.isPresent()) {
+			CustomerAddress foundCustomerAddress = customerAddressData.get();
+			if(foundCustomerAddress.getCustomer().getId() == customerId) {
+				customerService.setPrimaryAddress(customerId, addressId);
+				return ResponseEntity.ok().body(new MessageResponse("Success: Primary Address has been set"));
+			}else {
+				return ResponseEntity.notFound().build();
+			}
+		}else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	//@GetMapping("/customer/{customerId}/order")
+	//@GetMapping("/customer/{customerId}/order/add")
+	@PostMapping("/customer/{customerId}/order/add")
+	public ResponseEntity<?> saveNewOrder(@PathVariable("customerId") long customerId, @RequestBody Order newOrder){
+		try{
+			Optional<Customer>customerData = customerService.findCustomerById(customerId);
+			if(customerData.isPresent()) {
+				customerService.saveNewOrder(customerId, newOrder);
+				return ResponseEntity.ok().body(new MessageResponse("Success:  A new order has been placed"));
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}
+		catch (Exception e) {
+			return ResponseEntity.internalServerError().body(new MessageResponse(e.getMessage()));
+		}
+	}
+	
+	
+	
 	
 }

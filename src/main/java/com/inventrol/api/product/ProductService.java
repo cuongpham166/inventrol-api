@@ -21,10 +21,12 @@ import com.inventrol.api.brand.BrandService;
 import com.inventrol.api.discount.Discount;
 import com.inventrol.api.discount.DiscountRepository;
 import com.inventrol.api.discount.DiscountService;
-import com.inventrol.api.record.ListingPriceRecord;
-import com.inventrol.api.record.ListingPriceRecordRepository;
-import com.inventrol.api.record.RetailPriceRecord;
-import com.inventrol.api.record.RetailPriceRecordRepository;
+import com.inventrol.api.product.productstock.ProductStock;
+import com.inventrol.api.product.productstock.ProductStockRepository;
+import com.inventrol.api.record.listingpricerecord.ListingPriceRecord;
+import com.inventrol.api.record.listingpricerecord.ListingPriceRecordRepository;
+import com.inventrol.api.record.retailpricerecord.RetailPriceRecord;
+import com.inventrol.api.record.retailpricerecord.RetailPriceRecordRepository;
 import com.inventrol.api.subcategory.Subcategory;
 import com.inventrol.api.subcategory.SubcategoryRepository;
 import com.inventrol.api.subcategory.SubcategoryService;
@@ -33,7 +35,7 @@ import com.inventrol.api.supplier.SupplierRepository;
 import com.inventrol.api.supplier.SupplierService;
 
 @Service
-public class ProductService {
+public class ProductService implements ProductInterface {
 	@Autowired
 	private ProductRepository productRepo;
 	
@@ -48,6 +50,9 @@ public class ProductService {
 	
 	@Autowired 
 	private SubcategoryRepository subcategoryRepo;
+	
+	@Autowired 
+	private SubcategoryService subcategoryService;
 	
 	@Autowired
 	private BrandRepository brandRepo;
@@ -86,8 +91,32 @@ public class ProductService {
 	}
 	
 	
+	public String createSKU (Product newProduct) {
+		Subcategory foundSubcategory = subcategoryService.getSubcategoryById(newProduct.getSubcategory().getId()).get();
+		Set<AttributeValue>attributeValue = newProduct.getAttributeValue();
+		AttributeValue firstAttributeValue = attributeValue.stream().findFirst().get();
+		
+		List<ProductView>products = getAllProducts ();
+		
+		long categoryId = foundSubcategory.getCategory().getId();
+		long subcategoryId = newProduct.getSubcategory().getId();
+		long brandId = newProduct.getBrand().getId();
+		long attributeValueId = firstAttributeValue.getId();
+		long sequential = products.size()+1; 
+		
+		String categoryValue =  String.format("%03d", categoryId);
+		String subcategoryValue = String.format("%03d", subcategoryId);
+		String brandValue = String.format("%03d", brandId);
+		String attributeValueValue = String.format("%03d", attributeValueId);
+		
+		String skuString = "CP-"+categoryValue+"-"+subcategoryValue+"-"+brandValue+"-"+attributeValueValue+"-"+sequential;
+		
+		return skuString;
+	}
 	
 	public void saveNewProduct (Product newProduct){
+		newProduct.setSku(createSKU(newProduct));
+		
 		Optional<Subcategory>subcategoryData = subcategoryRepo.findById(newProduct.getSubcategory().getId());
 		Optional<Brand>brandData= brandRepo.findById(newProduct.getBrand().getId());
 		Optional<Discount>discountData = discountRepo.findById(newProduct.getDiscount().getId());

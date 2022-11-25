@@ -12,21 +12,21 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.inventrol.api.contact.Contact;
-import com.inventrol.api.contact.ContactRepository;
 import com.inventrol.api.product.Product;
 import com.inventrol.api.product.ProductRepository;
 import com.inventrol.api.purchase.Purchase;
-import com.inventrol.api.purchase.PurchaseHistory;
-import com.inventrol.api.purchase.PurchaseHistoryRepository;
-import com.inventrol.api.purchase.PurchaseItem;
-import com.inventrol.api.purchase.PurchaseItemRepository;
 import com.inventrol.api.purchase.PurchaseRepository;
-import com.inventrol.api.purchase.PurchaseShipping;
-import com.inventrol.api.purchase.PurchaseShippingRepository;
+import com.inventrol.api.purchase.purchasehistory.PurchaseHistory;
+import com.inventrol.api.purchase.purchasehistory.PurchaseHistoryRepository;
+import com.inventrol.api.purchase.purchaseitem.PurchaseItem;
+import com.inventrol.api.purchase.purchaseitem.PurchaseItemRepository;
+import com.inventrol.api.purchase.purchaseshipping.PurchaseShipping;
+import com.inventrol.api.purchase.purchaseshipping.PurchaseShippingRepository;
+import com.inventrol.api.supplier.suppliercontact.SupplierContact;
+import com.inventrol.api.supplier.suppliercontact.SupplierContactRepository;
 
 @Service
-public class SupplierService {
+public class SupplierService implements SupplierInterface {
 	
 	private BigDecimal totalCost = BigDecimal.ZERO;
 
@@ -34,7 +34,7 @@ public class SupplierService {
 	private SupplierRepository supplierRepo;
 	
 	@Autowired
-	private ContactRepository contactRepo;
+	private SupplierContactRepository contactRepo;
 	
 	@Autowired
 	private ProductRepository productRepo;
@@ -76,7 +76,7 @@ public class SupplierService {
 	
 
 	public void createSupplier(Supplier newSupplier) {
-		Contact newContact = newSupplier.getContact();
+		SupplierContact newContact = newSupplier.getContact();
 		newContact.setSupplier(newSupplier);
 		newSupplier.setContact(newContact);
 		contactRepo.save(newContact);
@@ -94,9 +94,9 @@ public class SupplierService {
 		supplierRepo.save(foundSupplier);
 	}
 	
-	public void updateSupplierContact (long supplierId, long contactId, Contact updatedContact) {
+	public void updateSupplierContact (long supplierId, long contactId, SupplierContact updatedContact) {
 		Supplier foundSupplier = getSupplierById(supplierId).get();
-		Contact foundContact = contactRepo.findById(contactId).get();
+		SupplierContact foundContact = contactRepo.findById(contactId).get();
 		
 		foundContact.setAdditionalAddressLine(updatedContact.getAdditionalAddressLine());
 		foundContact.setCity(updatedContact.getCity());
@@ -139,7 +139,8 @@ public class SupplierService {
 			newPurchase.getPurchaseItem().add(item);
 		});
 		
-		PurchaseShipping newPurchaseShipping = newPurchase.getPurchaseshipping();
+		//PurchaseShipping newPurchaseShipping = newPurchase.getPurchaseshipping();
+		PurchaseShipping newPurchaseShipping = new PurchaseShipping();
 		newPurchaseShipping.setStatus("Processing");
 		newPurchaseShipping.setPurchase(newPurchase);
 		newPurchase.setPurchaseshipping(newPurchaseShipping);

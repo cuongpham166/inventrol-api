@@ -30,10 +30,11 @@ import org.springframework.beans.factory.annotation.Value;
 import com.inventrol.api.attributevalue.AttributeValue;
 import com.inventrol.api.brand.Brand;
 import com.inventrol.api.discount.Discount;
-import com.inventrol.api.order.OrderItem;
-import com.inventrol.api.purchase.PurchaseItem;
-import com.inventrol.api.record.ListingPriceRecord;
-import com.inventrol.api.record.RetailPriceRecord;
+import com.inventrol.api.order.orderitem.OrderItem;
+import com.inventrol.api.product.productstock.ProductStock;
+import com.inventrol.api.purchase.purchaseitem.PurchaseItem;
+import com.inventrol.api.record.listingpricerecord.ListingPriceRecord;
+import com.inventrol.api.record.retailpricerecord.RetailPriceRecord;
 import com.inventrol.api.subcategory.Subcategory;
 import com.inventrol.api.supplier.Supplier;
 

@@ -1,5 +1,7 @@
 package com.inventrol.api.customer;
 
+import com.inventrol.api.customer.customeraddress.CustomerAddress;
+
 public class NewCustomerPayload {
 	private Customer customer;
 	private CustomerAddress customerAddress;

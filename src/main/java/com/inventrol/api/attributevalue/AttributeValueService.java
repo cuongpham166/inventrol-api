@@ -15,7 +15,7 @@ import com.inventrol.api.atrribute.AttributeService;
 import com.inventrol.api.atrribute.AttributeView;
 
 @Service
-public class AttributeValueService {
+public class AttributeValueService implements AttributeValueInterface {
 	@Autowired
 	private AttributeValueRepository attributeValueRepo;
 	
