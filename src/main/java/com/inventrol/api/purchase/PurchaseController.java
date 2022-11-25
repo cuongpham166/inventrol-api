@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.inventrol.api.auth.MessageResponse;
 import com.inventrol.api.purchase.purchaseshipping.PurchaseShipping;
-import com.inventrol.api.subcategory.Subcategory;
-import com.inventrol.api.subcategory.SubcategoryDetailView;
-
+import com.inventrol.api.purchase.purchaseshipping.PurchaseShippingView;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -38,6 +36,20 @@ public class PurchaseController {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
 			return new ResponseEntity<>(purchases, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/purchase/shipping")
+	public ResponseEntity<List<PurchaseShippingView>> getAllPurchaseShipping() {
+		try {
+			List<PurchaseShippingView> purchaseShipping = new ArrayList<PurchaseShippingView>();
+			purchaseShipping = purchaseService.getAllPurchaseShipping();
+			if (purchaseShipping.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(purchaseShipping, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

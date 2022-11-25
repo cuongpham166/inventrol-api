@@ -12,6 +12,7 @@ import com.inventrol.api.purchase.purchasehistory.PurchaseHistory;
 import com.inventrol.api.purchase.purchasehistory.PurchaseHistoryRepository;
 import com.inventrol.api.purchase.purchaseshipping.PurchaseShipping;
 import com.inventrol.api.purchase.purchaseshipping.PurchaseShippingRepository;
+import com.inventrol.api.purchase.purchaseshipping.PurchaseShippingView;
 
 @Service
 public class PurchaseService implements PurchaseInterface{
@@ -42,6 +43,13 @@ public class PurchaseService implements PurchaseInterface{
 		List<PurchaseView>purchases = new ArrayList<PurchaseView>();
 		purchaseRepo.findAllProjectedByOrderByIdAsc(PurchaseView.class).forEach(purchases::add);
 		List<PurchaseView> results = purchases.stream().filter(res -> res.isDeleted() == false).collect(Collectors.toList());
+		return results;
+	}
+	
+	public List<PurchaseShippingView>getAllPurchaseShipping(){
+		List<PurchaseShippingView>purchaseShipping = new ArrayList<PurchaseShippingView>();
+		purchaseshippingRepo.findAllProjectedByOrderByIdAsc(PurchaseShippingView.class).forEach(purchaseShipping::add);
+		List<PurchaseShippingView> results = purchaseShipping.stream().filter(res -> res.isDeleted() == false).collect(Collectors.toList());
 		return results;
 	}
 	

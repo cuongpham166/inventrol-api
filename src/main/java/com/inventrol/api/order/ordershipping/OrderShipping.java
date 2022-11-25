@@ -89,9 +89,7 @@ public class OrderShipping {
 	public void setService(String service) {
 		this.service = service;
 	}
-
-
-
+	
 	public String getTrackingNumber() {
 		return trackingNumber;
 	}
