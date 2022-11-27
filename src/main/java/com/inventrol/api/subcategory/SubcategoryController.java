@@ -1,8 +1,10 @@
 package com.inventrol.api.subcategory;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,6 +64,24 @@ public class SubcategoryController {
 			if(_subcategory.isDeleted() == false) {
 				SubcategoryDetailView _subcategoryDetail = subcategoryService.getSubcategoryDetailById(id);
 				return new ResponseEntity<>(_subcategoryDetail, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/subcategory/{id}/products")
+	public ResponseEntity<Set<SubcategoryDetailView.ProductData>>getProductByCategoryId(@PathVariable("id") long id){
+		Optional<Subcategory> subcategoryData = subcategoryService.getSubcategoryById(id);
+		if(subcategoryData.isPresent()) {
+			Subcategory _subcategory = subcategoryData.get();
+			if(_subcategory.isDeleted() == false) {
+				SubcategoryDetailView _subcategoryDetail = subcategoryService.getSubcategoryDetailById(id);
+				Set<SubcategoryDetailView.ProductData> _products = new HashSet<SubcategoryDetailView.ProductData>();
+				_products = _subcategoryDetail.getProduct();
+				return new ResponseEntity<>(_products, HttpStatus.OK);
 			}else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}

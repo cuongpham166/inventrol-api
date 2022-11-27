@@ -48,7 +48,7 @@ public class PurchaseService implements PurchaseInterface{
 	
 	public List<PurchaseShippingView>getAllPurchaseShipping(){
 		List<PurchaseShippingView>purchaseShipping = new ArrayList<PurchaseShippingView>();
-		purchaseshippingRepo.findAllProjectedByOrderByIdAsc(PurchaseShippingView.class).forEach(purchaseShipping::add);
+		purchaseRepo.findAllProjectedByOrderByIdAsc(PurchaseShippingView.class).forEach(purchaseShipping::add);
 		List<PurchaseShippingView> results = purchaseShipping.stream().filter(res -> res.isDeleted() == false).collect(Collectors.toList());
 		return results;
 	}

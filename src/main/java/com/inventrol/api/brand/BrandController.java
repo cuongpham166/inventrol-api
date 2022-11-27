@@ -45,6 +45,7 @@ public class BrandController {
 			}
 			return new ResponseEntity<>(brands, HttpStatus.OK);
 		} catch (Exception e) {
+			System.out.printf(e.getMessage());
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

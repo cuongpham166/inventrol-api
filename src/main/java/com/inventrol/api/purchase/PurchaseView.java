@@ -19,7 +19,10 @@ public interface PurchaseView {
 	boolean isDeleted();
 	
 	interface PurchaseShippingData{
+		long getId();
 		String getStatus();
+		String getTrackingNumber();
+		String getService();
 	}
 	interface PurchaseItemData {
 		long getId();

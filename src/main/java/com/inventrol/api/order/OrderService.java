@@ -40,7 +40,7 @@ public class OrderService implements OrderInterface {
 	
 	public List<OrderShippingView>getAllOrderShipping(){
 		List<OrderShippingView>orderShipping = new ArrayList<OrderShippingView>();
-		ordershippingRepo.findAllProjectedByOrderByIdAsc(OrderShippingView.class).forEach(orderShipping::add);
+		orderRepo.findAllProjectedByOrderByIdAsc(OrderShippingView.class).forEach(orderShipping::add);
 		List<OrderShippingView> results = orderShipping.stream().filter(res -> res.isDeleted() == false).collect(Collectors.toList());
 		return results;
 	}

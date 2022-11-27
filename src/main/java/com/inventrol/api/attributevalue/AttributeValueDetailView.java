@@ -7,9 +7,9 @@ import java.util.Set;
 
 import com.inventrol.api.brand.BrandDetailView.ProductData.AttributeValueData;
 import com.inventrol.api.brand.BrandDetailView.ProductData.BrandData;
-import com.inventrol.api.brand.BrandDetailView.ProductData.SubcategoryData;
+
 import com.inventrol.api.brand.BrandDetailView.ProductData.AttributeValueData.AttributeData;
-import com.inventrol.api.brand.BrandDetailView.ProductData.SubcategoryData.CategoryData;
+
 
 public interface AttributeValueDetailView {
 	long getId();

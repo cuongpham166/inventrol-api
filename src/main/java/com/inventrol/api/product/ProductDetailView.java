@@ -25,13 +25,33 @@ public interface ProductDetailView {
 	String getUpdatedBy();
 	
 	SubcategoryData getSubcategory();
+	
 	Set<AttributeValueData>getAttributeValue();
 	BrandData getBrand();
 	Set<ListingPriceRecordData>getListingPriceRecord();
 	Set<RetailPriceRecordData>getRetailPriceRecord();
 	Set<SupplierData>getSupplier();
 	ProductStockData getProductstock();
-	DiscountData  getDiscount();
+	DiscountData getDiscount();
+	OrderItemData getOrderItem();
+	PurchaseItemData getPurchaseItem();
+	
+	interface OrderItemData {
+		int getQuantity();
+		OrderData getOrder();
+		interface OrderData{
+			LocalDateTime getCreatedOn();
+		}
+	}
+	
+	interface PurchaseItemData{
+		int getQuantity();
+		PurchaseData getPurchase();
+		interface PurchaseData{
+			LocalDateTime getCreatedOn();
+		}
+	}
+	
 	
 	interface DiscountData{
 		long getId();
@@ -85,7 +105,7 @@ public interface ProductDetailView {
 	
 	interface RetailPriceRecordData{
 		BigDecimal getPrice();
-		 LocalDateTime getCreatedOn();
+		LocalDateTime getCreatedOn();
 	}
 	
 	interface SupplierData{
@@ -93,8 +113,8 @@ public interface ProductDetailView {
 		String getName();	
 		String getContactPerson();
 		String getNotice();
-		 String getEmail();
-		 String getWebsite();
+		String getEmail();
+		String getWebsite();
 		boolean isDeleted();
 		ContactData getContact();
 		interface ContactData {
