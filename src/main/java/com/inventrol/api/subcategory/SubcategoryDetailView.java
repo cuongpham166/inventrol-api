@@ -21,10 +21,10 @@ public interface SubcategoryDetailView {
 	String getCreatedBy();
 	LocalDateTime getUpdatedOn();
 	String getUpdatedBy();
-	categoryData getCategory();
+	CategoryData getCategory();
 	Set<ProductData> getProduct();
 	boolean isDeleted();
-	interface categoryData{
+	interface CategoryData{
 		long getId();
 		String getName();		
 		String getTagColor();

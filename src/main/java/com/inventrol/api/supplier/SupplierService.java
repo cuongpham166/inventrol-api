@@ -69,11 +69,16 @@ public class SupplierService implements SupplierInterface {
 		List<SupplierView> result = foundSuppliers.stream().filter(cat -> cat.isDeleted() == false).collect(Collectors.toList());
 		return result;
 	}
+	
 	public SupplierDetailView getSupplierDetailById(long id) {
 		SupplierDetailView supplierDetail = supplierRepo.findProjectedById(id, SupplierDetailView.class);
 		return supplierDetail;
 	}
 	
+	public SupplierPurchaseView getSupplierPurchaseBySupplierId(long id){
+		SupplierPurchaseView supplierPurchaseDetail = supplierRepo.findProjectedById(id, SupplierPurchaseView.class);
+		return supplierPurchaseDetail;
+	}
 
 	public void createSupplier(Supplier newSupplier) {
 		SupplierContact newContact = newSupplier.getContact();

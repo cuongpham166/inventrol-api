@@ -25,9 +25,6 @@ public interface CategoryDetailView {
 	String getTagColor();
 	Set<SubcategoryData> getSubcategory();
 	interface SubcategoryData {
-		long getId();
-		String getName();
-		String getTagColor();
 		Set<ProductData> getProduct();
 		interface ProductData{
 			long getId();
@@ -47,6 +44,12 @@ public interface CategoryDetailView {
 			BrandData getBrand();
 			DiscountData getDiscount();
 			ProductStockData getProductstock();
+			ProductSubcategory getSubcategory();
+			interface ProductSubcategory{
+				long getId();
+				String getName();
+				String getTagColor();
+			}
 			
 			interface ProductStockData {
 				int getQuantity();

@@ -1,8 +1,11 @@
 package com.inventrol.api.category;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,6 +75,30 @@ public class CategoryController {
 			if(_category.isDeleted() == false) {
 				CategoryDetailView _categoryDetail = categoryService.getCategoryDetailById(id);
 				return new ResponseEntity<>(_categoryDetail, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping("/category/{id}/products")
+	public ResponseEntity<Set<CategoryDetailView.SubcategoryData.ProductData>>getProductsByCategoryId(@PathVariable("id") long id){
+		Optional<Category> categoryData = categoryService.getCategoryById(id);
+		if(categoryData.isPresent()) {
+			Category _category = categoryData.get();
+			if(_category.isDeleted() == false) {
+				CategoryDetailView _categoryDetail = categoryService.getCategoryDetailById(id);
+				Set<CategoryDetailView.SubcategoryData>_subcategories = new HashSet<CategoryDetailView.SubcategoryData>();
+				Set<CategoryDetailView.SubcategoryData.ProductData> _products = new HashSet<CategoryDetailView.SubcategoryData.ProductData>();
+				_subcategories = _categoryDetail.getSubcategory();
+				_subcategories.forEach(subcategory ->{
+					subcategory.getProduct().forEach(product ->{
+						_products.add(product);
+					});
+				});
+				return new ResponseEntity<>(_products, HttpStatus.OK);
 			}else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}

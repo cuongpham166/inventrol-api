@@ -12,6 +12,7 @@ import com.inventrol.api.supplier.suppliercontact.SupplierContact;
 public interface SupplierInterface {
 	public Optional<Supplier> getSupplierById(long id);
 	public List<SupplierView>getAllSuppliers();
+	public SupplierPurchaseView getSupplierPurchaseBySupplierId(long id);
 	public List<SupplierView>searchSupplier (String name);
 	public SupplierDetailView getSupplierDetailById(long id);
 	public void createSupplier(Supplier newSupplier);

@@ -93,6 +93,21 @@ public class SupplierController {
 		}
 	}
 	
+	@GetMapping("/supplier/{id}/purchases")
+	public ResponseEntity<Set<SupplierPurchaseView.PurchaseData>> getAllPurchaseBySupplierId(@PathVariable("id") long id){
+		Optional<Supplier> supplierData = supplierService.getSupplierById(id);
+		if(supplierData.isPresent()) {
+			Supplier _supplier = supplierData.get();
+			if(_supplier.isDeleted() == false) {
+				SupplierPurchaseView _supplierPurchase = supplierService.getSupplierPurchaseBySupplierId(id);
+				Set<SupplierPurchaseView.PurchaseData>_purchases = _supplierPurchase.getPurchase();
+				return new ResponseEntity<>(_purchases, HttpStatus.OK);
+			}
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
 	@PostMapping("/supplier")
 	public ResponseEntity<?> createSupplier(@RequestBody Supplier newSupplier){
 		try{
