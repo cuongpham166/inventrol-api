@@ -23,6 +23,7 @@ import com.inventrol.api.discount.DiscountRepository;
 import com.inventrol.api.discount.DiscountService;
 import com.inventrol.api.product.productstock.ProductStock;
 import com.inventrol.api.product.productstock.ProductStockRepository;
+import com.inventrol.api.product.productstock.ProductStockView;
 import com.inventrol.api.record.listingpricerecord.ListingPriceRecord;
 import com.inventrol.api.record.listingpricerecord.ListingPriceRecordRepository;
 import com.inventrol.api.record.retailpricerecord.RetailPriceRecord;
@@ -76,6 +77,12 @@ public class ProductService implements ProductInterface {
 		productRepo.findAllProjectedByOrderByIdAsc(ProductView.class).forEach(products::add);
 		List<ProductView> results = products.stream().filter(res -> res.isDeleted() == false).collect(Collectors.toList());
 		return results;
+	}
+	
+	public List<ProductStockView>getAllProductStock(){
+		List<ProductStockView>productStock = new ArrayList<ProductStockView>();
+		productRepo.findAllProjectedByOrderByIdAsc(ProductStockView.class).forEach(productStock::add);
+		return productStock;
 	}
 	
 	public List<ProductView>searchProduct (String name){

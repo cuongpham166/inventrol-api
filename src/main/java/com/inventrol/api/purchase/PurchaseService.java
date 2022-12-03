@@ -12,6 +12,7 @@ import com.inventrol.api.purchase.purchasehistory.PurchaseHistory;
 import com.inventrol.api.purchase.purchasehistory.PurchaseHistoryRepository;
 import com.inventrol.api.purchase.purchaseshipping.PurchaseShipping;
 import com.inventrol.api.purchase.purchaseshipping.PurchaseShippingRepository;
+import com.inventrol.api.purchase.purchaseshipping.PurchaseShippingStatusView;
 import com.inventrol.api.purchase.purchaseshipping.PurchaseShippingView;
 
 @Service
@@ -53,6 +54,11 @@ public class PurchaseService implements PurchaseInterface{
 		return results;
 	}
 	
+	public List<PurchaseShippingStatusView>getAllPurchaseShippingStatus(){
+		List<PurchaseShippingStatusView>purchaseShippingStatus = new ArrayList<PurchaseShippingStatusView>();
+		purchaseRepo.findAllProjectedByOrderByIdAsc(PurchaseShippingStatusView.class).forEach(purchaseShippingStatus::add);
+		return purchaseShippingStatus;
+	}
 	
 	public void createPurchaseHistory (String historyStatus, Purchase foundPurchase) {
 		PurchaseHistory newPurchaseHistory = new PurchaseHistory();
