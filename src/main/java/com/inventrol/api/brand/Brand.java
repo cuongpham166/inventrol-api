@@ -1,5 +1,6 @@
 package com.inventrol.api.brand;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -24,7 +25,6 @@ import com.inventrol.api.product.Product;
 @Entity
 @Table(name = "brand")
 public class Brand {
-
 
 	public Brand(Set<Product> product, String name, String notice, boolean deleted, LocalDateTime createdOn,
 			String createdBy, LocalDateTime updatedOn, String updatedBy) {

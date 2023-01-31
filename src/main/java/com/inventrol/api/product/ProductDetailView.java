@@ -34,7 +34,7 @@ public interface ProductDetailView {
 	ProductStockData getProductstock();
 	DiscountData getDiscount();
 	OrderItemData getOrderItem();
-	PurchaseItemData getPurchaseItem();
+	//PurchaseItemData getPurchaseItem();
 	
 	interface OrderItemData {
 		int getQuantity();
