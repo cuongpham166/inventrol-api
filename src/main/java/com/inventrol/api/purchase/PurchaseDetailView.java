@@ -81,6 +81,12 @@ public interface PurchaseDetailView {
 			String getPhoneNumber();
 			String getMobileNumber();
 			String getAdditionalAddressLine();
+			String getStreetName();
+			String getStreetNumber();
+			String getPostcode();
+			String getCity();
+			String getCountry();
+			
 		    @Value("#{target.streetName + '. ' + target.streetNumber + ', ' +target.postcode+ ' '+target.city+ ', '+target.country}")
 		    String getAddress();
 		}
